@@ -1,0 +1,71 @@
+\documentclass{article}
+
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath, amssymb, changepage, amsthm}
+
+\begin{document}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\text{\normalfont\ T}}
+\newcommand{\F}{\text{\normalfont\ F}}
+\newcommand{\ti}{\textit}
+\newcommand{\tb}{\textbf}
+\newcommand{\n}{\leavevmode \newline}
+\newcommand{\nn}{\leavevmode \newline \newline}
+\def \Def#1#2{\begin{adjustwidth}{0.85cm}{0.85cm} \tb{(Definition) #1}: \ti{#2} \end{adjustwidth}}
+\def \nDef#1#2{\n \Def{#1}{#2}}
+\def \Defn#1#2{\Def{#1}{#2} \n}
+\def \nDefn#1#2{\n \Defn{#1}{#2}}
+\def \Defcont#1{\begin{adjustwidth}{0.85cm}{0.85cm} \ti{#1} \end{adjustwidth} \n}
+\def \InDef#1{\ti{\begin{adjustwidth}{0.85cm}{0.85cm} #1 \end{adjustwidth}}}
+\def \Thm#1#2{\begin{adjustwidth}{0.85cm}{0.85cm} \tb{(Theorem) #1}: \ti{#2} \end{adjustwidth}}
+\def \nThm#1#2{\n \Thm{#1}{#2}}
+\def \Thmn#1#2{\Thm{#1}{#2} \n}
+\def \nThmn#1#2{\n \Thmn{#1}{#2}}
+\def \InThm#1{\ti{\begin{adjustwidth}{0.85cm}{0.85cm} #1 \end{adjustwidth}}}
+\def \Pf#1{\begin{adjustwidth}{0.85cm}{0.85cm} \textit{Proof}: #1 \qedsymbol \end{adjustwidth} \nn}
+\newcommand{\st}{\textnormal{ s.t. }}
+\newcommand{\proplang}{\mathcal{L}_0}
+
+\title{First Order Logic - Syntax}
+\author{Piyush Patil}
+\date{August 24, 2017}
+\maketitle
+
+Recall that the propositional language we defined in the last chapter consisted of propositional symbols, which were meant to serve as variables with truth values, such as the deductive propositions to which we are accustomed in mathematics, and logical connectives, which allow us ways of combining propositions together into compound propositions. The first-order logical language, also known as \ti{predicate logic}, augments $ \proplang $ by including \ti{logical quantifiers}, which provide a means of referring to the elements of a propositional structure, and asserting properties of them.
+\nn
+As before, our language will consist of finite sequences of symbols, with certain pre-defined notions of what allowable symbols and ways of concatenating them are. Specifically, the symbols are the following:
+\begin{enumerate}
+    \item \ti{Logical symbols}: $ ( \quad ) \quad \neg \quad \rightarrow \quad \forall $
+    \item \ti{Variable symbols}: $ x_i, \text{ for } i \in \N $
+    \item \ti{Constant symbols}: $ c_i, \text{ for } i \in \N $
+    \item \ti{Function symbols}: $ F_i, \text{ for } i \in \N $
+    \item \ti{Predicate symbols}: $ P_i, \text{ for  } i \in \N $
+\end{enumerate}
+\n
+To specify the $ arity $ of a function or predicate symbol is the number of arguments it takes, and we fix a special function 
+    $$ \pi: \{ F_i, i \in \N \} \cup \{ P_i, i \in \N \} \rightarrow \N $$
+which maps each function and predicate symbol to its arity. Having set up the necessary framework of symbols, let's move on to describing the terms of the language itself, and the production rules for defining sequences of symbols that characterize the language.
+
+\section{Terms}
+As before, we denote (finite) sequences of symbols as $ \langle s_1, \cdots, s_n \rangle $ for for symbols $ s_i $ over $ 1 \leq i \leq n $, with the sum of two symbols denoting their concatenation. Let's jump right in and define the terms of the predicate language.
+\nDef{Terms}{The set of \tb{terms} is the smallest set $ T $ of finite sequences of symbols satisfying the following properties.}
+\InDef{\begin{enumerate}
+    \item $ \forall i \in \N: \langle x_i \rangle \in T $
+    \item $ \forall i \in \N: \langle c_i \rangle \in T $
+    \item $ \forall i \in \N: \ti{ if } \tau_1, \cdots, \tau_n \in T \ti{ then } $
+        $$ \langle F_i \rangle + \langle ( \rangle + \tau_1 + \cdots + \tau_n + \langle ) \rangle \in T $$
+    where $ n = \pi(F_i) $.
+\end{enumerate}}
+As convenient shorthand, we'll typically refer to unit-length terms (e.g. $ \langle x_i \rangle $) by omitting the brackets (e.g. by referring to $ x_i $ as a term), and we'll informally use $ F_i(\tau_1, \cdots, \tau_n) $ to refer to terms of the third form above.
+
+\section{Formulas}
+
+\section{Subformulas}
+
+\section{Free and Bound Variable}
+
+\end{document}

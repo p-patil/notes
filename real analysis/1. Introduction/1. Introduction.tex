@@ -1,0 +1,80 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[margin=0.5in]{geometry}
+
+\newcommand*{\tb}{\textbf}
+\newcommand*{\ti}{\textit}
+\newcommand*{\n}{\newline}
+\newcommand*{\nn}{\newline \newline}
+\newcommand*{\Pf}{\indent \ensuremath{\bullet} \textit{Proof}: }
+\newcommand*{\In}{\indent \ensuremath{\bullet} \textit{Intuition}: }
+\newcommand*{\Mo}{\indent \ensuremath{\bullet} \textit{Motivation}: }
+\newcommand*{\Co}{\indent \ensuremath{\bullet} \textit{Corollary}: }
+\newcommand*{\No}{\indent \ensuremath{\bullet} \textit{Notation}: }
+\newcommand*{\N}{\mathbb{N}}
+\newcommand*{\Z}{\mathbb{Z}}
+\newcommand*{\Q}{\mathbb{Q}}
+\newcommand*{\R}{\mathbb{R}}
+\newcommand*{\C}{\mathbb{C}}
+\newcommand*{\st}{\text{ s.t. }}
+\newcommand*{\sti}{\textit{ s.t. }}
+
+\begin{document}
+
+\title{Introduction}
+\author{Piyush Patil}
+\maketitle
+
+In this chapter, we'll construct the real numbers. Starting from absolute scratch, there are two ways to define the real numbers. The first is from to define the natural numbers, then the integers, then the rationals, and finally the reals as the completion of the rationals. Alternatively, we may take an algebraic approach, defining the notion of a field and the notion of an order on a field, then defining the property of \ti{Dedekind-completeness} (every non-empty subset that's bounded above has a supremum) in terms of the order, and then proving the \ti{existence theorem of the reals}, which states that there exists an ordered field $ \R $ that's Dedekind-complete, that contains $ \Q $.
+\nn
+Let's begin by axiomatically defining the natural numbers, using the following \ti{Peano postulates}.
+\nn
+\tb{(Definition) Naturals}: \ti{Define the set $ \N $ implicitly as the set with the following properties.}
+\begin{enumerate}
+    \item \ti{$ \emptyset \in \N $, denoted $ 0 $.}
+    \item \ti{$ \N $ is totally ordered, so that}
+        $$ \forall n \in \N: \exists s(n) \sti n < s(n) \ti{ and } \forall m \in \N: n \leq m \leq s(n) \rightarrow m = n \ti{ or } m = s(n) $$
+    \item \ti{There is no $ n \in \N $ such that $ s(n) = 0 $.}
+    \item \ti{For every $ n \neq 0 \in \N $, there exists $ m \in \N $ such that $ s(m) = n $.}
+\end{enumerate}
+We can make $ \N $ into a field by defining addition and multiplication, in the usual sense, recursively as follows
+    $$ \forall n, m \in \N: n + m := \begin{cases}
+        s(n + m'), &\text{ if } m \neq 0 \\
+        n, &\text{ if } m = 0 
+    \end{cases} $$
+    $$ \forall n, m \in \N: n \cdot m := \begin{cases}
+        m + n \cdot m', &\text{ if } m \neq 0 \\
+        0, &\text{ if } m = 0
+    \end{cases} $$
+where $ s(m') = m $. We construct the integers $ \Z $ by throwing in all additive inverses (which we call \ti{negative}, as opposed to elements of $ \N $, besides 0, which are \ti{positive}) into $ \N $, and then define the rationals, $ \Q $ to be the set of pairs of integers $ (a, b) \in \N^2 $ with $ b \neq 0 $, under the operations
+    $$ \begin{aligned}
+        &\forall (a_1, b_1), (a_2, b_2) \in \Q: (a_1, b_1) + (a_2, b_2) := (a_1 b_2 + a_2 b_1, b_1 b_2) \\
+        &\forall (a_1, b_1), (a_2, b_2) \in \Q: (a_1, b_2) \cdot (a_2, b_2) := (a_1 \cdot a_2, b_1 \cdot b_2)
+    \end{aligned} $$
+We further define an equivalence relation $ \sim $ on $ \Q $ by
+    $$ (a_1, b_1) \sim (a_2, b_2) \text{ if } a_1 \cdot b_2 = a_2 \cdot b_1 $$
+Notice that $ \Q $ is full of "holes", in the sense that there exist many different sequences of rationals which should converge, but don't. By "should", here we mean that the sequence gets infinitely close to itself (ie the elements of the sequence get infinitely close to each other), but doesn't get infinitely close to any element of $ \Q $. An example is the sequence
+    $$ 1, 1.4, 1.41, 1.414, \cdots $$
+which of couse approaches $ \sqrt{2} $. We are now in a position to define the field of real numbers $ \R $, as the completion of $ \Q $. First, we make precise this notion of sequences which "should" converge but don't, leaving behind holes, and then fill in the holes. Recall that a sequence is simply a function over the naturals. Then,
+\nn
+\tb{(Definition) Cauchy sequence}: \ti{A sequence $ ( q_n )_{n \in \N} $ of rationals is \tb{Cauchy} if}
+    $$ \forall \epsilon \in \Q^+: \exists N \in \N \sti \forall n, m > N \rightarrow | q_n - q_m | < \epsilon $$
+\nn
+where $ \Q^+ $ is the set of rational in which both parts are positive. Of couse, to speak properly about the limit of a sequence, we must first define the notion of a limit; it isn't surprising that the construction of the continuum requires a limiting process, after all.
+\nn
+\tb{(Definition) Limit}: \ti{A sequence of rationals $ ( q_n )_{n \in \N} $ \tb{converges} or has \tb{limit} $ q $ if}
+    $$ \forall \epsilon \in \Q: \exists N \in \N \sti n > N \rightarrow | q - q_n | < \epsilon $$
+\nn
+We can now cosntruct the real numbers from the rationals through a process known as \ti{completion}, as follows.
+\nn
+\tb{(Definition) Reals}: \ti{Define the field $ \R $ as the set of Cauchy sequences of $ \Q $, under the equivalence relation $ \sim $ defined by}
+    $$( q_n ) \sim ( r_n ) \ti{ if } \lim_{n \to \infty} | q_n - r_n | = 0 $$
+\indent \ti{where $ n $ ranges over the naturals. We can make this set into a field by defining addition and multiplication pointwise:}
+    $$ ( q_n ) + ( r_n ) = ( q_n + r_n ) $$
+    $$ ( q_n ) \cdot ( r_n ) = ( q_n \cdot r_n ) $$
+We can now embed $ \Q $ in $ \R $ by associating every $ q \in \Q $ with the Cauchy sequence $ ( q_n )_{n \in \N}, \forall n: q_n = q $.
+\nn
+Alternatively, we may define the real numbers using the existence theorem, which asserts the existence of a Dedekind-complete ordered field in which the rationals are embedded. In fact, the proof of the existence theorem can be given precisely by the construction above.
+
+\end{document}

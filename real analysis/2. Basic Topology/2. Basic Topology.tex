@@ -1,0 +1,124 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[margin=0.5in]{geometry}
+
+\newcommand*{\tb}{\textbf}
+\newcommand*{\ti}{\textit}
+\newcommand*{\n}{\newline}
+\newcommand*{\nn}{\newline \newline}
+\newcommand*{\Pf}{\indent \ensuremath{\bullet} \textit{Proof}: }
+\newcommand*{\In}{\indent \ensuremath{\bullet} \textit{Intuition}: }
+\newcommand*{\Mo}{\indent \ensuremath{\bullet} \textit{Motivation}: }
+\newcommand*{\Co}{\indent \ensuremath{\bullet} \textit{Corollary}: }
+\newcommand*{\No}{\indent \ensuremath{\bullet} \textit{Notation}: }
+\newcommand*{\N}{\mathbb{N}}
+\newcommand*{\Q}{\mathbb{Q}}
+\newcommand*{\R}{\mathbb{R}}
+\newcommand*{\C}{\mathbb{C}}
+\newcommand*{\st}{\text{ s.t. }}
+\newcommand*{\sti}{\textit{ s.t. }}
+
+\begin{document}
+
+\title{Basic Topology}
+\author{Piyush Patil}
+\maketitle
+
+We assume basic knowledge of the construction of real numbers as the completion of the rationals, and in this chapter present an overview of some of the most basic concepts from general point-set topology. These concepts will help us study the topological and structural aspects of the field of real numbers.
+
+\section{Finite, Countable, and Uncountable Sets}
+We'll start this chapter by introducing extremely fundamental notions and building on them iteratively. We begin with one of the most foundational concepts in all of mathematics - that of a function.
+\nn
+\tb{(Definition) Function}: \ti{Let $ A $ and $ B $ be two arbitrary sets. A \tb{function} $ f $ from $ A $ to $ B $, denoted}
+    $$ f: A \rightarrow B $$
+\indent \ti{is a subset $ S $ of $ A \times B $ in which $ A $ is embedded, ie}
+    $$ \forall a \in A: \exists (a, b) \in S \ti{ for some } b \in B $$
+\indent \ti{We denote}
+    $$ \forall a \in A: f(a) := \{ b \in B \sti (a, b) \in S \} $$
+A function, thus, is simply a way of associating to every element of $ A $ at least one element from $ B $. The set $ A $ is the \ti{domain} of $ f $, while $ B $ is the co-domain. Since not every $ b \in B $ has an associated $ a $ (though the reverse must hold), we define the \ti{range} of $ f $ to be the subset of $ B $ which do have associated values in $ A $, ie
+    $$ \text{ range of $ f $} = f(A) = \{ f(a), a \in A \} $$
+When $ f $ maps $ a $ to a single, unique $ b $, we often consider $ f(a) = b $, rather than the singleton containing $ b $; we often call $ b $ the \ti{image} of $ a $ under $ f $. Next, we introduce two basic set-theoretic properties a function may have.
+\nn
+\tb{(Definition) Injective}: \ti{For sets $ A, B $, the function $ f: A \rightarrow B $ is \tb{injective} if}
+    $$ \forall a_1 \neq a_2 \in A: f(a_1) \neq f(a_2) $$
+Injective functions are, in a sense, information-preserving, since they never map distinct elements to the same image, and so the inverse function, associating values in $ A $ to values from $ B $, may be recovered.
+\nn
+\tb{(Definition) Surjective}: \ti{For sets $ A, B $, the function $ f: A \rightarrow B $ is \tb{surjective} if}
+    $$ \forall b \in B: \exists a \in A \sti f(a) = b $$
+Functions must be defined everywhere in their domain, by definition, but surjective definitions are also defined everywhere in their co-domain; they don't miss any elements of their target. Injectivity and surjectivity are not mutually exclusive, and in fact if a function if both injective and surjective, we say that it's \ti{bijective}. Bijective functions, or \ti{bijections}, are functions with well-defined inverses, which are also bijections. Bijections are of critical importance because they act as "truly associative" functions, in the sense that every element in the domain is mapped to a unique element in the co-domain, and if we wanted to we could invert the function and do the same if the co-domain became the domain.
+\nn
+Let $ | A | $ denote the number of elements, or \ti{cardinality}, of $ A $ . Notice that for finite sets $ A $ and $ B $, if $ | B | > | A | $ then any function which uniquely maps elements from $ A $ to elements in $ B $ must necessarily miss some points in $ B $. In other words, a bijection between the two cannot exist. Conversely, if $ n = | A | = | B | $ then there are $ n! $ possible bijections between the two. It follows that two finite sets have the same cardinality if and only if we can find a bijection between them. This is a quite formal idea, but it's rooted in the very mechanics of counting, since whenever we count any group of objects, what we're really doing is assigning a bijection between a subset of the natural numbers and objects in the group, with the number of objects being last (ie largest) element in the bijection.
+\nn
+With infinite sets, it's difficult to speak of cardinality in terms of the intuitive notion of "how many elements" the set contains. Instead, we may define cardinality for infinite sets by saying that two infinite sets have the same cardinality if and only if there exists a bijection between them. Let's introduce some terminology to go with this idea.
+\nn
+\tb{(Definition) Countable}: \ti{Let $ J_n = \{ 1, \cdots, n \} $. A set $ A $ is \tb{finite} if there's a bijection between $ J_n $, for some $ n $, and $ A $. It's \tb{countably infinite} if there's a bijection between $ \N $ and $ A $, and \tb{uncountably infinite} otherwise.}
+\nn
+It can be shown that the both the integers and rationals are countable, but the reals are uncountable. Functions are absolutely critical to mathematical analysis; in particular, one of the most basic uses they play in an extremely common mathematical construct are in \ti{sequences} of numbers.
+\nn
+\tb{(Definition) Sequence}: \ti{A \tb{sequence} is a function defined over all of the natural numbers into some common co-domain.}
+\nn
+We often denote sequences not with the conventional parenthetical function notation but rather by choosing a variable to represent the sequence and subscripting with the \ti{index} (what natural number maps to the element of the sequence).
+\nn
+\tb{(Theorem) Countability is preserved by subsets}: \ti{Every infinite subset of a countable set is countable.}
+\n
+\Pf Let $ A $ be a countable set, and $ E $ be a subset of $ A $. Since $ A $ is countable, there exists a bijection $ \phi: \N \rightarrow A $. Since $ \phi $ is bijective, every element of $ A $ has a pre-image, and therefore
+    $$ \forall x \in E: \exists n \in \N \st \phi(n) = x $$
+We can order the elements of $ E $ by their pre-image through $ \phi $. We can now construct a bijection $ \psi: \N \rightarrow E $ by simply mapping $ n \in \N $ to the element of $ E $ whose index in the sorted ordering is $ n $. This is clearly a bijection, since it's injective because any two distinct natural numbers can't map to the same element of $ E $ seeing as we're working with a total ordering of $ E $, and every element of $ E $ must have a pre-image under our bijection because the existence of a pre-image under $ \phi $ indicates that it must exist somewhere in our ordering of $ E $. \qedsymbol
+\nn
+Intuitively, the above theorem is obvious; a subset of a countable set is either finite or infinite; in the latter case, if it were uncountable, then the fact that we couldn't form a bijection from the naturals to the subset would seem to indicate that we couldn't form one from the naturals to any superset of that subset, since the latter bijection would "include" the former, immediately giving us a bijection from a subset of the naturals to the subset. A more non-trivial fact is that countability is closed under union, even if the set union is over countably many sets. Note that in general, this doesn't hold for uncountable unions.
+\nn
+\tb{(Theorem) Countability is closed under countable union}: \ti{Let $ \{ E_n \}_{n \in \N} $ be a countable set of sets, with each $ E_n $ countable. Then}
+    $$ S = \bigcup_{n \in \N} E_n $$
+\indent \ti{is countable.}
+\n
+\Pf For each $ E_n $, we can denumerate its elements using some bijection $ \phi_n: \N \rightarrow E_n $ as
+    $$ x_{n, 1}, x_{n, 2}, \cdots $$
+Doing so for every $ E_n $, we can denumerate a countable list rows, each row consisting of countably many elements:
+    $$ \begin{matrix}
+        x_{0, 0}, & x_{0, 1}, & \cdots \\
+        x_{1, 0}, & x_{1, 1}, & \cdots \\
+        \vdots & \vdots & \ddots \\
+    \end{matrix} $$
+The $ n^{\text{th}} $ diagonal of this matrix consists of one unique element from $ E_1, \cdots, E_n $ respectively. Since $ S $ is countable, we may form a bijection $ \phi $ from the naturals to the rows of the matrix.
+    $$ \phi(n) = \{ x_{k, n - k}, 0 \leq k \leq n \} $$
+We can then make $ \phi $ into a bijection $ \psi $ over the elements of the matrix by defining
+    $$ \begin{aligned}
+        \psi(0) &= x_{0, 0} \\
+        \psi(1) &= x_{1, 0}, \psi(2) = x_{0, 1} \\
+        \psi(3) &= x_{2, 0}, \psi(4) = x_{1, 1}, \psi(5) = x_{0, 2} \\
+        &\vdots
+    \end{aligned} $$
+What we're doing is simply taking $ \phi(n) $ and shifting the bijection down by $ n $ elements to make room for $ \psi $ to map the next $ n $ natural numbers to the elements of $ \phi(n) $, and then continuing the process for $ \phi(n + 1) $ inductively. Thus, because $ \phi $ is a bijection, so is $ \psi $, and therefore $ S $ is countable. \qedsymbol
+\nn
+We can generalize the above argument of arranging elements into a 2-D matrix to show that countability is in fact preserved by arbitrary set products as well. The following result has the notable result of showing that $ \Q $ is countable as a corollary.
+\nn
+\tb{(Theorem) Countability is closed under set product}: \ti{Let $ A $ be a countable set. Then for any $ n \in \N $, the set of $ n $-tuples of $ A $, denoted $ A^n $, is countable.}
+\n
+\Pf We'll prove this with induction. The base case is trivial, since $ A^1 = A $ which is countable by assumption. Next, suppose that $ A^n $ is countable. We can express
+    $$ A^{n + 1} = A^n \times A = \{ (x, a), x \in A^n, a \in A \} $$
+Since both $ A^n $ and $ A $ are countable, enumerate
+    $$ A^n = \{ x_0, \cdots \}, A = \{ a_0, \cdots \} $$
+Then we can form a matrix of the elements of $ A^{n + 1} $ by taking the $ k^{\text{th}} $ row to be
+    $$ (x_k, a_0), (x_k, a_1), \cdots $$
+We can now apply the same argument for countability used in the last theorem, proving that the matrix is countable, and hence $ A^{n + 1} $ is countable. \qedsymbol
+\nn
+We conclude the section on countability and uncountability by giving our first and the most canonical example of an uncountable set: the real numbers. The proof below is known as Cantor's diagonalization argument, and involves a similar construction of a matrix and then uses the matrix to create a new row, not in the matrix, that any bijection over the naturals must miss.
+\nn
+\tb{(Theorem) Uncountability of the reals}: \ti{The set of real numbers is uncountable.}
+\n
+\Pf Every real number can be represented with an infinite binary sequence, namely by considering each number's binary digit expansion. Thus, the set of real numbers can be represented with the set
+    $$ A = \{ ( x_n )_{n \in \N} \st \forall n: x_n \in \{ 0, 1 \} \} $$
+Suppose for the sake of contradiction that $ A $ were countable, so that we could enumerate the sequences. Then we could write
+    $$ ( x_n )_0, ( x_n )_1, \cdots $$
+and enumerate every sequence in $ A $. Construct a new sequence, $ ( y_n )_{n \in \N} $ by defining
+    $$ y_n = \begin{cases}
+        0, &\text{ if } x_{n, n} = 1 \\
+        1, &\text{ if } x_{n, n} = 0
+    \end{cases} $$
+where $ x_{n, n} $ is the $ n^{\text{th}} $ element of the $ n^{\text{th}} $ sequence in the above enumeration. Then the sequence $ ( y_n ) $ cannot be contained in the enumeration, since it differs in at least one element from every row in the enumeration. Clearly, $ ( y_n ) \in A $, but it's not enumerated in our bijection from the naturals to $ A $. This is a contradiction, and hence the bijection cannot exist; $ A $, and hence $ \R $, is uncountable. \qedsymbol
+
+\section{Metric Spaces}
+
+
+\end{document}

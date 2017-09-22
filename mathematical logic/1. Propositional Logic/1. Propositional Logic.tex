@@ -1,0 +1,306 @@
+\documentclass{article}
+
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath, amssymb, changepage, amsthm}
+
+\begin{document}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\text{\normalfont\ T}}
+\newcommand{\F}{\text{\normalfont\ F}}
+\newcommand{\ti}{\textit}
+\newcommand{\tb}{\textbf}
+\newcommand{\n}{\leavevmode \newline}
+\newcommand{\nn}{\leavevmode \newline \newline}
+\def \Def#1#2{\begin{adjustwidth}{0.85cm}{0.85cm} \tb{(Definition) #1}: \ti{#2} \end{adjustwidth}}
+\def \nDef#1#2{\n \Def{#1}{#2}}
+\def \Defn#1#2{\Def{#1}{#2} \n}
+\def \nDefn#1#2{\n \Defn{#1}{#2}}
+\def \Defcont#1{\begin{adjustwidth}{0.85cm}{0.85cm} \ti{#1} \end{adjustwidth} \n}
+\def \InDef#1{\ti{\begin{adjustwidth}{0.85cm}{0.85cm} #1 \end{adjustwidth}}}
+\def \Thm#1#2{\begin{adjustwidth}{0.85cm}{0.85cm} \tb{(Theorem) #1}: \ti{#2} \end{adjustwidth}}
+\def \nThm#1#2{\n \Thm{#1}{#2}}
+\def \Thmn#1#2{\Thm{#1}{#2} \n}
+\def \nThmn#1#2{\n \Thmn{#1}{#2}}
+\def \InThm#1{\ti{\begin{adjustwidth}{0.85cm}{0.85cm} #1 \end{adjustwidth}}}
+\def \Pf#1{\begin{adjustwidth}{0.85cm}{0.85cm} \textit{Proof}: #1 \qedsymbol \end{adjustwidth} \nn}
+\newcommand{\st}{\textnormal{ s.t. }}
+\newcommand{\proplang}{\mathcal{L}_0}
+
+\title{Propositional Logic}
+\author{Piyush Patil}
+\date{August 24, 2017}
+\maketitle
+
+The essence of propositional logic is to formally govern the methodology by which propositions are combined to form compound sentences. Informally, a \ti{proposition} is a declarative sentence with a definite truth value, meaning it can be logically evaluated to be either true or false. Multiple propositions are combined (into compound sentences) using logical connectives; as such, propositions may be defined recursively using sub-propositions that are connected with a pre-defined logical connectives.
+
+\section{The Language}
+Let's begin the process of formalizing the intuitive notions of truth and propositions we introduced above. The atomic elements of propositions are a set of a pre-defined symbols that compose the logical language we use. We'll first specify the symbols of our language and then impose a syntax on it, which be designed so as to capture our intuitive notions of logical progression. There are two types of symbols we use: \ti{logical symbols} and \ti{propositional symbols}. Propositional symbols are the grounding building blocks of our language and are the most basic elements of our logical system which take on truth values, and we use logical symbols to stand for operators on propositional symbols, such as negating a symbol, grouping logically connected symbols, and linking symbols.
+\nDefn{Propositional symbol}{The \tb{propositional symbols} of our logical language are denoted $ A_n $ for $ n \in \N $.}
+\Def{Logical symbol}{The \tb{logical symbols} of our logical langauge are}
+\begin{center}
+    $ \text{(, ),} \neg, \rightarrow $
+\end{center}
+\Defcont{These symbols are used, in general, to connect compound statements.}
+The language we use for propositional logic consists of finite sequences of symbols which adhere to a certain structure, which we'll soon define. These symbols, forming the basis for our logical language, are often referred to as composing our \ti{alphabet}. We can combine such finite sequences as follows.
+\nDefn{Sum of finite sequences}{Let $ s = \langle s_1, \cdots, s_n \rangle $ and $ t = \langle t_1, \cdots, t_m \rangle $ be sequences of symbols. Then we define}
+    $$ s + t := \langle s_1, \cdots, s_n, t_1, \cdots, t_m \rangle $$
+\n
+In other words, we combine sequences by simply concatenating them. We can now formally define the logical language we've been alluding to thus far.
+\nDef{Propositional language}{The \tb{propositional language} $ \proplang $ is the smallest set of finite sequences of symbols satisfying the following.}
+\InDef{\begin{enumerate}
+    \item $ \proplang $ contains every propositional symbol, i.e. $ \forall n \in \N: A_n \in \mathcal{L}_0 $.
+    \item $ \proplang $ is closed under negation, i.e. $ \forall \text{ finite sequences } s: (\neg s) \in \mathcal{L}_0 $.
+    \item $ \proplang $ is closed under implication, i.e. $ \forall \text{ finite sequences } s, t: (s \rightarrow t) \in \mathcal{L}_0 $.
+\end{enumerate}}
+\Defcont{We refer to elements of $ \proplang $ as \tb{propositional formulas}, or simply formulas for short.}
+All we've done here is specify that the language we're using needs to contain our propositional symbols as a starting point, as well as contain compound sentences which are formed by operating on propositional symbols, which is done by either negating a symbol, inverting the truth value, or linking two symbols with an implication, chaining the truth values together unidirectionally (bidirectional chaining, of course, can be built from the implication using the logical operators we'll soon define). Of course, there are infinitely many sets satisfying these properties, but most of these will also contain superfluous elements which have nothing to do with our propositional language; what we really want is a set which satisfies the above axioms, and nothing more. We accomplish this by forcing our language to be the smallest such set.
+\nn
+To take a step back for a moment, note that everything we've done so far has involved what amounts to simple strings of symbols with no intrinsic meaning of their own. Our intention is to formally capture notions of mathematical proof, truth, and deduction by encoding these strings with the appropriate structure inherent to our way of doing mathematics. TODO
+\nn
+Intuitively, another way to think of $ \proplang $ is as the intersection of all sets satisfying the above axioms. By intersecting every possible such set, we force our language to retain only those elements which are crucial to the condition that $ \proplang $ satisfy our axioms, leaving behind the smallest such set which just barely meets our requirements.
+
+\subsection{Subformulas}
+We've already defined basic operations on our "strings" of symbols, such as concatenation. Another useful property to look at is formulas which contain other formulas. We define such notions of containment over sentences and symbolic sequences below.
+\nDefn{Block-subsequence}{Let $ s = \langle s_1, \cdots, s_n \rangle $ be a sequence of symbols. Then sequence $ t $ is a \tb{block-subsequence} of $ s $ if there exist $ i, j \in \N $, with $ i < j \leq n $, such that}
+    $$ t = \langle s_i, \cdots, s_j \rangle $$
+\Defcont{If $ s $ and $ t $ are formulas, then we say $ t $ is a \tb{subformula} of $ s $.}
+\Defn{Initial segment}{Let $ s = \langle s_1, \cdots, s_n \rangle $. Then sequence $ t $ is an \tb{initial segment} of $ s $ if there exists $ k \in \N $, with $ k \leq n $, such that}
+    $$ t = \langle s_1, \cdots, s_k \rangle $$
+\Defcont{In other words, $ t $ is a block-subsequence that starts at $ s_1 $.}
+\Def{Occurrence}{Let $ s $ be a finite sequence of symbols and $ \phi = \langle a_1, \cdots, a_n \rangle $ be a formula. An \tb{occurrence} of $ s $ in $ \phi $ is an interval $ (i, j) $ such that}
+    $$ s = \langle a_i, \cdots, a_j \rangle $$
+Notice that a formula is a subformula of another formula if and only if it occurs (ie the latter has an occurrence in the former) in the latter. The ideas of occurrence and being a subformula are important in formalizing the intuition that formulas in $ \proplang $ are built or generated out of sub-formulas already in the propositional language. In fact, we can essentially prove as much.
+\nThm{Readability}{Let $ \phi $ be any formula from $ \proplang $. Then exactly one of the following is true:}
+\InThm{\begin{enumerate}
+    \item $ \phi = \langle A_n \rangle $ for some $ n \in \N $
+    \item $ \phi = (\neg \psi) $ for some $ \psi \in \proplang $
+    \item $ \phi = (\psi_1 \rightarrow \psi_2) $ for some $ \psi_1, \psi_2 \in \proplang $
+\end{enumerate}}
+\Pf{Consider the set $ L $ of finite sequences of symbols $ \phi $ which satisfy the above conditions, so every element of $ L $ is either a single propositional symbol, the negation of a formula in $ \proplang $ wrapped in parentheses, or an implication between two formulas in $ \proplang $ wrapped in parentheses. Clearly, $ L \subseteq \proplang $ since $ \proplang $ is closed under the operations we used to define $ L $. Notice that $ L $ satisfies the defining conditions of the propositional language, since it too is closed under the operations of negation and implication. Clearly, $ L $ contains every propositional symbol, by the first condition. For any $ s \in L $, since $ L \subseteq \proplang $ we have $ s \in \proplang $ and hence by definition $ (\neg s) \in L $. Similarly, for $ s, t \in L $, since $ s, t \in \proplang $ we have $ (s \rightarrow t) \in L $. However, $ \proplang $ was defined to be the smallest set satisfying these conditions, and therefore to have $ L \subseteq \proplang $ we must have $ L = \proplang $, and hence $ \proplang $ satisfies the above conditions.}
+We've now shown that every formula in $ \proplang $ is indeed, as our intuition suspected, generated from subformulas in $ \proplang $. However, we haven't learned anything about the stronger statement of whether we can uniquely and completely create $ \proplang $ by starting at propositional symbols and building new formulas by applying negation and implication operators, in an exponentially growing tree of formulas linked by operators. In such a way, every formula in $ \proplang $ would be recursively decomposed through its path to the root of this tree to a sequence of generating operations, which would imply an inherently hierarchical structure to formulas. To prove this stronger intuition, we'll introduce a useful lemma followed by the theorem that the above ways of expressing formulas as operations of sub-formulas is unique.
+\nThm{No proper initial segments}{No proper initial segment of any formula in $ \proplang $ is itself a formula in $ \proplang $.}
+\Pf {Let $ \phi \in \proplang $ so that by readability we have either $ \phi = \langle A_n \rangle $ for some $ n $, or $ \phi = (\neg \psi) $ for some $ \psi \in \proplang $, or $ \phi = (\psi_1 \rightarrow \psi_2) $ for some $ \psi_1, \psi_2 \in \proplang $. In the first case, the only proper initial segment of $ \phi $ would be the empty sequence of symbols, which can't be in $ \proplang $ by the definition of the propositional langauge. For the second and third cases, we can proceed by induction (the first case satisfies the base case) - take as the inductive hypothesis that for all sequences of length less than $ l := \textit{ length of $ \phi $ } $ the theorem holds. Then in the second case, no proper initial segment of $ \psi $ is a formula, and since any proper initial segment of $ \phi $ must start with the symbols $ (\neg $ (otherwise the proper initial segment would simply be $ ( $ which is clearly not a formula), but cannot be followed by a valid formula since no proper initial segment of $ \psi $ is a formula; thus, it cannot be expressed as either a negation or implication of a formula and therefore contradicts readability. In the third case, since neither $ \psi_1 $ nor $ \psi_2 $ have proper initial segments that are formulas, and hence by the same logic, since any proper initial segment of $ \phi $ starts with $ ( $, no proper initial segment can be a formula.}
+\Thm{Unique readability}{Let $ \phi $ be any formula in $ \proplang $. Then exactly one of the following is true:}
+\InThm{\begin{enumerate}
+    \item $ \phi = \langle A_n \rangle $ for some $ n \in \N $
+    \item $ \phi = (\neg \psi) $ for some unique $ \psi \in \proplang $
+    \item $ \phi = (\psi_1 \rightarrow \psi_2) $ for some unique $ \psi_1, \psi_2 \in \proplang $
+\end{enumerate}}
+\Pf{That such $ A_n, \phi, $ or $ \psi_1, \psi_2 $ exist is guaranteed by readability, so we need only prove uniqueness. Suppose for the second case that
+    $$ \phi = (\neg \psi) = (\neg \theta) $$
+for $ \psi, \theta \in \proplang $. If $ \psi \neq \theta $ then prepending a negation symbol and wrapping in parentheses wouldn't make the formulas equal, and hence would contradict our assumption. Thus, $ \psi = \theta $. For the second case, suppose
+    $$ \phi = (\psi_1 \rightarrow \psi_2) = (\theta_1 \rightarrow \theta_2) $$
+for $ \psi_1, \psi_2, \theta_1, \theta_2 \in \proplang $. If $ \psi_1 \neq \theta_1 $ then for the expressions above to be equal, either $ \psi_1 $ is an initial segment of $ \theta_1 $ or vice versa; both cases are impossible by the above theorem, and hence $ \psi_1 = \theta_1 $. From this it easily follows, if we simply remove symbols as in the second case, that $ \psi_2 = \theta_2 $. This proves uniqueness.}
+
+\section{Truth Assignments}
+Thus far, we've been working purely with the symbolic manipulation of the propositional language and its contained sequences of symbols, which of course up to this point have been inherently meaningless. Of course, the purpose of introducing these ideas of formal languages is to rigorously codify some notion of proof, deduction, and truth. To do so, we need to formally incept a way of imbuing our symbols and sequences of symbols, which are meant to stand for propositions and boolean operators on these propositions, with notions of truth and falsity. To do this, and actually evaluate a given formula in $ \proplang $, which of course represents a hierarchically built proposition, we interpret propositional symbols as boolean variables, standing for atomic propositions that take on their own truth values, and interpret logical symbols as operators that determine the truth of compound formulas based on the composing sub-formulas and propositions. This hints at a recursive way of determining the truth or falsity of a formula, by working down the hierarchy until propositional symbols are reached and then applying logical operators level by level. This also implies that determining the truth value of a formula is computable in a straightforward way, in a sense of computability that we will formalize later, which has its own philosophical implications.
+\nDefn{Truth assigment}{A \ti{truth assignment} for $ \proplang $ is a function $ \nu: \{ A_n, n \in \N \} \rightarrow \{ \T, \F \} $.}
+This gives us a way to assign symbols truth values (simply by specifying a truth assignment); next, we want to make sure this notion of truth assignment conforms to how we want our logical operators to behave. Specifically, if formula $ \phi $ has $ \nu(\phi) = \T $ then we want $ \nu(\neg \phi) = \F $, and vice versa, and moreover for formulas $ \phi_1, \phi_2 $ we want $ \nu((\phi_1 \rightarrow \phi_2)) = \T $ if $ \nu(\phi_2) = \T $ whenever $ \nu(\phi_1) = \T $. Let's first prove that such a truth assignment exists in the first place.
+\nThm{Existence of truth assignment respecting logical operators}{Let $ \nu $ be a truth assignment for $ \proplang $. Then there exists a unique function $ \overline{\nu}: \proplang \rightarrow \{ \T, \F \} $ such that}
+\InDef{\begin{enumerate}
+    \item $ \forall n \in \N: \overline{\nu}(A_n) = \nu(A_n) $
+    \item $ \forall \phi \in \proplang: \overline{\nu}((\neg \phi)) = \begin{cases}
+            \T, &\textit{ if } \overline{\nu}(\phi) = \F \\
+            \F, &\textit{ otherwise }
+        \end{cases} $
+    \item $ \forall \phi_1, \phi_2 \in \proplang: \overline{\nu}((\phi_1 \rightarrow \phi_2)) = \begin{cases}
+            \F, &\textit{ if } \overline{\nu}(\phi_1) = \T \textit{ and } \overline{\nu}(\phi_2) = \F \\
+            \T, &\textit{ otherwise }
+        \end{cases} $
+\end{enumerate}}
+\Pf{We can build this extended function by formalizing the recursive approach to looking up truth values we outlined above. First, in the base case, we simply set
+    $$ \forall n \in \N: \overline{\nu}(\langle A_n \rangle) := \nu(A_n) $$
+Next, we can define $ \overline{\nu} $ inductively according to the conditions above. By unique readability, every $ \phi \in \proplang $ is expressed uniquely as either a unit-length sequence consisting of a symbol, in which case we map it as specified in the base case, or as either $ (\neg \psi) $ or $ (\psi_1 \rightarrow \psi_2) $ for some $ \psi, \psi_1, \psi_2 \in \proplang $. In the former case, we define
+    $$ \overline{\nu}(\phi) = \overline{\nu}((\neg \psi)) = \begin{cases}
+        \T, &\textit{ if } \overline{\nu}(\psi) = \F \\
+        \F, &\textit{ otherwise }
+    \end{cases} $$
+In the latter case, we define
+    $$ \overline{\nu}(\phi) = \overline{\nu}((\psi_1 \rightarrow \psi_2)) = \begin{cases}
+        \F, &\textit{ if } \overline{\nu}(\phi_1) = \T \textit{ and } \overline{\nu}(\phi_2) = \F \\
+        \T, &\textit{ otherwise }
+    \end{cases} $$
+If we inductively assume that formulas with length less than the length of $ \phi $ map to well-defined images under $ \overline{\nu} $, then so does $ \phi $, and hence it follows that $ \overline{\nu} $ is well-defined. To prove uniqueness, suppose for the sake of contradiction that there's a function $ \xi: \proplang \rightarrow \{ \T, \F, \} $ which satisfies the above three conditions but is distinct from $ \overline{\nu} $. Then there exist a set of $ \phi \in \proplang $ for which $ \overline{\nu}(\phi) \neq \xi(\phi) $; the lengths of these $ \phi $ are obviously bound below by zero, and hence we can take the shortest formula $ \phi $. Hence, it follows that for any formula shorter than $ \phi $, the images through $ \overline{\nu} $ and through $ \xi $ agree. Since $ \phi $ is either a symbol, the negation of a shorter formula, or the implication between two shorter formulas, and the values of the functions at each of the shorter formulas agree, it follows that we must have $ \overline{\nu}(\phi) = \xi(\phi) $, a contradiction and thereby proving uniquness.}
+What we're doing here is taking a truth assignment, which provides a way of looking up the truth values of the atomic elements of our propositions (which are expressed as formulas); it accounts for the base case in the recursive approach we outlined after. We then extend this base case to a full function on our propositional language, enabling us to recursively assign truth values to compound formulas in a way that respects our intuitive ideas of how logical operators ought to behave. Notice that from the inductive approach in the above proof, resulting from the inherently recursive structure of formulas, it follows that truth assignments which agree on propositional symbols have corresponding extensions to $ \proplang $ (in the sense as defined in the above theorem) which also agree. In other words,
+    $$ \textit{ if } \nu = \xi, \textit{ i.e. } \forall n \in \N: \nu(A_n) = \xi(A_n), \textit{ then } \overline{\nu} = \overline{\xi} $$
+We can now define what it means to satisfy a formula, intuitively referring to the idea of meeting the boolean constraints imposed by the formula forcing it to evaluate to true.
+\nDefn{Satisfiability}{A truth assignment $ \nu $ \tb{satisfies} a formula $ \phi $ if $ \nu(\phi) = \T $. Further, we say $ \phi \in \proplang $ is a \tb{tautology} if it's satisfied by every truth assignment, and is a \tb{contradiction} if there's no truth assignment that satisfies it.}
+We can use \ti{truth tables} to systematically examine all possible truth assignments to a formula and see which satisfy it. If there are $ n $ propositional symbols in a formula, there are $ 2^n $ possible truth assignments; a truth table delineates each one and maps it to the corresponding truth value of the entire formula. Because the above theorems imply that a formula's truth value is completely determined by the symbols that compose it, a truth table fully characterizes a formula. Truth tables are useful not only as characterizations of formulas, but in computational paradigms for determining, efficiently through computation rather than simply non-constructively proving existence, the truth value of a formula.
+\nThm{Computability of satisfiability}{There exists an algorithm to determine whether a formula is a tautology, is satisfiable, or a contradiction.}
+\Pf{We can generate the truth table of the formula by iterating over the formula, extracting the (say, $ n $) propositional symbols as we find them, and putting them in a table. We then iterate over each of the $ 2^n $ truth assignments and recursively compute (with the base case of looking up the truth value of a propositional symbol in the corresponding row) the truth assignment of the whole formula. This gives us the full truth table. We can now iterate over the truth values per assignment - if they are all true, the formula is a tautology, and if some are true, it's merely satisfiable, whereas if none are true, it's a contradiction.}
+
+\subsection{Truth Functions}
+In this section, we'll show that the propositional language we've defined is indeed as logically expressive as possible. To make this more precise, recall that over an infinite set of arbitrary placeholder propositional symbols, we only defined two logical symbols, meant to act as operators. From these two logical connectives we build hierarchically more and more formulas, but the question remains of whether we could have considered additional logical connectives that would have allowed us to build new formulas that would otherwise be inaccessible, rendering our choice of logical connectives arbitrary.
+\nn
+Truth functions formalize a very general notion of a logical connective. Intuitively, a truth function is simply any boolean function mapping an $ n $-tuple of boolean values (i.e. $ \T $'s and $ \F $'s) to a single boolean value.
+\nDefn{Truth function}{An \tb{$ n $-place truth function} is a function from $ \{ \T, \F \}^n $ to $ \{ \T, \F \} $.}
+In the most general case, a truth function is simply a lookup table arbitrarily mapping sequences of boolean value to a boolean value, and thus captures any notion of an $ n $-ary logical operator we might consider. However, it's also clear that we immediately have a correspondence between formulas in $ \proplang $ and truth functions, since a formula $ \phi $ with $ n $ propositional symbols induces an $ n $-place truth function, denoted $ f_\phi $, whose value at $ \sigma \in \{ \T, \F \}^n $ is $ \overline{\nu}(\phi) $, where $ \nu $ is the truth assignment defined by $ \nu(A_i) = \sigma_i $. Here we've assumed without loss of generality that the $ n $ propositional symbols appearing in $ \phi $ are the first $ n $ indexed symbols. We can now prove the expressivity result we alluded to earlier.
+\nThm{$ \proplang $ is maximally expressive}{Let $ f $ be an arbitrary truth function. Then there exists a formula $ \phi \in \proplang $ such that $ f = f_\phi $.}
+\Pf{Suppose $ f $ is an $ n $-place truth function. First, given a sequence of truth values $ \sigma \in \{ \T, \F \}^n $ we can build a formula $ \psi_\sigma $, consisting of $ n $ propositional variables, that evaluates to $ \T $ exactly when its $ i^\text{th} $ propositional variable is assigned truth value $ \sigma_i $. In other words, we'll build $ \psi_\sigma \in \proplang $ such that for any truth assignment $ \nu $,
+    $$ \overline{\nu}(\psi_\sigma) = \T \ti{ if and only if } \forall i \in \{ 1, \cdots, n \}: \nu(A_i) = \sigma_i $$
+where we've assumed without loss of generality that $ \psi_\sigma $ contains only the first $ n $ propositional symbols. Thus, $ \psi_\sigma $ correponds with $ \sigma $ in the sense that it's made true only by $ \sigma $. The idea behind why we'd want to build such a $ \psi_\sigma $ is that we can then build the $ \phi $ that we seek (i.e. where $ f_\phi = f $) by looking at all $ \sigma $ for which $ f(\sigma) = \T $ and splicing the corresponding $ \psi_\sigma $'s together in such a way that the result is true whenever at least one of the $ \psi_\sigma $'s is true.
+\n
+To actually perform these constructions, we'll need to introduce two new abstractions on logical connectives. First, let's define the \ti{conjunction} of formulas $ \psi_1, \psi_2 $ to be the formula $ (\neg(\psi_1 \rightarrow (\neg \psi_2))) $. It's easily verifable (by examining the truth table) that a truth assignment satisfies the conjunction if and only if it satisfies both $ \psi_1 $ and $ \psi_2 $. We can extend the conjunction to countably many formulas inductively. Given this new construction, we can, for a fixed $ \sigma \in \{ \T, \F \}^n $, build the $ \psi_\sigma $ we outlined (i.e. a formula which is designed to be satisfied precisely when we follow $ \sigma $ in assigning truth values) by taking the conjunction of the $ \theta_i(\sigma) $ over $ 1 \leq i \leq n $, where
+    $$ \theta_i(\sigma) := \begin{cases}
+        A_i, &\ti{ if } \sigma_i = \T \\
+        (\neg A_i) &\ti{ otherwise }
+    \end{cases} $$
+Notice that for the conjunction of the above $ \theta_i(\sigma) $'s to be satisfied, each $ \theta_i(\sigma) $ must be satisfied, and we specifically designed the $ \theta_i(\sigma) $'s so that each is satisfied only by $ \sigma_i $.
+\n
+Next, we define the \ti{disjunction} of formulas $ \psi_1, \psi_2 $ as $ ((\neg \psi_1) \rightarrow \psi_2) $. We've designed the disjunction to be satisfied when at least one of $ \psi_1 $ and $ \psi_2 $ is satisfied. As before, we can inductively define the disjunction of multiple formulas. We can now build $ \phi $ by looking at every $ \sigma $, of which there are finitely many choices (specifically, at most $ 2^n $ choices), for which $ f(\sigma) = \T $. We define
+    $$ \phi := \ti{ disjunction over } \sigma \st f(\sigma) = \T \ti{ of } \theta(\sigma) \ti{ where } \theta(\sigma) := \ti{conjunction over } i \in \{ 1, \cdots, n \} \ti{ of } \theta_i(\sigma) $$
+Intuitively, we've designed $ \phi $ to be satisfied by a boolean sequence whenever one of its conjunctions is satisfied by that boolean sequence, and since each conjunction is built so as to be satisfied by one unique boolean sequence that maps to $ \T $ under $ f $, it follows that $ \phi $ is satisfied by exactly those boolean sequences which $ f $ maps to $ \T $. More formally, consider some $ \tau \in \{ \T, \F \}^n $. Let $ \nu $ be the truth assignment given by $ \nu(A_i) = \tau_i $. Then we have
+    $$ f_\phi(\tau) = \overline{\nu}(\tau) = \T \iff \exists \sigma \st \overline{\nu}(\theta_\tau) = \overline{\nu}(\theta_\sigma) = \T \iff \exists \sigma \st \tau = \sigma \ti{ where } f(\sigma) = \T \iff f(\tau) = \T $$
+which follows from the way we've constructed disjunctions and conjunctions. It follows that $ f_\phi = f $ as desired.}
+Whwat we've done in the above proof is something quite important worth noting. We defined extra logical connectives using the logical symbols we started with, allowing us to use them as an intermediate layer of abstraction to prove the above theorem. In fact, the two logical connectives we formed are extremely common and significant. \tb{Conjunctions}, logical operators often denoted $ \psi_1 \land \psi_2 $ for formulas $ \psi_1, \psi_2 $, are defined so as to be satisfied only when both $ \psi_1 $ and $ \psi_2 $ are satisifed, equivalent to the linguistic "and", giving us a way to impose a logical condition that's dependent on both sub-conditions (ie $ \psi_1 $ and $ \psi_2 $) being true. \tb{Disjunctions} are more relaxed, and are logical operators often denoted $ \psi_1 \lor \psi_2 $, and are satisfied when at least one of $ \psi_1 $ or $ \psi_2 $ is satisfied, allowing us to impose a logical condition that only requires some of its sub-conditions, but not necessarily all of them. In fact, the two operators correspond to necessity and sufficiency in mathematical jargon, and are thus extremely fundamental to logic. It's not uncommon to include them as logical symbols right from the start, but we chose to began with as minimal a set of symbols as we could in order to expedite proofs. As we saw above, this doesn't pose an issue since conjunctions and disjunctions can be defined as
+    $$ \psi_1 \land \psi_2 := (\neg (\psi_1 \rightarrow (\neg \psi_2))) $$
+    $$ \psi_1 \lor \psi_2 := ((\neg \psi_1) \rightarrow \psi_2) $$
+We intuitively construct the former as follows: if $ \psi_1 $ and $ \psi_2 $ are inextricably linked as we desire, so that their conjunction depends on both of them being true, then since the formula $ (\psi_1 \rightarrow \psi_2) $ is satisfied if $ \psi_1 $ is false or if $ \psi_1 $ is true and $ \psi_2 $ is true, the formula $ (\psi_1 \rightarrow (\neg \psi_2)) $ is always satisfied unless both $ \psi_1 $ and $ \psi_2 $ are true; since this is the opposite of what we want, we negate the expression. The latter is constructed with the idea that when $ \phi_1 $ is true, we make it a false antecedent of the implication, forcing the expression to evaluate to true, and when $ \phi_2 $ is true, we force it to be the true consequent, also forcing the expression to evaluate to true. This is made clear if we simply examine the truth tables.
+
+\section{Proof System for $ \proplang $}
+Having formalized notions of propositions, logical operators, and satisfiability, we can now tackle the notion of proof. Given a subset $ \Gamma $ of $ \proplang $, we'll intuitively define a \ti{proof} as a finite sequence $ \langle \phi_1, \cdots, \phi_n \rangle $ of formulas from $ \proplang $ which satisfies certain conditions relevant to $ \Gamma $. The idea here is that a proof is simply a progression of propositions, each deductively linked to the prior. To make these ideas formal, we must first introduce a set of \ti{logical axioms}.
+\nDef{Logical axiom}{Let $ \phi_1, \phi_2, \phi_3 $ be propositional formulas. Then each of the following formulas is a \tb{logical axiom}.}
+\InDef{\begin{enumerate}
+    \item Group I axioms
+    \begin{enumerate}
+        \item $ ((\phi_1 \rightarrow (\phi_2 \rightarrow \phi_3)) \rightarrow ((\phi_1 \rightarrow \phi_2) \rightarrow (\phi_1 \rightarrow \phi_3))) $
+        \item $ (\phi_1 \rightarrow \phi_1) $
+        \item $ (\phi_1 \rightarrow (\phi_2 \rightarrow \phi_1)) $
+    \end{enumerate}
+    \item Group II axioms
+    \begin{enumerate}
+        \item $ (\phi_1 \rightarrow ((\neg \phi_1) \rightarrow \phi_2)) $
+    \end{enumerate}
+    \item Group III axioms
+    \begin{enumerate}
+        \item $ (((\neg \phi_1) \rightarrow \phi_1) \rightarrow \phi_1) $
+    \end{enumerate}
+    \item Group IV axioms
+    \begin{enumerate}
+        \item $ ((\neg \phi_1) \rightarrow (\phi_1 \rightarrow \phi_2)) $
+        \item $ (\phi_1 \rightarrow ((\neg \phi_2) \rightarrow (\neg (\phi_1 \rightarrow \phi_2)))) $
+    \end{enumerate}
+\end{enumerate}}
+\n
+Note that each logical axiom is a tautology. This is, of course, by design; our intention is to use axioms as a starting point in the iterative inference machine that is our proof system, and hence these axioms are meant to be taken as universally true. Proof systems that rely only on logical axioms are called \ti{logic proof systems}, but more generally we distinguish between two kinds of axioms - \ti{logical axioms} and \ti{specific axioms}. The latter differ from the already defined former in that they are not simply a specified set of tautologies but rather a select subset of formulas from our propositional language that we choose to regard as universally true, a priori, so that formulas that deductively follow, in a sense we'll now make precise, from our axioms can also be regarded as tautologically, incontrovertibly true. A quick aside - if it wasn't already clear, by "true" we of course mean "satisfied", i.e. that a formula evaluates to $ \T $ under some extended truth assignment.
+\nDef{$ \Gamma $-Proof}{Let $ \Gamma \subseteq \proplang $ be a collection of formulas and $ s = \langle \phi_1, \cdots, \phi_n \rangle $ be a sequence of formulas. We say $ s $ is a \tb{$ \Gamma $-proof} if, for each $ i \leq n $, at least one of the following holds:}
+\InDef{\begin{enumerate}
+    \item $ \phi_i \in \Gamma $
+    \item $ \phi_i $ is a logical axiom
+    \item $ \exists j_1, j_2 < i \st \phi_{j_2} = (\phi_{j_1} \rightarrow \phi_i) $
+\end{enumerate}
+Further, for any formula $ \phi \in \proplang $, we write $ \Gamma \vdash \phi $ if there exists a finite sequence $ s = \langle \phi_1, \cdots, \phi_n \rangle $ such that $ s $ is a $ \Gamma $-proof and $ \phi_n = \phi $.}
+\n
+Let's unpack this definition. Essentially, we are taking $ \Gamma $ to be our set of specific axioms, and regarding a proof to be a sequence of propositions. The conditions we impose on this sequence are meant to cement what it means for a proof to be logical and deductive; namely, we require that each proposition in the sequence, corresponding intuitively to a step in a proof, be either an axiom (logical or specific - these are the first two conditions), or both follow from a previous proposition in a valid way. The latter condition is what the third point in the definition formalizes. We require first that $ (\phi_{j_1} \rightarrow \phi_i) $ so that the "current" proposition $ \phi_i $ in the proof follows from a previous one, and further that $ \phi_{j_2} := (\phi_{j_1} \rightarrow \phi_i) $ is itself in the proof and hence is deductively valid and can be taken as true (otherwise, simply requiring that $ \phi_i $ follows from a previous statement from the proof isn't enough, since we don't know - or more formally, haven't yet proved - that the implicatory link between $ \phi_{j_1} $ and $ \phi_i $ is valid within our proof). The notation $ \Gamma \vdash \phi $ just means that $ \phi $ can be "proven" from the axiomatic system $ \Gamma $ (with logical axioms of course), i.e. that $ \phi $ follows from $ \Gamma $.
+\nn
+We'll now prove a series of useful lemmas concerning our proof system and the nature of proof.
+\nThm{Inference lemma}{For $ \Gamma \subseteq \proplang $, let $ \phi, \psi $ be formulas with $ \Gamma \vdash \psi $ and $ \Gamma \vdash (\psi \rightarrow \phi) $. Then $ \Gamma \vdash \phi $.}
+\Pf{Let $ \langle \psi_1, \cdots, \psi_n \rangle $ be a $ \Gamma $-proof of $ \psi $ and $ \langle \omega_1, \cdots, \omega_m \rangle $ be a $ \Gamma $-proof of $ (\psi \rightarrow \phi) $. It follows easily that
+    $$ \langle \psi_1, \cdots, \psi_n, \omega_1, \cdots, \omega_m, \phi \rangle $$
+is a $ \Gamma $-proof for $ \phi $, since clearly the sequence up to its last element satisfies the conditions for a $ \Gamma $-proof and for the last element, $ \phi $, we have $ \omega_m = (\psi \rightarrow \phi) $ where $ \psi_n = \psi $ is also in the sequence. Thus, $ \Gamma \vdash \phi $.}
+This lemma makes concrete the foundational basis of our deduction, and makes formal the way we mean to use the implication operator. It essentially guarantees that if we can prove both an implication and the antecedent of the implication, then we can prove the consequent. Philosophically, this is related to the idea of modus ponens, the idea that if both of the propositions $ P $ and $ (P \rightarrow Q) $ are true, then $ Q $ must be true as well, but is actually a stronger statement as it concerns not truth but provability, which implies truth.
+\nn
+Next, we'll link the two ideas or provability and truth (which we formalized as satisfiability), by showing that if a formula can be proven, then it's truth, or equivalently its satisfiability, depends completely and inextricably on the specific axioms (and not the logical axioms, since these are always tautologies) that its proof relies on.
+\nThm{Soundness lemma}{Let $ \Gamma \subseteq \proplang $ be a subset of formulas and $ \phi $ be a $ \Gamma $-provable formula, i.e. so that $ \Gamma \vdash \phi $. Suppose we have the truth assignment
+    $$ \nu: \{ A_n, n \in \N \} \rightarrow \{ \T, \F \} \st \forall \psi \in \Gamma: \overline{\nu}(\psi) = \T $$
+Then we must have $ \overline{\nu}(\phi) = \T $.}
+\Pf{TODO fix this. We proceed by induction on $ n := | \Gamma | $. Suppose $ n = 0 $, so that we have no specific axioms and only logical axioms. Then for $ \phi $ to be $ \Gamma $-proven indicates that $ \phi $ is the last element in a sequence of formulas that are all logical axioms, and hence is either equivalent to a logical axiom or the consequent of an implication with a logical axiom as the antecedent. Logical axioms are tautologies, and so in either case, $ \phi $ is satisfied by every truth assignment, proving the base case.
+\n
+Next, assume as the inductive hypothesis the theorem for subsets with at most $ n $ elements, and consider a subset $ \Gamma $ with $ n + 1 $ elements. If every $ \Gamma $-proof of $ \phi $ uses $ n $ or less formulas from $ \Gamma $, then by considering the subset of $ \Gamma $ composed of those formulas and applying the inductive hypothesis it follows that $ \overline{\nu}(\phi) = \T $. For $ \Gamma $-proofs using all $ n + 1 $ formulas in $ \Gamma $, the $ \Gamma $-proof must contain an element of the form $ (\psi \rightarrow \phi) $ for some $ \psi \in \Gamma $, and since $ \overline{\nu}(\psi) = \T $ and $ \overline{\nu}((\psi \rightarrow \phi)) = \T $ we must have $ \overline{\nu}(\phi) = \T $.}
+This theorem expresses what it really means for a formula to be $ \Gamma $-proven; the truth of the specific axioms composing $ \Gamma $ are sufficient to determine the truth of the formula, which is exactly what we'd want from a notion of proof. It essentially states that if we can satisfy every axiom in $ \Gamma $, and we know that those axioms are sufficient to prove the formula $ \phi $ then the same satisfying truth assignment must also satisfy $ \phi $. After all, this direction of sufficiency in satisfiability and truth is what we'd expect from proof; to say $ \phi $ "follows from" the formulas in $ \Gamma $ is to say that when the latter are true, $ \phi $ must be too.
+\nn
+Let's move on to the final lemma we'll consider with regards to the ideas of provability and proof from axioms we just introduced. Taken together, these three lemmas form the basis of our "laws of thought" which govern exactly what it means for a logical statement to rigorously follow from another, and what our underlying logical framework for truth is.
+\nThm{Deduction lemma}{For $ \Gamma \subseteq \proplang $ and formulas $ \phi, \psi \in \proplang $, suppose that $ \Gamma \cup \{ \phi \} \vdash \psi $. Then $ \Gamma \vdash (\phi \rightarrow \psi) $.}
+\Pf{TODO}
+As the name implies, the deduction lemma formalizes what it means for one formula to imply another, in terms of provability. The idea is that given a set of axioms, if we can add in a formula to that set, effectively giving it a temporary status of self-evident, axiomatic truth that we imbue the elements of $ \Gamma $ with, and prove $ \psi $, then clearly $ \phi $ is sufficient to prove $ \psi $ (in addition to the axioms, of course), and hence it should follow that we can prove that $ \phi $ implies $ \psi $.
+\nn
+These three lemmas - the inference lemma, soundness lemma, and deduction lemma - cement the connection between our formal notion of proof from axiomatic formulas and truth, which we formalized using truth functions and their extensions. Hence, they will allow us to rigorously reason about provability and truth within our logical framework in a way that aligns with our intuition regarding logic and mathematical proof. Let's now take a look at the nature of the axioms themselves, and what we can say about them. First, we need to answer the question of whether our axiomatic system is indeed a valuable system to consider. Given that axioms exist for us to use as a foundation for deriving truth, we ought to require that our axioms follow some notion of self-consistency that's consistent with our basic ideas of what truth is. For example, built into our definition of truth functions is that the formal languages we work with obey the law of the excluded middle - every formula is either true or false. Next, our axioms should be consistent with the law that both a proposition and its negation cannot both be true at the same time. Let's define this notion of consistency.
+\nDef{Consistent}{We say that $ \Gamma \subseteq \proplang $ is \tb{inconsistent} if}
+    $$ \exists \phi \in \proplang \st \Gamma \vdash \phi \ti{ and } \Gamma \vdash (\neg \phi) $$
+\InDef{Otherwise, we say $ \Gamma $ is \tb{consistent}.}
+One might question even our fundamental assumption for why consistency is desirable - why, ultimately, is it a problem if our axiomatic system is inconsistent? Intuitively, we require consistency because lack thereof causes our axiomatic system to lose all meaning, and to lose any semblance of truth. The theorem below states this formally, by showing that inconsistent axioms can prove any possible formula, completely devaluing our notion of proof.
+\nThm{Inconsistency can prove everything}{Suppose $ \Gamma \subseteq \proplang $ is inconsistent. Then}
+    $$ \forall \phi \in \proplang: \Gamma \vdash \phi $$
+\Pf{Since $ \Gamma $ is inconsistent, we can find a $ \psi $ such that $ \Gamma \vdash \psi $ and $ \Gamma \vdash (\neg \psi) $. Then,
+    $$ \Gamma \vdash (\psi \rightarrow ((\neg \psi) \rightarrow \phi)) $$
+since that formula is a logical axiom. Then, by the inference lemma,
+    $$ \Gamma \vdash ((\neg \psi) \rightarrow \phi) $$
+and hence by the inference lemma again, we have
+    $$ \Gamma \vdash \phi $$
+which proves the theorem.}
+Thus, it's desirable for us to choose consistent axioms. It would appear that the larger our set of axioms, the greater the risk of inconsistency, as the number of logical dependencies between the axioms and the full scope of what can be proven grows exponentially, and so does the chance of a formula appearing for which we could prove both it and its negation. Nonetheless, larger axiomatic systems are more expressive and powerful, so a natural question to ask is what the largest axiomatic system we can find is without sacrificing consistency. The next definition solidifies what we're looking for.
+\nDef{Maximally consistent}{Consider a consistent $ \Gamma \subseteq \proplang $. $ \Gamma $ is \tb{maximally consistent} if}
+    $$ \forall \phi \in \proplang: \ti{ if } \Gamma \cup \{ \phi \} \ti{ is consistent, then } \phi \in \Gamma $$
+In other words, $ \Gamma $ is both consistent and so large that the addition of any new formula sacrifices its consistency. Let's look at how we can go about building a maximally consistent axiomatic system. We begin with the following intuitive building block.
+\nThm{Possibility of adding formulas and preserving consistency}{Suppose $ \Gamma \subseteq \proplang $ is consistent. Then for any $ \phi \in \proplang $, at least one of $ \Gamma \cup \{ \phi \} $ and $ \Gamma \cup \{ (\neg \phi) \} $ is consistent.}
+\Pf{We'll prove that if $ \Gamma \cup \{ (\neg \phi) \} $ is inconsistent, then $ \Gamma \cup \{ \phi \} $ is consistent. From this and its contrapositive, the theorem follows. So, suppose that $ \Gamma \cup \{ (\neg \phi) \} $ is inconsistent. The idea behind the proof is that given that the addition of the negation of $ \phi $ forces $ \Gamma $ to be inconsistent, despite $ \Gamma $ being consistent, then because inconsistent systems prove everything, we can conclude that $ \Gamma \cup \{ (\neg \phi) \} $ proves $ \phi $, ie
+    $$ \Gamma \cup \{ (\neg \phi) \} \vdash \phi $$
+Intuitively, $ (\neg \phi) $ shouldn't help prove $ \phi $, and hence if $ \Gamma \cup \{ (\neg \phi) \} $ can prove $ \phi $, we'd expect $ \Gamma $ alone to be able to prove $ \phi $. Formally, this follows from the deduction lemma, which tells us that
+    $$ \Gamma \vdash ((\neg \phi) \rightarrow \phi) $$
+and since $ (((\neg \phi) \rightarrow \phi) \rightarrow \phi) $ is a logical axiom, by the inference lemma $ \Gamma \vdash \phi $. Now that we've shown that $ \Gamma $ proves $ \phi $, which we'd intuitively expect if $ \Gamma \cup \{ (\neg \phi) \} $ is inconsistent (since this would be the case if $ \Gamma $ already "contained" $ \phi $ in its provable statements, which is what's causing the addition of $ (\neg \phi) $ to kill consistency), we can proceed by contradiction.
+\n
+Suppose for the sake of contradiction that $ \Gamma \cup \{ \phi \} $ is also inconsistent. Then, again, since inconsistent systems prove everything, we have $ \Gamma \cup \{ \phi \} \vdash \psi $ for every $ \psi \in \proplang $. By the deduction lemma, we have $ \Gamma \vdash (\phi \rightarrow \psi) $. Since we just showed that $ \Gamma \vdash \phi $, by the inference lemma we have $ \Gamma \vdash \psi $. We've thus proven that $ \Gamma $ can prove arbitrary formulas from $ \proplang $, and hence that $ \Gamma $ must be inconsistent, a contradiction.}
+Notice that a corollary is that for a maximally consistent $ \Gamma \subseteq \proplang $, for any formula $ \phi $, either (1) $ \Gamma $ contains $ \phi $ or $ (\neg \phi) $ or (2) if $ \Gamma $ can prove $ \phi $, then $ \Gamma $ must contain $ \phi $. Intuitively, every propositional formula is associated with a maximally consistent axiom set - either the formula or its negation is an axiom itself, or the provability of the formula within our axiom set implies that it was an axiom to begin with. Since maximally consistent axiomatic sets are as large as possible, if they don't contain a formula, it must be because it already contains the negation of the formula and hence adding the formula would cause inconsistency. Notice that this first condition is in fact a biconditional, since if a consistent axiomatic set contains every formula or its negation, then the only formulas it doesn't contain are the negations of formulas that are contained (assuming double negation cancels out, which is easy to prove), and hence the addition of any new formula would break the consistency.
+\nn
+The second statement tells us that maximally consistent axiom sets can't prove any formulas they haven't taken as axioms to begin with; they are, indeed, so maximal that their "proving power" has saturated, and they contain every formula they can prove (unless the formula, or its negation, is already contained). This, too, is quite clear, since if a maximally consistent set could prove a formula it didn't contain, then intuitively it wouldn't quite be maximal, as clearly the addition of a provable formula isn't going to shatter the set's consistency. Quite trivially, any set of axioms can prove the axioms it contains; therefore, the second part of this corollarly tells us that for maximally consistent axiomatic sets, provability and containment are one and the same.
+\nn
+We'll conclude the section by proving two useful lemmas followed by the theorem that consistent sets can extended so as to become maximally consistent, followed by the an initial version of the completeness theorem, which we'll further explore in the next section.
+\nThm{Condition for containment of implications in maximally consistent sets}{Let $ \Gamma \subseteq \proplang $ be maximally consistent. For any formulas $ \phi_1, \phi_2 \in \proplang $, $ (\phi_1 \rightarrow \phi_2) \in \Gamma $ if and only if either $ \phi_1 \not \in \Gamma $ or $ \phi_2 \in \Gamma $.}
+\Pf{Here's the intuition for the proof, which we'll then formalize and fill in the details of. If $ \phi_1 \not \in \Gamma $, then since $ \Gamma $ is maximally consistent we must have $ (\neg \phi_1) \in \Gamma $ and therefore $ \Gamma \vdash (\neg \phi_1) $. Intuitively, this means that under the axiomatic system of $ \Gamma $, the formula $ \phi_1 $ is false, and hence any implication with $ \phi_1 $ as the antecedent should be true and therefore provable by $ \Gamma $, and hence, by our assumption of maximal consistency, contained in it. Formally, we can now conclude that $ \Gamma \vdash (\phi_1 \rightarrow \phi_2) $ by the inference lemma because $ ((\neg \phi_1) \rightarrow (\phi_1 \rightarrow \phi_2)) $ is a logical axiom and therefore we must have $ \Gamma \vdash (\phi_1 \rightarrow \phi_2) $.
+\n
+Next, suppose that instead we have $ \phi_2 \in \Gamma $. With similar intuitive reasoning as above, our proof sketch is to say that if $ \phi_2 $ is considered true under the axiomatic system of $ \Gamma $ then any implication with $ \phi_2 $ as the consequent ought to be true. As before, since $ \phi_2 \in \Gamma $ we have $ \Gamma \vdash \phi_2 $, and since $ (\phi_2 \rightarrow (\phi_1 \rightarrow \phi_2)) $ is a logical axiom and therefore provable by $ \Gamma $, we can conclude from the inference lemma that $ \Gamma \vdash (\phi_1 \rightarrow \phi_2) $.
+\n
+This proves one direction of the theorem. To prove the other condition, we'll prove the contrapositive. Hence, we begin by assuming that $ \phi_1 \in \Gamma $ and $ \phi_2 \not \in \Gamma $, with the intent of proving that $ (\phi_1 \rightarrow \phi_2) \not \in \Gamma $. The idea here is that if $ \phi_1 $ is true but $ \phi_2 $ is false, under $ \Gamma $, then their implication must also be false under any consistent (let alone maximally consistent) $ \Gamma $. We can conclude from our assumptions that $ (\neg \phi_2) \in \Gamma $ and therefore $ \Gamma \vdash \phi_1 $ and $ \Gamma \vdash (\neg \phi_2) $. Formalizing our intuition that implications with true antecedents and false consequents must be false, we assert that since $ (\phi_1 \rightarrow ((\neg \phi_2) \rightarrow (\neg(\phi_1 \rightarrow \phi_2)))) $ is a logical axiom and hence provable by $ \Gamma $, by the inference lemma, $ \Gamma \vdash ((\neg \phi_2) \rightarrow (\neg (\phi_1 \rightarrow \phi_2))) $. But $ ((\neg \phi_2) \rightarrow (\neg (\phi_1 \rightarrow \phi_2))) $ is also a logical axiom, and therefore by the inference lemma again, we conclude that $ \Gamma \vdash (\neg (\phi_1 \rightarrow \phi_2)) $, from which it follows that $ (\phi_1 \rightarrow \phi_2) \not \in \Gamma $.}
+The goal we're working towards through these lemmas is to show that consistency is a sufficient condition for satisfiability; to do so, we start with the special case of maximal consistency.
+\nThm{Maximal consistency is sufficient for satisfiability}{Suppose $ \Gamma \subseteq \proplang $ is maximally consistent. Then $ \Gamma $ is satisfiable.}
+\Pf{We wish to find a truth assignment $ \nu $ which satisfies every formula in $ \Gamma $. We'll constructively design such a $ \nu $ in the most obvious way possible: let
+    $$ \forall n \in \N: \nu(A_n) = \begin{cases}
+        \T &\ti{ if } \langle A_n \rangle \in \Gamma \\
+        \F &\ti{ otherwise }
+    \end{cases} $$
+We want to prove that $ \forall \phi \in \proplang: \overline{nu}(\phi) = \T \ti{ if and only if } \phi \in \Gamma $. This is quite an intuitive claim, as one would expect truth assignments constructed specifically for satisfiability in $ \Gamma $ over propositional symbols to extend to all formulas built out of those symbols. We'll prove this by induction on the length $ n $ of $ \phi $. The base case with $ n = 1 $ is trivial and follows by definition. Now take as the inductive hypothesis that $ \overline{\nu} $ behaves as we want it to for formulas with length $ n $ or shorter. Consider now a formula $ \phi $ of length $ n + 1 $.
+\n
+Then by readability we'll consider two cases: either $ \phi = (\neg \psi) $ for some $ \psi $ or $ \phi = (\psi_1 \rightarrow \psi_2) $ for some $ \psi_1, \psi_2 $. In the first case, $ \phi \in \Gamma $ if and only if $ \psi \not \in \Gamma $, by maximum consistency. This means that $ \overline{\nu}(\phi) = \T $ if and only if $ \overline{\nu}(\psi) = \F $. Thus, if $ \phi \in \Gamma $ then $ \psi \not \in \Gamma $ which means, by the inductive hypothesis, that $ \overline{nu}(\psi) = \F $ which means $ \overline{nu}(\phi) = \T $. Conversely, if $ \phi \not \in \Gamma $ then by a similar argument we have $ \overline{nu}(\phi) = \F $.
+\n
+In the second case, we have $ \phi \in \Gamma $ if and only if either $ \psi_1 \not \in \Gamma $ or $ \psi_2 \in \Gamma $, and hence $ \overline{\nu}(\phi) = \T $ if and only if either $ \overline{nu}(\psi_1) = \F $ or $ \overline{nu}(\psi_2) = \T $. By the inductive hypothesis, $ \overline{\nu}(\phi) = \T $ if and only if $ \psi_1 \not \in \Gamma $ or $ \psi_2 \in \Gamma $, which proves that $ \overline{nu}(\phi) = \T $ if and only if $ \phi \not \in \Gamma $.}
+Finally, let's show that the notion of maximal consistency meets what we intuitively expect from a maximal object, in an algebraic context; namely, that it ought to contain all sub-objects that meet its criteria.
+\nThm{Extensibility of consistent sets}{Suppose $ \Gamma \subseteq \proplang $ is consistent. Then there exists maximally consistent $ \Gamma^* \subseteq \proplang $ with $ \Gamma \subseteq \Gamma^* $.}
+\Pf{We'll construct $ \Gamma^* $ using the theorem we proved earlier on adding formulas while preserving consistency. Namely, recall that we proved that if $ \Delta \subseteq \proplang $ is consistent, then for any formula $ \phi $, we can either add $ \phi $ or $ (\neg \phi) $ to $ \Delta $ and preserve consistency. We'll use this idea to construct $ \Gamma^* $ one formula at a time, iteratively. This will require us to enumerate  We'll use this idea to construct $ \Gamma^* $ one formula at a time, iteratively.
+\n
+This will require us to enumerate the formulas of $ \proplang $, which can be done since there are countably many propositional symbols and, since each formula consists of finitely many propositional symbols, hence there are countably many formulas. One such enumeration, for example, might be to start with the (finitely many) formulas of length 1 which only use the propositional symbol $ A_1 $, followed by the (finitely many) formulas of length 2 which only use either $ A_1 $ or $ A_2 $ (or both), followed by the (finitely many) formulas of length 3 which use no symbols other than $ A_1, A_2, A_3 $, and so on. Thus, we can enumerate
+    $$ \proplang = \{ \phi_n, n \in \N \} $$
+We now iteratively consider every single formula in $ \proplang $ and grow $ \Gamma $'s size with each one while preserving consistency. At the end of this process, because we've considered every formula in the propositional language, it'll follow that if the result is consistent, which it should be, then it's maximally consistent.
+\n
+Let's formally prove this. Define the sequence of sets $ \{ \Gamma_n, n \in \N \} $ recursively as follows. Let $ \Gamma_0 = \Gamma $, and for $ n > 0 $, let
+    $$ \Gamma_n = \begin{cases}
+        \Gamma_{n - 1} \cup \{ \phi_{n - 1} \} &\ti{ if } \Gamma_{n - 1} \cup \{ \phi_{n - 1} \} \ti{ is consistent } \\
+        \Gamma_{n - 1} \cup \{ (\neg \phi_{n - 1}) \} &\ti{ otherwise }
+    \end{cases} $$
+Notice that this forms an ascending chain, where $ \forall n \in \N: \Gamma_n \subseteq \Gamma_{n + 1} $. It's easy to use the theorem we alluded to in the beginning of the proof to prove, by induction, that each $ \Gamma_n $ is consistent. We now take $ \Gamma^* $ to be the "last" set in the above sequence, by defining
+    $$ \Gamma^* = \bigcup_{n \in \N} \Gamma_n $$
+Then $ \Gamma^* $ must be consistent, since if it weren't, it would prove a formula and its negation, which means $ \Gamma_n $ is inconsistent for some $ n $, which is a contradiction. Further, $ \Gamma^* $ must be maximally consistent, since for every $ \phi \in \proplang $ there's an $ n $ for which $ \phi = \phi_n $ which means $ \phi \in \Gamma^* $ or $ (\neg \phi) \in \Gamma^* $ and hence the only formulas not in $ \Gamma^* $ are the negations of formulas already in $ \Gamma^* $ (assuming that double negation cancels, which is easy to prove), which exactly satisfies the definition of maximal consistency, since this means adding new formulas breaks the consistency of $ \Gamma^* $.}
+We can now prove the central result, which follows as a straightforward corollary of the last two lemmas.
+\nThm{Consistency is sufficient for satisfiability}{Suppose that $ \Gamma \subseteq \proplang $ is consistent. Then $ \Gamma $ is satisfiable.}
+\Pf{The proof is simple - simply use the last theorem to extend $ \Gamma $ to a maximally consistent set, and then define the truth assignment $ \nu $ as defined in one of the lemmas we used, i.e.
+    $$ \forall n \in \N: \nu(A_n) = \begin{cases}
+        \T, &\ti{ if } \langle A_n \rangle \in \Gamma \\
+        \F, &\ti{ otherwise }
+    \end{cases} $$
+to show that the result is satisfiable. Since $ \Gamma $ is contained in the maximally consistent set we constructed, which itself is satisfiable, $ \Gamma $ must be satisfiable as well, proving the theorem.}
+
+\section{Logical Implication and Compactness}
+\Def{Logical implication}{For $ \Gamma \subseteq \proplang $ and $ \phi \in \proplang $, we say $ \Gamma $ \tb{logically implies} $ \phi $ if}
+    $$ \forall \ti{ truth assignments } \nu: \ti{ if } \nu \ti { satisfies } \Gamma \ti{ then } \nu \ti { satisfies } \phi $$
+\InDef{where by $ \nu $ satisfying $ \Gamma $ we mean that $ \forall \psi \in \Gamma: \overline{\nu}(\psi) = \T $. We denote logical implication by $ \Gamma $ with $ \Gamma \vDash \phi $.}
+Intuitively, logical implication simply means that satisfying axioms forces satisfying of a formula, so that in a sense the formula "follows from" the axioms. It's simply a different way of codifying the idea of deduction from axioms, and in fact, as we'll show, is equivalent to $ \Gamma $-proof. In fact, right off the bat we notice that the soundness lemma tells us that if $ \Gamma \vdash \phi $ then $ \Gamma \vDash \phi $, so that provability entails logical implication.
+\nDefn{Finite satisfiability}{$ \Gamma \subseteq \proplang $ is \tb{finitely satisfiable} if every finite subset of $ \Gamma $ is satisfiable.}
+This is a useful definition in proving the main result of this section, compactness.
+\nThmn{Compactness for $ \proplang $}{Let $ \Gamma \subseteq \proplang $ logically imply $ \phi \in \proplang $. Then there exists a finite subset $ \Gamma_0 \subseteq \Gamma $ that logically implies $ \phi $.}
+\Pf{Because $ \Gamma \vDash \phi $, we know that $ \Gamma \cup \{ (\neg \phi) \} $ is not satisfiable, and hence by the completeness theorem that $ \Gamma \cup \{ (\neg \phi) \} $ is inconsistent. This means that there's a formula which is $ \Gamma $-provable such that it's negation is also $ \Gamma $-provable; both $ \Gamma $-proofs are finite sequences, and hence there's a finite subset $ \Gamma_1 \subseteq \Gamma \{ (\neg \phi) \} $ that's also inconsistent. We can decompose this subset as $ \Gamma_0 \cup \{ (\neg \phi) $ if $ (\neg \phi) \in \Gamma_1 $, and if not, we can simply add it in; in either case, $ \Gamma_0 \cup \{ (\neg \phi) \} $ is inconsistent as well. This means that $ \Gamma_0 \cup \{ (\neg \phi) \} $ can prove anything, including $ \phi $, and hence it can logically imply anything, including $ \phi $.}
+We can reformulate the completeness theorem to state that if $ \Gamma \vdash \phi $ then $ \Gamma \vDash \phi $. TODO
+
+\end{document}

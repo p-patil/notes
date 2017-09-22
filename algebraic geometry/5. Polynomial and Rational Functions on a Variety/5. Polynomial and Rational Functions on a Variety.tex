@@ -1,0 +1,250 @@
+\documentclass{article}
+\usepackage{amsmath, amsfonts, amsthm, algorithmicx, amssymb}
+\usepackage[margin = 0.5in]{geometry}
+
+\newcommand*{\tb}{\textbf}
+\newcommand*{\ti}{\textit}
+\newcommand*{\n}{\newline}
+\newcommand*{\nn}{\newline \newline}
+\newcommand*{\Pf}{\indent \ensuremath{\bullet} \textit{Proof}: }
+\newcommand*{\In}{\indent \ensuremath{\bullet} \textit{Intuition}: }
+\newcommand*{\Mo}{\indent \ensuremath{\bullet} \textit{Motivation}: }
+\newcommand*{\Co}{\indent \ensuremath{\bullet} \textit{Corollary}: }
+\newcommand*{\No}{\indent \ensuremath{\bullet} \textit{Notation}: }
+\newcommand*{\Fx}{\ensuremath{F[x_1, \cdots, x_n]}}
+\newcommand*{\Ft}{\ensuremath{F[t_1, \cdots, t_m]}}
+\newcommand*{\fs}{f_1, \cdots, f_s}
+\newcommand*{\gt}{g_1, \cdots, g_t}
+\newcommand*{\lfsr}{\langle f_1, \cdots, f_s \rangle}
+\newcommand*{\V}{\ensuremath{\mathbf{V}}}
+\newcommand*{\I}{\ensuremath{\mathbf{I}}}
+\newcommand*{\IV}{\ensuremath{\mathbf{I}(V)}}
+\newcommand*{\VI}{\ensuremath{\mathbf{V}(I)}}
+
+\begin{document}
+
+\title{Polynomial and Rational Functions on a Variety}
+\author{Piyush Patil}
+\maketitle
+
+In this chapter, we'll study the algebraic properties of polynomials and rational functions on affine varieties, and their ramifications for the geometric properties of varieties. In just about every domain of mathematics the concept of mappings between structures or spaces, especially those that preserve certain properties, are of great interest (e.g. isomorphisms between groups, linear transformations between vector spaces, etc.). We'll look at polynomial and rational mappings between varieties as extensions of linear transformations, and the resulting theory will add another chapter to the algebra-geometry dictionary from the last chatper.
+
+\section{Polynomial Mappings}
+Before introducing polynomial mappings, recall that we've already studied certain examples of such mappings. For instance, polynomial parameterizations can be viewed as polynomial mappings themselves, seeing as they are mappings between varieties (though often with domain $ \mathbb{R}^n $, which can be viewed as the degenerate variety $ \V(0) $) with polynomial components. Moreover, the projection mapping $ \pi_l $ trivially has polynomial components (since $ \pi_l(a_1, \cdots, a_n) = (a_{l + 1}, \cdots, a_n) $) and is a mapping from the variety of an ideal $ \VI $ to a subset of the variety $ \V(I_l) $, where $ I_l $ is the $ l^{\text{th}} $ elimination ideal of $ I $.
+\nn
+\tb{(Definition) Polynomial mapping}: \ti{Let $ V \subset F^n, W \subset F^m $ be varieties. A function $ \phi: V \rightarrow W $ is a \tb{polynomial mapping} if}
+$$ \phi(a_1, \cdots, a_n) = (f_1(a_1, \cdots, a_n), \cdots, f_m(a_1, \cdots, a_n)) $$
+\indent \ti{for polynomials $ f_1, \cdots, f_m $. Then we also say that the tuple of polynomials $ (f_1, \cdots, f_m) $ \tb{represents} $ \phi $, and the specific polynomials are \tb{components} of $ \phi $.}
+\nn
+Notice that if the polynomial mapping $ \phi $ is represented by $ (f_1, \cdots, f_m) $ between varieties $ V $ and $ W $, then there are certain restrictions on what the components of $ \phi $ can be in order to maintain it as a mapping from $ V $ to $ W $. This is because every point $ (f_1(a_1, \cdots, a_n), \cdots, f_m(a_1, \cdots, a_n)) $, for $ (a_1, \cdots, a_n) \in V $, in the range of $ \phi $ must satisfy the defining equations of $ W $. That is, if $ W = \V(\gt) $ then we must have
+$$ g_1(f_1(a_1, \cdots, a_n), \cdots, f_m(a_1, \cdots, a_n)) = \cdots = g_t(f_1(a_1, \cdots, a_n), \cdots, f_m(a_1, \cdots, a_n)) = 0 $$
+One convenient consequence of our definition of polynomial mappings is that by studying polynomial mappings between $ V $ and $ W $ for $ W = F $, which are merely just regular polynomial functions, we can understand many properties of general polynomial mappings from $ V $ to $ F^m $, since any general polynomial mappings are biult out of $ m $ polynomial functions.
+\n
+Although in this single-dimensional case we don't need to worry about finding representations of polynomial mappings (since they're given by polynomial functions), it's important to note that polynomial mappings don't correspond one-to-one with polynomial functions. That is, multiple (indeed, often infinitely many) polynomial functions often represent the same polynomial mapping. This can be made clear by considering that for a polynomial mapping $ \phi $ from affine variety $ V $ to $ F $ represented by polynomial function $ f $, polynomial functions given by
+$$ f + g, g \in \IV $$
+also represent $ \phi $, since by design $ g $ is zero at every point of $ V $ and thus adding it to $ f $ doesn't affect $ \phi $, because the domain of $ \phi $ is $ V $. To extend this idea, we introduce the following result.
+\nn
+\tb{(Theorem) Polynomial mappings are represented by polynomials modulo ideals}: \ti{Let $ V \subset F^n $ be an affine variety. Then the polynomials $ f, g \in \Fx $ represent the same polynomial mapping from $ V $ to $ F $ if and only if $ f - g \in \IV $. More generally, the polynomial tuples $ (f_i), (g_i) $, for $ 1 \leq i \leq m $, represent the same polynomial mapping from $ V $ to $ F^m $ if and only if $ f_i - g_i \in \IV, \forall i $.}
+\n
+\Pf If $ f - g \in \IV $ then for every $ a \in V $, $ f(a) - g(a) = 0 $. This means that $ f(a) = g(a), \forall a \in V $, which means $ f $ and $ g $ represent the same mapping over $ V $. Conversely, if $ f, g $ represent the same mapping, then we must have $ f(a) = g(a) $ for every $ a \in V $, by definition, which means $ f(a) - g(a) = 0 $ which implies $ f - g \in \IV $. \qedsymbol
+\nn
+Notice that this implies that polynomial mappings are uniquely represented by polynomials if and only if $ \IV = \{ 0 \} $, which is only the case if $ F $ is infinite and $ V = F^n $. There are two potential ways to deal with this ambiguity of representations of polynomial mappings: we could lump together all the representations of a polynomial mapping into a set and treat the set as a structure in its own right, as some kind of aggregate representation of the mapping, or we could try to define some notion of the simplest possible representation of a mapping and use that as the canonical representation. We'll introduce both of these concepts. Before proceeding, we introduce some notation - let $ F[V] $ denote the set of polynomial mappings taken from $ V $ to $ F $. If we define sum and product operations on $ F[V] $ with
+$$ \forall a \in V: (\phi + \psi)(a) = \phi(a) + \psi(a), (\phi \psi)(a) = \phi(a) \psi(a) $$
+for $ \phi, \psi \in F[V] $. It's not difficult to see that all the usual sum and product properties for polynomials in $ \Fx $ extend to $ F[V] $, which means $ F[V] $ is a commutative ring. Let's look at what we can learn about the geometric properties of $ V $ by studying $ F[V] $.
+\n
+The precise algebraic structure of $ F[V] $ tells us about the reducibility of $ V $. Specifically, if $ F[V] $ displays multiplicative pathological behavior, then the underlying variety $ V $ is reducible, where by pathological behavior we specifically refer to the product of non-zero elements being zero (in well-behaved rings, of course, we expect that the product of elements can only be zero if one of the elements is zero). This is because if $ V $ is reducible as $ V = V_1 \cup V_2 $, then we can find polynomials which are zero over $ V_1 $ but not $ V_2 $, say $ f_1 $, and likewise polynomials which are zero over $ V_2 $ but not $ V_1 $, say $ f_2 $ ($ f_1 $ and $ f_2 $ must exist since $ V_1, V_2 $ are distinct varieties not contained in each other, because $ V $ is reducible). Then neither $ f_1 $ nor $ f_2 $ is zero over $ V_1 \cup V_2 = V $, but their product is, which means the polynomial mappings represented by $ f_1 $ and $ f_2 $ are the multiplicative pathological elements referred to earlier. The specific term for rings which don't display this pathological behavior is defined below.
+\nn
+\tb{(Definition) Integral domain}: \ti{A commutative ring $ R $ is an \tb{integral domain} if}
+$$ \forall r, s \in R: r s = 0 \rightarrow r = 0 \text{ or } s = 0 $$
+Thus, it follows that $ V $ is irreducible if and only if $ F[V] $ is an integral domain. The reason $ F[V] $ not being an integral domain is sufficient for $ V $ to be reducible is that if $ f_1, f_2 $ are non-zero polynomials whose product is zero over $ V $, then we can factor $ V $ into
+$$ V = (V \cap \V(f_1)) \cup (V \cap \V(f_2)) $$
+
+\section{Quotients of Polynomial Rings}
+We've already seen that two polynomials represent the same mapping whenever their difference is zero over the domain (and that this extends to mappings represented by an arbitrary number of polynomials), which is reminiscent of modular arithmetic from number theory, in which two integers are "the same" (i.e. congruent) if their difference is zero when the base is divided out. Modular arithmetic is deeply related to the operation of division and factoring, and in group theory the idea is extended and applied to groups, forming quotient groups. Quotient groups are essentially groups formed from a base group $ G $ "modulo" another group $ H $; specifically, the structure is given by lumping together elements that are "congruent modulo $ H $" in the sense that both elements lie in the same coset of $ H $, similar to how modular reductions are formed by lumping together integers which are congruent modulo the base.
+\n
+The construction of $ F[V] $ in the last section can be viewed as a special case of the above group theoretic idea of a quotient, since we formed $ F[V] $ by lumping together polynomials which are "congruent modulo an ideal $ I $", in the sense that their difference is in $ I $, where $ I = \IV $. In this section we'll extend the theory of quotients of polynomial rings, and consider their applications to answering the question of how to resolve the ambiguity in polynomial representations of mappings.
+\nn
+\tb{(Definition) Congruent}: \ti{Given an ideal $ I $, polynomials $ f, g $ are \tb{congruent modulo $ I $} if $ f - g \in I $.}
+\n
+\No If $ f, g $ are congruent modulo $ I $, we write $ f \equiv g \pmod{I} $. The main reason this definition is useful is that it defined an equivalence relation on $ \Fx $.
+\nn
+The fact that congruence modulo an ideal is an equivalence relation is significant. Any equivalence relation on a set partitions the set into disjoint subsets known as equivalence classes, since the subsets are formed by lumping all equivalent elements together. For the ideal $ I $, we denote the equivalence class of polynomial $ f $ with
+$$ [ f ] = \{ g \in \Fx \text{ s.t. } g \equiv f \pmod{I} \} $$
+In accordance with our motivation, when its the case that $ I = \IV $ for some variety $ V $, polynomials $ f $ and $ g $ are congruent modulo $ I $ if and only if they define the same mapping over $ V $. Thus, the equivalence class $ [ f ] $ is the "lumping together" of all the ambiguous representations of a polynomial mapping that we alluded to in the last section.
+\nn
+\tb{(Theorem) Polynomial equivalence classes define mappings}: \ti{Polynomial mappings $ \phi: V \rightarrow F $ bijectively correspond to the equivalence classes of polynomials under congruence modulo $ \IV $.}
+\n
+\Pf This is a direct corollary of congruence modulo $ \IV $ being an equivalence relation.
+\nn
+We can now extend the idea of group theoretic quotients to polynomial ideals. Intuitively, we want to partition the full polynomial space $ \Fx $ into disjoint lumps which are the "multiples" of $ I $, extending the intuitive notion of dividing the space by the ideal.
+\nn
+\tb{(Definition) Ideal quotient}: \ti{The \tb{quotient} of $ \Fx $ modulo $ I $, denoted $ \Fx / I $, is the set of equivalence classes modulo $ I $:}
+$$ \Fx / I = \{ [ f ] \text{ for } \Fx \} $$
+Notice that this resolves the ambiguity in which polynomials represent a polynomial mapping. However, quotient ideals are interesting mathematical structures in their own right, and we may ask if we can treat equivalence classes as polynomial-like objects in their own right. To do so, we need to define some notion of addition and multiplication on equivalence classes. A natural formulation is
+$$ [ f ] + [ g ] = [ f + g ], [ f ] [ g ] = [ f g ] $$
+It can be proven that the above operations are \ti{well-defined}, meaning that if we chose different $ f' \in [ f ], g' \in [ g ] $ then we would still have
+$$ [ f' ] + [ g' ] = [ f' + g' ], [ f' ] [ g' ] = [ f' g' ] $$
+It follows that $ \Fx / I $ is itself a commutative ring under the above operations.
+\n
+We motivated the entire concept of quotient ideals with the starting example of $ F[V] $, regarding both as a way to extend the idea of division and group theoretic quotients to polynomials and ideals. To connect these ideas with affine varieties, we'll show that not only was $ F[V] $ our motivation for quotient ideals, but that the two are actually intimately related - in some sense, $ F[V] $ and $ \Fx / \IV $ are actually the same ring (specifically, the two are isomorphic).
+\nn
+\tb{(Theorem) $ F[V] $ and $ \Fx / \IV $ are isomorphic}: \ti{There exists a bijective correspondence between $ F[V] $ and $ \Fx $ which preserves the addition and multiplication operations on equivalence classes.}
+\n
+\Pf To prove this, we constructively provide such a bijection. Let $ \Phi: \Fx / \IV \rightarrow F[V] $ be the mapping given by
+$$ \forall [ f ] \in \Fx / \IV: \Phi([ f ]) = \phi $$
+where $ \phi $ is the polynomial mapping represented by $ f $. Every mapping has a polynomial representation, so $ \Phi $ is surjective. Moreover, if $ \Phi([ f ]) = \Phi([ g ]) $ then $ f $ and $ g $ represent the same mapping, which means $ f \equiv g \pmod(\IV) $, which means $ [ f ] = [ g ] $, proving that $ \Phi $ is also injective, and hence bijective. To prove that $ \Phi $ preseves the equivalence class operations above, we have
+$$ \Phi([ f ] + [ g ]) = \Phi([ f + g ]) = \phi + \psi = \Phi([ f ]) + \Phi([ g ]) $$
+where $ \phi, \psi $ are the mappings represented by $ f, g $, respectively. Thus, $ \Phi $ preserves addition. Similarly,
+$$ \Phi([ f ] [ g ]) = \Phi([ f g ]) = \phi \psi = \Phi([ f ]) \Phi([ g ]) $$
+so that $ \Phi $ also preserves multiplication. \qedsymbol
+\nn
+Since $ \Fx / I $ is a ring in its own right, we might consider its ideals and their relationship to ideals of $ I $. Recall that an ideal of a commutative ring is defined as any set which contains $ 0 $ and is closed under addition and scalar multiplication. It turns out that there's a close relationship between polynomial ideals and ideals of a quotient; similar to the isomorphism theorems from group theory, the two structures are intimately related.
+\nn
+\tb{(Theorem) Ideals of quotient ideal are isomorphic to polynomial ideals}: \ti{Let $ I $ be an ideal of $ \Fx $. Then the ideals of $ \Fx / I $ are in bijective correspondence with the ideals of $ \Fx $ which contain $ I $.}
+\n
+\Pf Let $ J $ be an ideal of $ \Fx $ containing $ I $; we'll first show that $ J $ uniquely corresponds to some ideal of $ \Fx / I $. Let $ J / I $ denote the set TODO
+\nn
+Notice that it follows as a corollary that, as with the Hilbert basis theorem, ideals in $ \Fx / I $ are finitely generated.
+
+\section{Algorithmic Computations in $ \Fx / I $}
+In this section, we study more explicit, constructive methods of describing ideals of a quotient ring. We'll use the division algorithm to find representative polynomials for an equivalence class, giving us a canonical representation of a polynomial mapping. These representatives will also help us develop explicit methods for computing sum and product operations in a polynomial quotient ring. The main property of the division algorithm we'll use here is that the remainder of the division of a polynomial $ f $ by a Groebner basis $ G $ is uniquely determined by $ f $. It's unsurprising that we're investigating remainders on polynomial division, since quotient ideals can be viewed as "dividing out" certain polynomials. Throughout the section, we'll be revisiting the monomial ideal $ \langle \text{LT}(I) \rangle $, for an ideal $ I $, as well as its complement $ \langle \text{LT}(I) \rangle^C = \{ x^\alpha \not \in \langle \text{LT}(I) \rangle \} $.
+\n
+First, we reframe the following basic observation on the division algorithm.
+\nn
+\tb{(Theorem) Remainders and congruence}: \ti{Fix a monomial ordering on $ \Fx $, and let $ I $ be an ideal of $ \Fx $. Then}
+\begin{enumerate}
+    \item Every $ f \in \Fx $ is congruent to a unique polynomial $ r $, and $ r $ is a linear combination, over $ F $, of monomials in $ \langle \text{LT}(I) \rangle^C $.
+    \item The elements of $ \langle \text{LT}(I) \rangle^C $ are linearly independent modulo $ I $, in the sense that
+    $$ \sum_\alpha c_\alpha x^\alpha \equiv 0 \pmod{I} \iff \forall \alpha: c_\alpha = 0 $$
+    for $ x^\alpha \in \langle \text{LT}(I) \rangle^C $.
+\end{enumerate}
+\Pf Let $ G $ be a Groebner basis for $ I $, and let $ r $ be the remainder of the division of $ f $ by $ G $. Then for some $ q \in I $,
+$$ f = q + r $$
+Hence, $ f - r = q \in I \rightarrow f \equiv r \pmod{I} $. The fact that $ r $ is a linear combination of monomials not in $ \langle \text{LT}(I) \rangle $ follows from the division algorithm theorems we covered early on, as does the uniqueness of $ r $.
+\n
+The second part of the theorem is obvious, since a polynomial is congruent to zero modulo an ideal if and only if, by definition, it's contained in the ideal, and by definition none of the elements in the sum
+$$ \sum_\alpha c_\alpha x^\alpha $$
+are in $ \langle \text{LT}(I) \rangle $. Thus, the only way the above sum could be in $ I $ is if the $ c_\alpha $ were degenerate, giving the zero polynomial. \qedsymbol
+\n
+\In The first part of the theorem reinforces our intuition on quotient ideals and polynomial congruence modulo an ideal by showing that as with modular arithmetic, in which every integer is congruent, modulo some modulus $ n $, to a unique residue class equivalent to one of $ \{ 0, \cdots, n - 1 \} $, every polynomial in the field is congruent to some unique "residue polynomial class" as well. Moreover, the proof demonstrates that this unique residue class can be determined as the remainder modulo division by the modulus (in this case not an integer but rather a Groebner basis of the ideal), as is the case with modular arithmetic over the integers, extending the intuition of modular arithmetic and congruences as circular arithmetic.
+\n
+The second part of the theorem simply shows that $ r $ being a linear combination of elements of $ \langle \text{LT}(I)^C \rangle $ is not a coincedence; the elements turn out, to borrow a term from linear algebra, to be linearly independent, and thus their span would cover every such polynomial. We use the complement of $ \langle \text{LT}(I) \rangle $ here since $ r $ is the remainder of a division by $ f $ and thus couldn't consist of any elements generated by $ \text{LT}(I) $.
+\nn
+The above theorem gives standard representitatives for polynomial functions $ \phi \in F[V] $ in the case that $ I = \IV $ for some variety $ V $. We can also use this theorem to describe certain aspects of the structure of the quotient ring $ \Fx / I $.
+\nn
+\tb{(Theorem) Quotient rings are generated by monomials not in $ \text{LT}(I) $}: \ti{Let $ I $ be an ideal of $ \Fx $. Then if we view $ \Fx / I $ as a vector space over $ F $,}
+$$ \Fx / I \cong \text{span}(x^\alpha \not \in \langle \text{LT}(I) \rangle) $$
+\Pf Let $ r_f $ denote the remainder of the division of $ f $ by Groebner basis $ G $ of $ I $. We'll give a constructive proof by proving that the mapping $ \Phi: \Fx / I \rightarrow S $, given by $ \phi([ f ]) = r_f $, is an isomorphism. By the first theorem in this section, $ \Phi $ is one-to-one, so we need only show that it preserves the vector space operations. The remainder operations splits over addition, so $ r_{f + g} = r_f + r_g $; furthermore, if we make use of the sum operation defined over quotient rings given by $ [ f + g ] = [ f ] + [ g ] $ which we introduced in the last section, then,
+$$ \Phi([ f ] + [ g ]) = \Phi([ f + g ]) = r_{f + g} = r_f + r_g = \Phi([ f ]) + \Phi([ g ]) $$
+Moreover, if
+$$ r_f = \sum_\alpha c_\alpha x^\alpha \text{ and } r_g = \sum_\alpha d_\alpha x^\alpha $$
+where the sum is over $ \alpha $ with $ x^\alpha \not \in \langle \text{LT}(I) \rangle $, then
+$$ r_{f + g} = \sum_\alpha (c_\alpha + d_\alpha) x^\alpha $$
+which means the sum operation $ \Phi([ f ]) + \Phi([ g ]) $ is precisely the sum operation in $ \text{span}(x^\alpha \not \in \langle \text{LT}(I) \rangle) $. $ \Phi $ therefore preserves summation.
+\n
+Next, we prove that $ \Phi $ preserves scalar multiplication. Since
+$$ \Phi([ c ] [ f ]) = \Phi([ c f ]) = r_{c f} = c r_f = c \Phi([ f ]) $$
+and $ r_{c f} = c r_f $ for $ c \in F $, it follows that
+$$ r_{c f} = \sum_\alpha c c_\alpha x^\alpha $$
+and hence the scalar multiplication over the span is precisely the one we want. Thus, $ \Phi $ preserves both operations and is an isomorphism. \qedsymbol
+\n
+\In This theorem shows that, in some sense, the quotient ring $ \Fx / I $ is generated by elements in the complement of $ \langle \text{LT}(I) \rangle $ (technically, it's generated by elements which bijectively correspond to elements in the complement). Intuitively, quotient rings take all the polynomials congruent modulo the divisor ideal and collapse them into a single element, so this should be clear from the first theorem of the section, which shows that every polynomial is congruent modulo $ I $ to a unique polynomial $ r $. $ r $ is a linear combination of monomials in $ \langle \text{LT}(I) \rangle^C $, which is to say, it's generated by the basis of $ \langle \text{LT}(I) \rangle^C $, which means it's in the span of monomials not in $ \langle \text{LT}(I) \rangle $ - this is where the theorem comes from.
+\nn
+We refer to $ r_f $ as the \textit{standard representitative} of $ f $ in $ \text{span}(x^\alpha \not \in \langle \text{LT}(I) \rangle) $, so that $ [ f ] + [ g ] $ is represented by $ r_f + r_g $, as shown in the above theorem. Polynomial multiplication is more difficult to find a standard representation for, but it turns out that $ [ f ] [ g ] $ is represented by $ r_{r_f r_g} $, the remainder of the division of $ r_f \cdot r_g $ on $ G $. One would expect simply $ r_f \cdot r_g $ to work as a standard representitative, but it turns out that there are plenty of polynomials for which this quantity contains monomials in $ \langle \text{LT}(I) \rangle $.
+\n
+We'll wrap this section up by applying the ideas we've developed to determining when a variety in $ \mathbb{C}^n $ contains finitely many points, which is equivalent to determining when a system of polynomial equations has only a finite number of solutions over $ \mathbb{C}^n $. Here's a general starting point.
+\nn
+\tb{(Theorem) Finiteness theorem}: \ti{Fix a monomial ordering on $ \Fx $ and let $ I $ be an ideal of $ \Fx $. Then the statements}
+\begin{enumerate}
+    \item \ti{There's some $ m_i \geq 0 $ such that $ x_i^{m_i} \in \langle \text{LT}(I) \rangle $, for every $ 1 \leq i \leq n $.}
+    \item \ti{Let $ G $ be a Groebner basis for $ I $. Then there's some $ m_i \geq 0 $ such that $ x_i^{m_i} = \text{LM}(g) $ for some $ g \in G $, for $ 1 \leq i \leq n $.}
+    \item \ti{$ \langle \text{LT}(I) \rangle^C $ is finite.}
+    \item \ti{$ \Fx / I $, viewed as a vector space over $ F $, is finite-dimensional.}
+\end{enumerate}
+\indent \ti{are equivalent. Moreover, if $ F $ is algebraically closed, the statements imply that $ \VI $ is finite.}
+\n
+\Pf TODO
+\n
+\In This theorem is a statement on when quotient rings are structurally restricted or finite, in some sense, relative to their infinite, continuous, or non-compact counterparts.
+\n
+The first statement asserts that some power of every variable $ x_i $ is in $ \langle \text{LT}(I) \rangle $. Since the $ x_i $ are the atomic building blocks of all polynomials, if powers $m_i $ of every $ x_i $ are in a set, then the only polynomials not in that set are those built out of powers of $ x_i $ lower than $ m_i $, i.e. polynomials with total degree less than $ \min_i m_i $, which clearly imposes rigid restrictions on the size of the complement. In fact, it forces it to be finite, since the inclusion of powers of every $ x_i $ means that almost every (i.e. all but finitely many) polynomials are in $ \langle \text{LT}(I) \rangle $, since almost every polynomial can be built out of powers $ m_i $ or greater of $ x_i $.
+\n
+The second statement is similar to the first, showing that the generators of $ I $ have leading monomials which are powers of the $ x_i $, meaning the generators of $ \langle \text{LT}(I) \rangle $ are powers of the $ x_i $, again implying that almost all polynomials are in the set.
+\n
+The third and fourth statements are direct statements of finiteness.
+\nn
+We can use the finiteness theorem to determine when systems of polynomial equations have finitely many solutions, as the following theorem demonstrates.
+\nn
+\tb{(Theorem) Finiteness of Varieties}: \ti{Let $ I $ be an ideal of $ \Fx $ such that}
+$$ \forall i \in \{ 1, \cdots, n \}: \exists m_i \geq 0 \text{ s.t. } x_i^{m_i} \in \langle \text{LT}(I) \rangle $$
+\indent \ti{Then $ | \VI | = \text{ number of points in } \VI = \min(d, m_1 \cdots m_n) $ where $ d = $ dimension of $ \Fx / I $. If $ F $ is algebraically closed and $ I $ is radical then $ | \VI | = d $.}
+\n
+\Pf TODO
+\nn
+This theorem essentially states that if the conditions of the finiteness theorem are met, then the variety corresponding to the ideal $ I $ is finite. It gives specific upper bounds which are in accordance with our intuition for the finiteness theorem.
+
+\section{Coordinate Ring of an Affine Variety}
+In this section, we'll study the ring $ F[V] $ of polynomial functions on affine variety $ V $ more in depth. We'll make liberal use of the isomorphism $ F[V] \cong \Fx / \IV $, often identifying the former with the latter. As usual, we denote the polynomial function in $ F[V] $ representing polynomial $ f \in \Fx $ with $ [ f ] $. Notice that each variable $ x_i $ gives a polynomial function $ [ x_i ]: V \rightarrow F $, whose value at $ (a_1, \cdots, a_n) \in V $ is $ a_i $. We refer to $ [ x_i ] \in F[V] $ as the $ i^{\text{th}} $ \textit{coordinate function} on $ V $, and, as one would expect, $ F[V] $ is generated by the $ n $ coordinate functions, in the sense that every polynomial function on $ V $ is a linear combination, over $ F $, of products of the $ [ x_i ] $. With this in mind, we formulate the following useful definition.
+\nn
+\tb{(Definition) Coordinate ring}: \ti{$ F[V] $ is the \tb{coordinate ring} of affine variety $ V \subset F^n $.}
+\nn
+We can now rephrase many of the past results that we've seen in terms of coordinate rings. For example, a variety is irreducible if and only if its coordinate ring is an integral domain. Another example is that over an algebraically closed ring $ F $, a variety is finite if and only if its coordinate ring is finite-dimensional (as a vector space over $ F $). More generally, we'll use our understanding of coordinate rings to extend the algebra-geometry dictionary from the last chapter, which related varieties in $ F^n $ to ideals in $ \Fx $, by replacing the former with any general variety $ V $ and the latter with the coordinate ring over $ V $, $ F[V] $.
+\nn
+\tb{(Definition) Subvariety}: \ti{Let $ V \subset F^n $ be an affine variety. Define a \tb{subvariety} of $ V $ as}
+$$ \mathbf{V}_V(J) = \{ a \in V \text{ s.t. } \forall \phi \in J: \phi(a) = 0 \} $$
+\indent \ti{where $ J = \langle \phi_1, \cdots, \phi_s \rangle \subset F[V] $ is an ideal of polynomial mappings. We also define}
+$$ \mathbf{I}_V(W) = \{ \phi \in F[V] \text{ s.t. } \forall a \in W: \phi(a) = 0 \} $$
+\indent \ti{where $ W $ is a subset of $ V $.}
+\n
+\indent $ \bullet $ \ti{Properties}: 
+\begin{enumerate}
+    \item Unsurprisingly, $ \mathbf{V}_V(J) $ is an affine variety contained in $ V $.
+    \item $ \mathbf{I}_V(W) $ is an ideal of $ F[V] $.
+    \item If $ J $ is an ideal, we may extend the Nullstellensatz with $ J \subset \sqrt{J} \subset \mathbf{I}_V(\mathbf{V}_V(J)) $.
+    \item If $ W $ is a subvariety of $ V $, then $ W = \mathbf{V}_V(\mathbf{I}_V(W)) $.
+\end{enumerate}
+We begin the extension of the algebra-geometry dictionary by relating radical ideals in coordinate rings to radical polynomial ideals.
+\nn
+\tb{(Theorem) Radical ideals in $ F[V] $ correspond with radical polynomial ideals containing $ \IV $}: \ti{Ideal $ J $ of $ F[V] $ is radical if and only if}
+$$ J' = \{ f \in \Fx \text{ s.t. } [f] \in J \} $$
+\indent \ti{is radical.}
+\n
+\Pf Suppose $ J $ is radical, and that for $ f \in \Fx $, $ f^m \in J' $. Then $ [ f^m ] = [ f ]^m \in J $, which, since $ J $ is radical, implies $ [ f ] \in J $. By definition, this means $ f \in J' $, which shows that $ J' $ is radical. Conversely, suppose $ J' $ is radical and that $ [ f ]^m \in J $, so that $ [ f^m ] \in J $ and hence $ f^m \in J' $. Since $ J' $ is radical, $ f \in J' $ which implies $ [ f ] \in J $, proving $ J $ to be radical. \qedsymbol
+\nn
+Moreover, we can use the notions of subvarieties to extend the Nullstellensatz.
+\nn
+\tb{(Theorem) Nullstellensatz for coordinate rings}: \ti{Let $ F $ be an algebraically closed field, and $ V \subset F^n $ be an affine variety. Then for any ideal $ J $ of $ F[V] $,}
+$$ \mathbf{I}_V(\mathbf{V}_V(J)) = \sqrt{J} = \{ [ f ] \in F[V] \text{ s.t. } [ f ]^m \in J \} $$
+\indent \ti{The correspondences}
+$$ \mathbf{I}_V(\cdot): \text{ affine subvarieties of $ V $} \rightarrow \text{ radical ideals of $ F[V] $} $$
+$$ \mathbf{V}_V(\cdot): \text{ radical ideals of $ F[V] $} \rightarrow \text{ affine subvarieties of $ V $} $$
+\indent \ti{are inclusion-reversing, and bijective inverses. Finally, under the above correspondences, points of $ V $ correspond to maximal ideals of $ F[V] $.}
+\n
+\Pf TODO
+\nn
+Next, we turn to the classification of varieties. To do so, we first formalize a notion of isomorphism for varieties.
+\nn
+\tb{(Definition) Variety isomorphism}: \ti{Let $ V \subset F^m $ and $ W \subset F^n $ be affine varieties. $ V $ and $ W $ are \tb{isomorphic} if there exist polynomial mappings $ \alpha: V \rightarrow W $ and $ \beta: W \rightarrow V $ such that}
+$$ \alpha \circ \beta = \text{id}_W \ti{ and } \beta \circ \alpha = \text{id}_V $$
+\indent \ti{where $ \text{id} $ denotes the identity function on a variety.}
+\nn
+This is an intuitive and natural definition of isomorphism, using polynomial mappings to preserve structure. Of course, we expect that isomorphic varieties should share many fundamental properties, such as irreducibility, dimension, and so on, if the mappings are really to be considered as preserving structure. We'll explore and prove precisely which properties are preserved. First, let's answer investigate the question of how to tell when two varieties are isomorphic. One way is to consider the relationship between their coordinate rings.
+\nn
+\tb{(Theorem) Constant preserving ring homomorphisms are pullback mappings}: \ti{Let $ \alpha: V \rightarrow W $ be a polynomial mapping, and define its \tb{pullback mapping} $ \alpha^*: F[W] \rightarrow F[V] $ by}
+$$ \alpha^*(\phi) = \phi \circ \alpha \text{ for } \phi \in F[W] $$
+\indent \ti{Then $ \alpha^* $ is a ring homomorphism which acts as the identity on constants (i.e. it maps constant functions to themselves). Moreover, for any ring homomorphism $ \Phi: F[W] \rightarrow F[V] $ which acts as identity on constants, there exists $ \alpha: V \rightarrow W $ such that $ \Phi = \alpha^* $.}
+\n
+\Pf TODO
+\n
+\In Pullback mappings are one way to take polynomial mappings and define analogous mappings between the corresponding coordinate rings. We call $ \alpha^* $ the pullback mapping because it maps in the opposite direction as $ \alpha $. The mapping itself is defined intuitively - given a fixed polynomial mapping, $ \alpha^* $ acts on polynomials by composing $ \alpha $ into them, so $ \alpha^* $ can be viewed as taking functions and sending them to modified versions where their domain has been transformed by $ \alpha $. The theorem states firstly that such mappings are guaranteed to be homomorphisms, and moreover behave like the identity function on constant functions, which is of course obvious since if $ \phi $ sends all inputs to the same constant, transforming its domain by $ \alpha $ won't matter - the result will still map all inputs to the same constant.
+\n
+\indent The more significant part of the theorem is that any ring homomorphism which acts as the identity on constants is actually a pullback function in disguise.
+\nn
+We can use pullback mappings to answer the question we raised earlier, of how to tell when two varieties are isomorphic.
+\nn
+\tb{(Theorem) Isomorphic varieties have pullback isomorphic coordinate rings}: \ti{Affine varieties $ V \subset F^m $ and $ W \subset F^n $ are isomorphic if and only if $ F[V] $ and $ F[W] $ are isomorphic, and the isomorphism is the identity on constant functions (in other words, the isomorphism is a pullback mapping for some $ \alpha $).}
+\n
+\Pf TODO
+
+\end{document}
+

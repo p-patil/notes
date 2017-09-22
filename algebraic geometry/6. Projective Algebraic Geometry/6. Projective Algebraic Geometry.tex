@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage{amsmath, amsfonts, amsthm, algorithmicx, amssymb}
+\usepackage[margin = 0.5in]{geometry}
+
+\newcommand*{\tb}{\textbf}
+\newcommand*{\ti}{\textit}
+\newcommand*{\n}{\newline}
+\newcommand*{\nn}{\newline \newline}
+\newcommand*{\Pf}{\indent \ensuremath{\bullet} \textit{Proof}: }
+\newcommand*{\In}{\indent \ensuremath{\bullet} \textit{Intuition}: }
+\newcommand*{\Mo}{\indent \ensuremath{\bullet} \textit{Motivation}: }
+\newcommand*{\Co}{\indent \ensuremath{\bullet} \textit{Corollary}: }
+\newcommand*{\No}{\indent \ensuremath{\bullet} \textit{Notation}: }
+\newcommand*{\Fx}{\ensuremath{F[x_1, \cdots, x_n]}}
+\newcommand*{\Ft}{\ensuremath{F[t_1, \cdots, t_m]}}
+\newcommand*{\fs}{f_1, \cdots, f_s}
+\newcommand*{\gt}{g_1, \cdots, g_t}
+\newcommand*{\lfsr}{\langle f_1, \cdots, f_s \rangle}
+\newcommand*{\V}{\ensuremath{\mathbf{V}}}
+\newcommand*{\I}{\ensuremath{\mathbf{I}}}
+\newcommand*{\IV}{\ensuremath{\mathbf{I}(V)}}
+\newcommand*{\VI}{\ensuremath{\mathbf{V}(I)}}
+
+\begin{document}
+
+\title{Projective Algebraic Geometry}
+\author{Piyush Patil}
+\maketitle
+
+In this chapter, we'll extend our very definition of varieties, which thus far have been studied as living in affine space $ F^n $. In this chapter, we'll extend $ F^n $ by adding some notion of "points at infinity", producing what we call $ n $-dimensional \textit{projective space}. We'll define projective varieties and study polynomial systems over projective spaces, and build up a projective version of the algebra-geometry dictionary.
+
+\section{The Projective Plane}
+In this section, we'll study the special case with $ n = 2 $ of projective space, and extend it in the next section. To start off, consider that in $ \mathbb{R}^2 $ any two lines intersect at a single point, except parallel lines. Our goal is to deal with this exception, thereby creating a more symmetric space over which more polynomials have zeros. We can take care of this by viewing parallel lines as meeting at some sort of infinity, in a sort of limiting process (since the intersection point of two lines moves further and further away the closer the lines get to parallel). More formally, we define an equivalence relation on $ \mathbb{R}^2 $, setting two lines to be equivalent if and only if they're parallel. We denote equivalence classes with $ [ L ] $, where $ L $ is a line in the plane, denoting the set of all parallel lines to $ L $. Moreover, we want different equivalence classes to intersect at different points at infinity, not the same one, so when we introduce points at infinity we need to allow for one per equivalence class. Based on this intuition, we make the following definition.
+\nn
+\tb{(Definition) Projective plane}: \ti{The \tb{projective plane} over $ \mathbb{R} $, denoted $ \mathbb{P}^2(\mathbb{R}) $, is the set}
+$$ \mathbb{P}^2(\mathbb{R}) = \mathbb{R}^2 \cup \{ \text{ one point at $ \infty $ for each equivalence class of parallel lines} \} $$
+We can use $ [ L ]_\infty $ to denote the point at infinity at which the lines in $ [ L ] $ meet; we often call $ [ L ] $ the \ti{projective line} corresponding to $ L $, and are points in projective space. Projective lines always meet at exactly one point. A consequence of this is that the points at infinity themselves all form their own projective line, which we refer to as the \ti{line at $ \infty $}.
+\n
+One issue we haven't cleared up yet is that we don't yet have a mechanism for uniquely specifying points in projective space, since the points are really projective lines. In order to impose coordinates on projective space, we introduce \ti{homogeneous coordinates}. Because the elements of our projective space are projective lines, we can view projective space as the result of taking the Euclidean space and collapsing collinear points onto one element. We can reframe this in terms of coordinate systems by defining an equivalence relation on points in $ \mathbb{R}^3 $, setting
+$$ (x_1, y_1, z_1) \sim (x_2, y_2, z_2) \iff \exists \lambda \neq 0 \in \mathbb{R} \text{ s.t. } (x_1, y_1, z_1) = \lambda \cdot (x_2, y_2, z_2) $$
+where the multiplication by $ \lambda $ is elementwise. This equivalence relation on $ \mathbb{R}^3 - \{ 0 \} $ allows us to redefine the projective plane by defining $ \mathbb{P}^2(\mathbb{R}) $ as the set of equivalence classes under the above relation on $ \mathbb{R}^3 - \{ 0 \} $. We denote the equivalence class of $ (x, y, z) \in \mathbb{R}^3 - \{ 0 \} $ with $ (x : y : z) $. We say that $ (x : y : z) $ are the \ti{homogeneous coordinates} of $ (x, y, z) $. We can now formally define projective lines.
+\nn
+\tb{(Definition) Projective line}: \ti{Given real numbers $ A, B, C $, not all zero, we define a \tb{projective line} as}
+$$ \mathbb{P}^2(\mathbb{R}) = \{ p \in \mathbb{P}^2(\mathbb{R}) \text{ s.t. } p = (x : y : z) \text{ where } A x + B y + C z = 0 \} $$
+The equation $ A x + B y + C z = 0 $ holds for all homogeneous coordinates $ (x : y : z) $. We now have two definitions of projective plane, as the plane with lines at infinity for each set of parallel lines, and as a set of projective lines which are constructed by collapsing collinear points. We relate the two definitions by mapping points $ (x, y) \in \mathbb{R}^2 $ to the point $ p \in \mathbb{P}^2(\mathbb{R}) $ whose homogeneous coordinates are $ (x : y : 1) $.
+\nn
+\tb{(Theorem) Points in the plane uniquely correspond to projective points}: \ti{The map $ \phi: \mathbb{R}^2 \rightarrow \mathbb{P}^2(\mathbb{R}) $ given by}
+$$ \phi(x, y) = (x : y : 1) \in \mathbb{P}^2(\mathbb{R}) \text{ for } (x, y) \in \mathbb{R}^2 $$
+\indent \ti{is one-to-one. The complement of its image is the projective line at infinity.}
+\n
+\Pf TODO
+\nn
+Denoting the line at infinity with $ H_\infty $, we can write
+$$ \mathbb{P}^2(\mathbb{R}) = \mathbb{R}^2 \cup H_\infty $$
+Geometrically, because we view the projective plane as consisting of projective lines, which are created by collapsing collinear points, we could also write
+$$ \mathbb{P}^2(\mathbb{R}) \cong \{ \text{ lines through the origin in $ \mathbb{R}^3 $ } \} $$
+
+\section{Projective Space and Projective Varieties}
+The last section served as a introduction to the general theory of projective spaces by way of the special case of two dimensions. In this section, we generalize the process by which we constructed the real projective plane to arbitrary dimensions over arbitrary fields $ F $. Thus, we first define the following equivalence relation on $ F^{n + 1} - \{ \mathbf{0} \} $
+$$ (x_0', \cdots, x_n') \sim (x_0, \cdots, x_n) \text{ if } \exists \lambda \neq 0 \in F \text{ s.t. } (x_0', \cdots, x_n') = \lambda \cdot (x_0, \cdots, x_n) $$
+where the multiplication is applied elementwise. This leads to our first definition.
+\nn
+\tb{(Definition) Projective space}: \ti{The $ n $-dimensional \tb{projective space} over field $ F $, denoted $ \mathbb{P}^n(F) $, is the set of equivalence classes of $ \sim $ on $ F^{n + 1} - \{ \mathbf{0} \} $.} 
+\n
+\In As one dives deeper into algebraic geometry, we find that projective space will become the most natural setting in which to work and study the solution sets of polynomial systems. Projective spaces are complete (with respect to Zariski topology), and this property spills over into our study of the zero sets of polynomials in projective space. There are essentially two instances in which polynomial systems fail to have solutions over their underlying field. The first is an issue of the field itself being too small for its own operators, as is the case with the polynomial $ x^2 + 1 $ in $ \mathbb{R}[x] $, which has no solution. This issue can be fixed by moving to a larger, preferably algebraically closed, field, in this case $ \mathbb{C} $. The second is when systems reduce to contradictory statementes, such as $ 0 = 1 $. This is because of a more fundamental issue of affine spaces - if we can reduce a polynomial system to one of the form $ \{ f(x) = a, f(x) = b \} $ then we've got a contradiction, because the equations essentially define two parallel lines in higher dimensional space and we're attempting to solve both simultaneously.This can be fixed by moving to a projective space, where all lines, including ones parallel in affine spaces, intersect.
+\nn
+As before, given an $ (x_0, \cdots, x_n) \in F^{n + 1} - \{ \mathbf{0} \} $, we denote its equivalence class $ p = (x_0 : \cdots : x_n) \in \mathbb{P}^n(F) $, and we say that $ (x_0 : \cdots : x_n) $ are the \ti{homogeneous coordinates} of $ p $. Thus, points in projective space have many, often infinitely many, homogeneous coordinates. The reason we associate $ n $-dimensional projective spaces with $ (n + 1) $-dimensional affine spaces follows from our intuition that projective spaces are constructed by taking lines in affine space and collapsing them to single points, a process which clearly loses a dimension in the transition from lines to points. Thus, as before, we can view projective space as
+$$ \mathbb{P}^n(F) = \{ \text{ set of lines through the origin in $ F^{n + 1} $ } \} $$
+Thus, $ \mathbb{P}^n(F) $ contains $ F^n $ as a subset.
+\nn
+We can split a projective space up into two components: $ U_0 = \{ (x_0 : \cdots : x_n) \in \mathbb{P}^n(F) \text{ s.t. } x_0 \neq 0 \} $ and $ H = \{ (0 : x_1 : \cdots : x_n) \in \mathbb{P}^n(F) \} $. We can associate $ U_0 $ with $ F^n $ by giving a one-to-one correspondence between the two - define $ \phi: F^n \rightarrow U_0 $ by
+$$ \phi(a_1, \cdots, a_n) = (1 : a_1 : \cdots : a_n) \text{ for } (a_1, \cdots, a_n) \in F^n $$
+Then $ \phi $ has inverse given by $ \phi^{-1}: U_0 \rightarrow F^n $ where
+$$ \phi^{-1}(x_0 : \cdots : x_n) = \left( \frac{x_1}{x_0}, \cdots, \frac{x_n}{x_0} \right) \text{ for } (x_0 : \cdots : x_n) \in \mathbb{P}^n(F) $$
+$ \phi^{-1} $ is well defined since $ x_0 \neq 0 $. The thing to notice here is that we can associate the entire $ n $-dimensional affine space with the subset of the $ n $-dimensional projective space given by points whose first coordinate isn't zero, points which can geometrically be interpreted as those which don't touch the $ (n - 1) $-dimensional subspace obtained by killing the first axis. Since our motivation for building projective spaces was to take affine spaces and add points at infinity, this would seem to imply that the rest of the space, made up of points confined to the subspace obtained by killing the first axis, are where all the points at infinity live. This intuition is reinforced by the description of $ \psi $ above, which associates projective points to points in $ F^n $ by dividing by the first coordinate, the implication being that the closer points get to zero on the first axis, the further the corresponding points in $ n $-dimensional affine space get from the origin. It's for this reason that we refer to $ H $, the set of projective points whose first homogeneous coordinate is zero, as the \ti{hyperplane at infinity}, since it's the subspace of projective space where all the points at infinity live.
+\nn
+It follows from the definition of $ H $ that points in $ H $ are in one-to-one correspondence with tuples $ (x_1, \cdots, x_n) $ collapsed by the equivalence relation $ \sim $, if we define our mapping so as to simply ignore the first coordinate. In other words, $ H $ is just a copy of the $ (n - 1) $-dimensional projective space. We've now identified $ U_0 $ with $ F^n $ and $ H $ with $ \mathbb{P}^{n - 1}(F) $, enabling us to write the following recursive definition of projective spaces.
+$$ \mathbb{P}^n(F) = F^n \cup \mathbb{P}^{n - 1}(F) $$
+This definition seems to imply that the construction of projective space can be reframed as taking corresponding affine space and throwing in the points at infinity contained in the projective space one dimension below, in accordance with our intuition. In fact, it follows as a corollary that if we extend the definition of $ U_0 $ by defining $ U_i $ as the set of projective points whose $ i^{\text{th}} $ coordinate is not zero then we can identify each $ U_i $ with $ F^n $.
+\n
+As a quick aside, a useful special case to consider here is $ n = 1 $ and $ F = \mathbb{C} $,
+$$ \mathbb{P}^1(\mathbb{C}) = \mathbb{C} \cup \{ \infty \} $$
+commonly known as the \ti{Riemann sphere} or \ti{stereographic projection} in complex analysis.
+\n
+We're now in a position to extend affine varieties, which we've been working with thus far, to the more general notion of projective varieties. Because projective points can be represented by infinitely many homogeneous coordinates, some such representations might satisfy certain polynomial equations while others might not. Thus, we want to restrict projective varieties to the zero sets of only those polynomials $ f $ for which
+$$ f(p) = 0 \rightarrow f(\lambda p) = 0, \forall \lambda \in F $$
+This would ensure that projective varieties, the zero set of a set of such polynomials, wouldn't ambiguously contain some homogeneous representations of a projective point but not others; instead, containing a single homogeneous point would imply the containment of all equivalent homogeneous points, and thus the corresponding projective point. The question is how to describe such polynomials, aptly referred to as \ti{homogeneous polynomials}. Here, the following definition comes in.
+\nn
+\tb{(Definition) Homogeneous polynomial}: \ti{A polynomial is \tb{homogeneous} if every term has the same total degree.}
+\nn
+Let's show that homogeneous polynomials do in fact satisfy the properties we want them to. Define $ f \in \Fx $ by
+$$ f = \sum_\alpha c_\alpha x^\alpha, \text{ where } \alpha \in \mathbb{Z}_{\geq 0}^n \text{ and } c_\alpha \in F $$
+$ f $ is homogeneous if for every term $ c_\alpha x^\alpha $ in $ f $ above, $ | \alpha | = \alpha_1 + \cdots + \alpha_n = \text{deg}(f) := d $. Then
+$$ \begin{aligned}
+    f(a_1, \cdots, a_n) = \sum_\alpha c_\alpha a_1^{\alpha_1} \cdots a_n^{\alpha_n} = 0 \rightarrow f(\lambda a_1, \cdots, \lambda a_n) &= \sum_\alpha c_\alpha (\lambda a_1)^{\alpha_1} \cdots (\lambda a_n)^{\alpha_n} = \sum_\alpha c_\alpha \lambda^{\alpha_1 + \cdots + \alpha_n} a_1^{\alpha_1} \cdots a_n^{\alpha_n} \\
+    &= \lambda^d f(a_1, \cdots, a_n) = 0
+\end{aligned} $$
+Thus, $ \mathbf{V}(f) = \{ p \in \mathbb{P}^n(F) \text{ s.t. } f(p) = 0 \} $ is a well-defined subset of $ \mathbb{P}^n(F) $. We can therefore define the following.
+\nn
+\tb{(Definition) Projective variety}: \ti{Let $ F $ be a field and $ f_1, \cdots, f_s \in F[x_0, \cdots, x_n] $ by homogeneous polynomials. Then we define the \tb{projective variety} of $ f_1, \cdots, f_s $ as}
+$$ \mathbb{V}(f_1, \cdots, f_s) = \{ p \in \mathbb{P}^n(F) \text{ s.t. } \forall i: f_i(p) = 0 \} $$
+\In Alluding to the Rieman sphere, we often visualize projective space as taking an affine space, moving up a dimension, and using the extra dimension to "wrap" the affine space into a hypersphere over which parallel lines now meet at the poles. We then collapse lines into points by "flattening" the sphere, obtaining projective space. Homogeneous polynomials are multiplicative, up to a power, in the sense that
+$$ f(\lambda p) = \lambda^d f(p), d = \text{deg}(f) $$
+\indent This means that when we flatten the sphere, such polynomials will continue behaving as polynomials, since the flattening process only affected them multiplicatively. In contrast, non-homogeneous polynomials become pathological and ambiguous to work with over projective space, and are no longer polynomials at all. Thus, when defining projective varieties, we restrict our attention to polynomials which remain polynomials after passing into projective space, which are precisely homogeneous polynomials.
+\nn
+In the upcoming sections, we'll develop an analogous notion of homogeneous ideals, and show that the entire algebra-geometry dictionary from the last chapter extends to projective space. To wrap this section up, we study the relationship between affine varieties and projective varieties. We saw earlier that for every $ i $, $ U_i \cong F^n $ and that $ \mathbb{P}^n(F) = U_0 \cup \cdots \cup U_n $. Since affine spaces are contained in projective spaces, it's a natural question to ask if taking a projective variety and retaining only the affine "parts" leaves us with an affine variety, since if this were the case it would seem that projective varieties are simple extensions of affine varieties the same way projective spaces are extensions of affine spaces. It turns out that the answer to this question is yes.
+\nn
+\tb{(Theorem) Projective varieties contain affine varieties}: \ti{Let $ V = \mathbf{V}(f_1, \cdots, f_s) $ be a projective variety for polynomials $ f_i \in F[x_0, \cdots, x_n] $. Then $ V \cap U_0 $ is isomorphic to the affine variety $ \mathbf{V}(g_1, \cdots, g_s) $ given by}
+$$ g_i(x_1, \cdots, x_n) = f_i(1, x_1, \cdots, x_n) \in \Fx $$
+\n
+\Pf TODO
+\nn
+The process of obtaining the defining equations of an affine variety from the enclosing projective variety using the $ g_i(x) = f_i(1, x) $ is known as \ti{dehomogenization}. We know that if $ p \in U_0 $ then $ p $ has homogeneous coordinates of the form $ (1 : x_1 : \cdots : x_n) $, which means $ f_i(1, x_1, \cdots, x_n) $ must vanish at every point in $ V \cap U_0 $. The process of grounding the $ f_i $ to a value of one on the first axis usually produces a non-homogeneous polynomial $ g_i $, hence the name. Let's define the opposite operation, allowing us to turn non-homogeneous polynomials into homogeneous ones.
+\nn
+\tb{(Definition) Homogenization}: \ti{Let $ g \in \Fx $ be a polynomial of total degree $ d $. Split $ g $ into its homogeneous components:}
+$$ g = \sum_{i = 0}^d g_i \text{ where } \text{deg}(g_i) = i $$
+\indent \ti{Then we define the \tb{homogenization} of $ g $ as the polynomial in $ F[x_0, \cdots, x_n] $ given by}
+$$ g^h(x_0, \cdots, x_n) = \sum_{i = 0}^d g_i(x_1, \cdots, x_n) x_0^{d - i} $$
+\n
+\Mo Notice that $ g^h $ is guaranteed to be homogeneous with total degree $ d $, the same degree as $ g $. What we've done is move up a dimension by introducing the additional variable $ x_0 $, analogous to how projective spaces are formed by moving up a dimension from affine spaces, and simply forced each homogeneous component to acquiesce to the same total degree. Another way to compute the homogenization is with the identity
+$$ g^h = x_0^d \cdot g \left( \frac{x_1}{x_0}, \cdots, \frac{x_n}{x_0} \right) $$
+\indent Moreover, dehomogenizing $ g^h $ produces $ g $ as expected.
+\nn
+Given any affine variety $ W $, we can homogenize the defining equations of $ W $ to obtain a projective variety $ V $. Moreover, $ V \cap U_0 = W $ since dehomogenizing the defining equations of $ V $ gives us the defining equations of $ W $ back. We refer to $ W $ as the \ti{affine portion} of $ V $.
+
+\section{The Projective Algebra-Geometry Dictionary}
+
+\end{document}

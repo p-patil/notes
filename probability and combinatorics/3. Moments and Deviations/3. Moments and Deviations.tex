@@ -1,0 +1,107 @@
+\documentclass{article}
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[margin=0.5in]{geometry}
+
+\newcommand*{\tb}{\textbf}
+\newcommand*{\ti}{\textit}
+\newcommand*{\n}{\newline}
+\newcommand*{\nn}{\newline \newline}
+\newcommand*{\Pf}{\indent \ensuremath{\bullet} \textit{Proof}: }
+\newcommand*{\In}{\indent \ensuremath{\bullet} \textit{Intuition}: }
+\newcommand*{\Mo}{\indent \ensuremath{\bullet} \textit{Motivation}: }
+\newcommand*{\Co}{\indent \ensuremath{\bullet} \textit{Corollary}: }
+\newcommand*{\No}{\indent \ensuremath{\bullet} \textit{Notation}: }
+\newcommand*{\st}{\text{ s.t. }}
+\newcommand*{\N}{\mathbb{N}}
+\newcommand*{\R}{\mathbb{R}}
+\newcommand*{\E}{\mathbb{E}}
+
+\begin{document}
+
+\title{Moments and Deviations}
+\author{Piyush Patil}
+\maketitle
+
+In this chapter we'll look at methods for bounding \ti{tail distributions} of random variables, ie the probabiltiy that a random variable deviates from its expected value. We'll quantify the probability that a random variable assumes values far from its expectation, which will be useful in the analysis of the worst-case runtime of randomized algorithms. The two main bounds we'll look at in this chapter are Markov's inequality Chebyshev's inequality.
+
+\section{Markov's Inequality}
+Markov's inequality is a useful upper bound on the tail of a random variable; that is, it provides a cieling for the probability that a random variable, under certain conditions, assumes values beyond some threshold.
+\nn
+\tb{(Theorem) Markov's inequality}: \ti{Let $ X $ be a non-negative random variable. Then}
+$$ \forall a \in \R: \Pr(X \geq a) \leq \frac{\E[X]}{a} $$
+\Pf Fix $ a > 0 $ and define the indicator variable $ I $ to be 1 when $ X \geq a $ and 0 otherwise. It follows that since $ X \geq 0 $,
+$$ I \leq \frac{X}{a} $$
+Moreover, $ \E[I] = \Pr(I = 1) = \Pr(X \geq a) $. It follows that
+$$ \Pr(X \geq a) = \E[I] = \E \left[ \frac{X}{a} \right] = \frac{\E[X]}{a} $$
+\qedsymbol
+
+\section{Variance and Moments}
+If all we know about a random variable is its expectation (and that it's non-negative), then Markov's inequality gives the best possible tail bound. However, if we have more information, we can obtain better bounds. To precisely define what we mean by "information" about the distribution of a random variable, we'll introduce the idea of \ti{moments}, which are used to quantify the overall "shape" of a set of points, or a distribution. The expectation of the random variable is its first moment, and we define subsequent moments iteratively with the following generalization.
+\nn
+\tb{(Definition) Moment}: \ti{The $ k^{\text{th}} $ \tb{moment} of a random variable $ X $ is $ \E[X^k] $.}
+\n
+\In The first moment is the mean, and the second is related to the variance (which will be defined later). The first moment thus measures the average point, whereas the second measures the average distance of the points from the mean. The same pattern holds - it turns out the third moment measures the skewness of the distribution, while the fourth measures its peakedness. In general, higher order moments generalize variance - whereas the variance takes the average distance of the points from the mean, higher order moments take the distance between points and the mean and amplify it by raising to a power before taking the average. Intuitively, this reveals differently characteristics of the distribution. Similar to how knowing all the higher order derivatives of an analytic function completely specify the function (through its Taylor series), knowing all the higher order moments of a random variable completely specify its distribution. This can be made more formal by introducing a bit of more advanced theory. First, define the \ti{moment-generating function} of a random variable $ X $ to be the function
+$$ \forall t \in \R: M(t) = \E[e^{t X}] $$
+It's known that the moment generating function of the random variable is directly linked to the probability distribution of $ X $. In probability theory and statistics in particular a central question is to find the underlying probability distribution of a set of data, a very difficult question in general, so the link between moment generating functions and probability distributions if quite significant. The moments of a random variable "ground" the moment-generating function and hence the probability distribution, by completely determining its values, with greater and greater precision as we look at higher order moments. This can be seen by examining the Taylor series:
+$$ M(t) = \E \left[ \sum_{k \in \N} \frac{X^k}{k!} t^k \right] = \sum_{k \in \N} \frac{t^k}{k!} \E[X^k] $$
+\nn
+As we discussed in the section on the intuition behind the definition of a moment, a specific moment of interest is the second moment, better known as the \ti{variance}. Technically speaking, the above moments are more commonly referred to as \ti{raw moments}, to contrast them with \ti{central moments}, which are defined as
+$$ \E[(X - \mu)^k] \text{ where } \mu = \E[X] $$
+In other words, central moments are merely moments about the center of the distribution, ie the moment of the random variable after its been centered (shifted so that the "middle" of the distribition is at the origin). The variance is then just a special name we give to a specific moment.
+\nn
+\tb{(Definition) Variance}: \ti{The \tb{variance} of a random variable $ X $ is the second central moment, ie}
+$$ \text{Var}(X) = \E[(X - \E[X])^2] = \E[X^2] - \E[X]^2 $$
+\nn
+Because the variance involves squaring the values of the random variable, this means that in practice when the variable's values represent some physical quantity, the units are squared as well. To return to the original units, we take the square root, giving a more practical notion of spread that we call the \ti{standard deviation}:
+$$ \sigma[X] = \sqrt{\text{Var}(X)} $$
+We can generalize the idea of variance to a notion of how much two random variables "vary" with each other. This is meant to quantify the answer to the question of how the behavior of one variable predicts or influences the behavior of another - if having information about the distribution of one variable tells us a lot about another variable, then the former variable approximates the latter in some sense, and the two vary together more than a pair of variables for which knowing about one tells us nothing about the other.
+\nn
+\tb{(Definition) Covariance}: \ti{The \tb{covariance} of two random variables $ X $ and $ Y $ is defined}
+$$ \text{Cov}(X, Y) = \E[(X - \E[X])(Y - \E[Y])] $$
+\In The definition of covariance is natural in and of itself. All we've done is first center both variables, to remove bias from translational differences between $ X $ and $ Y $, and look at the expected value of the product. The product of the centered random variables is a good representation of how much the variables vary with each other because its magnitude directly depends on whether $ X $ and $ Y $ have the same sign, and moreover is larger whenever large values of one of the variables coincide with large values of the other variable. In fact, the correlation of the two random variables is defined as the normalized covariance - ie the quantity obtained by taking the covariance and dividing by the product of the standard deviations, to further standardize the random variables and account for differences in the absolute quantity of $ X $ or $ Y $ (this way, the same intuition holds but instead of comparing values of $ X $ to values of $ Y $, we compare respective z-scores - distances from the mean).
+\n
+\indent However, the covariance does have a deeper interpretation. Recall that random variables are really real-valued functions, "under the hood". From a functional analysis perspective, if we consider the space of square integrable functions $ L_2 $, the covariance as defined above is an inner product of functions. Specifically, the quantity
+$$ \langle f, g \rangle := \E[f g] \text{ where } \E[f] := \int_\R f(x) d\rho(x) \text{ and } \rho \text{ is the distribution of } f $$
+is a well defined inner product. The covariance then is simply the process of taking functions in $ L_2 $, projecting them down to the subspace of functions that integrate to zero (ie functions which are "balanced") and taking the inner product. We can thus think of the covariance as the angle between two centered random variables, where identical or directly proportional random variables are parallel and completely independent variables with no influence one another are orthogonal.
+\nn
+With this definition, it's often cleaner to think of the variance as a special case of the covariance - a measure of how much a variable "varies with itself", ie the spread of the variable. Notice that
+$$ \text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y) + 2 \text{Cov}(X, Y) $$
+because
+$$ \begin{aligned}
+    \text{Var}(X + Y) &= \E[(X + Y - \E[X + Y])^2] = \E[((X - \E[X]) + (Y - \E[Y]))^2] \\
+    &= \E[(X - \E[X])^2] + \E[(Y - \E[Y])^2] + 2 \E[(X - \E[X])(Y - \E[Y])] \\
+    &= \text{Var}(X) + \text{Var}(Y) + 2 \text{Cov}(X, Y)
+\end{aligned} $$
+As we'll see below independent random variables have exactly the expectation and covariance we'd expect.
+\nn
+\tb{(Theorem) Expectation is multiplicative for independent variables}: \ti{Let $ X $ and $ Y $ be independent random variables. Then}
+$$ \E[X Y] = \E[X] \E[Y] $$
+\Pf
+$$ \begin{aligned}
+    \E[X Y] &= \sum_{x \in \R} \sum_{y \in \R} x y \Pr(X = x \cap Y = y) = \sum_{x \in \R} \sum_{y \in \R} x y \Pr(X = x) \Pr(Y = y) = \sum_{x \in \R} x \Pr(X = x) \sum_{y \in \R} y \Pr(Y = y) \\
+    &= \left( \sum_{x \in \R} x \Pr(X = x) \right) \cdot \left( \sum_{y \in \R} y \Pr(Y = y) \right) = \E[X] \E[Y]
+\end{aligned} $$
+\qedsymbol
+\nn
+\tb{(Theorem) Variance is additive for independent variables}: \ti{Let $ X $ and $ Y $ be independent random variables. Then}
+$$ \text{Cov}(X, Y) = 0 \text{ and } \text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y) $$
+\Pf The second statement follows from the first and the above statement on the variance of a sum of variables, so let's prove the first. This easily follows from the definition:
+$$ \text{Cov}(X, Y) = \E[(X - \E[X]) (Y - \E[Y])] = \E[X - \E[X]] \E[Y - \E[Y]] = 0 $$
+\qedsymbol
+\nn
+This result extends by induction to any finite sum of random variables.
+
+\section{Chebyshev's Inequality}
+If we know the variance of a random variable, we can find a much tighter bound on its tail distribution.
+\nn
+\tb{(Theorem) Chebyshev's inequality}: \ti{Let $ X $ be a random variable. Then}
+$$ \forall a \in \R: \Pr(| X - \E[X] | \geq a) \leq \frac{\text{Var}(X)}{a^2} $$
+\Pf We can prove this with Markov's inequality:
+$$ \Pr(| X - \E[X] | \geq a) = \Pr((X - \E[X])^2 \geq a^2) \leq \frac{\E[(X - \E[X])^2]}{a^2} = \frac{\text{Var}(X)}{a^2} $$
+if we view $ (X - \E[X])^2 $ as a random variable. \qedsymbol
+\n
+\In Intuitively, this statement quantifies the idea that for most probability distributions, most of the values lie near the mean. Formally, the density of points decreases quadratically in z-score - no more than $ \frac{1}{k^2} $ of the values of the distribution are more than $ k $ standard deviations from the mean.
+
+
+\end{document}

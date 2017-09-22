@@ -1,0 +1,394 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[margin=0.5in]{geometry}
+
+\newcommand*{\tb}{\textbf}
+\newcommand*{\ti}{\textit}
+\newcommand*{\n}{\newline}
+\newcommand*{\nn}{\newline \newline}
+\newcommand*{\Pf}{\indent \ensuremath{\bullet} \textit{Proof}: }
+\newcommand*{\In}{\indent \ensuremath{\bullet} \textit{Intuition}: }
+\newcommand*{\Mo}{\indent \ensuremath{\bullet} \textit{Motivation}: }
+\newcommand*{\Co}{\indent \ensuremath{\bullet} \textit{Corollary}: }
+\newcommand*{\No}{\indent \ensuremath{\bullet} \textit{Notation}: }
+\newcommand*{\N}{\mathbb{N}}
+\newcommand*{\R}{\mathbb{R}}
+\newcommand*{\C}{\mathbb{C}}
+\newcommand*{\st}{\text{ s.t. }}
+
+\begin{document}
+
+\title{Complex Numbers and Functions}
+\author{Piyush Patil}
+\maketitle
+
+\section{Introduction}
+
+Intuitively, complex numbers extend the notion of the one-dimensional real line $ \R $ to two dimensions, by adding a vertical axis. The extension itself imposes additional structure on the plane than what existed on the real line; specifically, in the construction of complex numbers, we take measures to ensure that the resulting field is \textit{algebraically closed}, unlike the reals. This is accomplished with the definition of the \textit{imaginary unit} $ i $, defined implicitly by
+$$ i^2 = -1 $$
+We express numbers not as points on a line but as points on a plane; any complex number can be expressed as a linear combination of a real and the imaginary unit, $ z = x + y i $ for $ x, y \in \R $. We define the \textit{real part} and \textit{imaginary part} of $ z $, denoted $ \text{Re}(z) $ and $ \text{Im}(z) $ respectively to be $ x $ and $ y $, respectively. We define the complex numbers more formally below.
+\nn
+\tb{(Definition) Complex number field}: \ti{The field of complex numbers, denoted $ \C $ is the field of ordered pairs in $ \R^2 $ over the binary operators $ \cdot $ and $ + $, defined for $ (x_1, y_2), (x_2, y_2) \in \R^2 $ as follows:}
+$$ (x_1, y_1) + (x_2, y_2) = (x_1 + x_2, y_1 + y_2) $$
+$$ (x_1, y_1) \cdot (x_2, y_2) = (x_1 x_2 - y_1 y_2, y_1 x_2 + x_1 y_2) $$
+It follows that the imaginary unit can be expressed under the above definition as $ i = (0, 1) $. Because we often visualize complex numbers as points in the complex plane, a useful representation is to view $ z = x + y i $ as a vector $ (x, y) $ in the plane. This motivates the following definitions.
+\nn
+\tb{(Definition) Modulus}: \ti{Define the \tb{modulus} of $ z \in \C $, denoted $ | z | $, by}
+$$ | z | = \sqrt{\text{Re}(z)^2 + \text{Im}(z)^2} $$
+\nn
+\tb{(Definition) Argument}: \ti{Define the \tb{argument} of $ z \in \C $, denoted $ \text{arg}(z) $ by}
+$$ \text{arg}(z) = \text{arctan} \left( \frac{\text{Im}(z)}{\text{Re}(z)} \right) $$
+These are the analogous concepts of vector magnitude and angle from the horizontal axis we impose on two dimensional vectors.
+\nn
+\tb{(Definition) Conjugate}: \tb{Define the \tb{conjugate} of $ z \in \C $, denoted $ \overline{z} $, by}
+$$ \overline{z} = \text{Re}(z) - \text{Im}(z) $$
+It follows that $ z = \overline{\overline{z}} $ and $ | z | = | \overline{z} | $. The conjugate is simply the vector representation of $ z $ reflected about the real axis. We can express the magnitude of $ z $ as $ | z | = z \overline{z} $.
+\n
+Next, let's introduce some basic topological concepts that will be useful in the study of $ \C $.
+\nn
+\tb{(Definition) Neighborhood}: \ti{The \tb{neighborhood} of a complex number $ z_0 $ is}
+$$ \mathcal{N}_\epsilon(z_0) = \{ z \in \C \st | z - z_0 | < \epsilon \} $$
+\indent \ti{where $ \epsilon \in \R^+ $ is the radius of the neighborhood.}
+\nn
+In other words, the neighborhood of a point is simply a disk centered at the point. This is a useful definition to consider as the radius approaches zero and the neighborhood approaches the point. Next, given a set in topological space, we distinguish between points wholly contained in the set and those on the very edge.
+\nn
+\tb{(Definition) Interior point}: \ti{A point $ z_0 $ in a set $ S \subset \C $ is an \tb{interior point} if there exists a neighborhood of $ z_0 $ completely contained in $ S $. That is,}
+$$ \exists \epsilon \in \R^+ \st \mathcal{N}_\epsilon(z_0) \subset S $$
+\tb{(Definition) Boundary point}: \ti{A point $ z_0 $ in set $ S \subset \C $ is a \tb{bounary point} if every neighborhood of $ z_0 $ contains points both in $ S $ and not in $ S $.}
+\nn
+Notice that every point in a set is either an interior point or a boundary point - they're complementary definitions. Boundary points are those on the very edge of the set, whereas interior points are fully contained in the set. We can now extend the notion of closed and open intervals in $ \R $.
+\nn
+\tb{(Definition) Open}: \ti{A set is \tb{open} if it doesn't contain any of its boundary points.}
+\n
+\indent $ \bullet $ An equivalent and often useful definition is that a set is open if every point in the set has a neighborhood completely contained in the set. Intuitively, this suggests that a set is open if every point is afforded some amount of wiggle room; none of the points are "on the fence".
+\nn
+\tb{(Definition) Closed}: \ti{A set is \tb{closed} if it contains all of its boundary points.}
+\n
+\indent $ \bullet $ A set is closed if and only if its complement is open. Another useful definition of closed sets is that they contain their limit points (or equivalently that every convergent sequence in the set converges to a point in the set, as opposed to converging to a point in the containing topoplogical space but not in the set). Note that this is distinct from a complete set, in which all Cauchy sequences converge. Convergent sequences get arbitrarily close to a point and hence get arbitrarily close to themselves, and so are Cauchy, but there exist many Cauchy sequences which do not converge - thus, all convergent sequences are Cauchy. For all Cauchy sequences in a set to converge, which is what it means for a set to be complete, is a stronger condition than merely having convergent (in the containing space) sequences converge (in the set). Thus, completeness implies closed, but not the other way around (i.e. there exist closed sets which aren't complete, such as $ [ 0, 1 ] \cap \mathbb{Q} $).
+\nn
+Notice that despite what their names suggest, the definitions of open and closed aren't complementary; there exist sets which are both open and closed (a trivial exapmle is $ \C $, or any other set with no boundary points) as well as sets which are neither open nor closed (such as sets which contain some boundary points but not others, such as the punctured disk $ \{ z \in \C \st 0 < | z | \leq 1 \} $).
+\nn
+\tb{(Definition) Connected}: \ti{A set $ S \subset \C $ is \tb{connected} if every pair of points in $ S $ can be joined by a polygonal line entirely in $ S $.}
+\nn
+Sets which are disconnected can always be expressed as the union of disjoint connected sets. Visually, connected sets are exactly what one would expect - sets with no holes or gaps in them and are instead continuous blobs.
+\nn
+\tb{(Definition) Bounded}: \ti{A set $ S \subset \C $ is \tb{bounded} if it's contained in a finite disk, i.e.}
+$$ \exists R \in \R^+ \st S \subset \{ z \in \C \st | z | \leq R \} $$
+This extends the analogous definition of boundedness over real numbers; namely, a set is bounded if no part of it escapes off to infinity. Finally, we define limit points from real analysis, which will be helpful in our formulation of complex limits later on.
+\nn
+\tb{(Definition) Limit point}: \ti{A point $ z_0 $ is a \tb{limit point} of set $ S \subset \C $ if every neighborhood of $ z_0 $ contains at least one point (other than $ z_0 $ itself) in $ S $}.
+\nn
+Intuitively, limit points are points, not necessarily in $ S $, which are infinitely close to $ S $. In a sense, they make up the "holes" or "gaps" and the boundary of a set.
+\nn
+\tb{(Definition) Cauchy sequence}: \ti{A sequence $ ( z_n )_{n \in \N} \subset \C $ is a \tb{Cauchy sequence} if}
+$$ \forall \epsilon \in \R^+: \exists N \st n, m \geq N \rightarrow | z_n - z_m | < \epsilon $$
+\n
+\In Cauchy sequences are simply sequences whose terms get arbitrarily close to each other; the sequence "bunches up" more and more.
+\nn
+Next, we offer an introduction to functions over the complex numbers. Because we can split any complex number $ z = x + i y $ up into its real and imaginary parts, it follows that we can similarly split any function $ f: \C \rightarrow \C $ into real and imaginary parts:
+$$ f(z) = f(x + i y) = u(x, y) + i v(x, y) $$
+where $ f $ is any function over $ \C $ and $ u, v $ are functions from the real plane to the reals. Functions are specified by their domain and their co-domain, mapping the former into the latter. We'll study functions whose domains are subsets of the complex plane; when the domain of a function is not explicitly specified, we'll adopt the convention of assuming the largest subset of $ \C $ over which the function remains well-defined to be the domain.
+
+\section{Limits}
+Differentiable complex functions are central objects of study in complex analysis, but before we can define complex differentiation, we need to extend the notion of limits from real analysis to complex analysis. The notation
+$$ \lim_{z \to z_0} f(z) = w_0 $$
+means that the limit as $ z $ approaches a fixed point $ z_0 \in \C $, the value of the function $ f $ approaches a fixed point $ w_0 \in \C $. Intuitively, this means that the closer we get to $ z_0 $, the closer te function's value gets to $ w_0 $. This is obviously true if $ f(z_0) = w_0 $, but the concept still holds in cases where this isn't true. Of course, as $ z $ approaches $ z_0 $, we want $ f(z) $ to approach $ w_0 $ in some sense which convinces us that $ w_0 $ is what we'd expect $ f(z_0) $ to be. There are many degenerate cases of a function's value getting closer and closer to something. For example, the sequence
+$$ 1, 1 + \frac{1}{2}, 1 + \frac{1}{2} + \frac{1}{4}, \cdots $$
+gets closer and closer to two, but also to three, and four, and indeed to every positive number larger than two. Nonetheless, we feel that the sequence gets closer and closer to two in a different way than it does to three; it gets \ti{arbitrarily} close to two. This is the difference between approaching a value and simply getting closer and closer to it.
+\nn
+\tb{(Definition) Limit}: \ti{The \tb{limit} of a complex function $ f $ at $ z_0 $ is $ w_0 $, which we denote}
+$$ \lim_{z \to z_0} f(z) = w_0 $$
+\indent \ti{if $ f(z) $ gets arbitrarily close to $ w_0 $ as $ z $ approaches $ z_0 $, i.e.}
+$$ \forall \epsilon \in \R^+: \exists \delta \in \R^+ \st | z - z_0 | < \delta \rightarrow | f(z) - w_0 | < \epsilon $$
+Intuitively, the above definition is saying that if the limit of $ f(z) $ as $ z $ approaches $ z_0 $ is $ w_0 $, what that means is that we can make $ f(z) $ take on values within any margin of error $ \epsilon $, no matter how small, if we simply look at values of $ z $ very close to $ z_0 $. This formalizes the idea of being arbitrarily close to $ w_0 $ - as long as we choose points near enough to $ z_0 $, we'll always be able to get within any margin of error we desire to $ w_0 $. The idea of choosing values "near enough" to $ z_0 $ graphically means we're looking at values within some neighborhood of $ z_0 $; as we shrink the neighborhood so the radius gets closer and closer to vanishing, our function values get closer and closer to $ w_0 $ (in the sense of lying in smaller and smaller neighborhoods of $ w_0 $).
+The notion is similar to limits of real functions in $ \R^2 $. In fact, it's not difficult to prove that if $ f(z) = u(x, y) + i v(x, y) $ then
+$$ \lim_{z \to z_0} f(z) = w_0 \iff \lim_{(x, y) \to (x_0, y_0)} u(x, y) = u_0 \text{ and } \lim_{(x, y) \to (x_0, y_0)} v(x, y) = v_0 $$
+where $ z_0 = x_0 + i y_0 $ and $ w_0 = u_0 + i v_0 $. From this result we obtain the following familiar properties of limits.
+\nn
+\tb{(Theorem) Properties of limits}: \ti{Suppose $ \lim_{z \to z_0} f(z) = w_0 $ and $ \lim_{z \to z_0} g(z) = v_0 $. Then}
+\begin{enumerate}
+    \item $ \lim_{z \to z_0} (f(z) + g(z)) = w_0 + v_0 $
+    \item $ \lim_{z \to z_0} f(z) g(z) = w_0 v_0 $
+\end{enumerate}
+\Pf First, we prove the first claim. For any $ \epsilon \in \R^+ $, we know there's some $ \delta $ such that
+$$ | z - z_0 | < \delta \rightarrow | f(z) - w_0 |, | g(z) - v_0 | < \frac{\epsilon}{2}$$
+It follows that
+$$ | z - z_0| < \delta \rightarrow | (f(z) + g(z)) - (w_0 + v_0) | < | f(z) - w_0 | + | g(z) - v_0 | < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon $$
+We now prove the second claim. Again, for any $ \epsilon \in \R^+ $, there's some $ \delta $ such that
+$$ | z - z_0 | < \delta \rightarrow | f(z) - w_0 |, | g(z) - v_0 | < \frac{\epsilon}{| v_0 | + | f(z) |}$$
+Then supposing $ | z - z_0 | < \delta $,
+$$ | w_0 v_0 - f(z) g(z) | = | w_0 v_0 - f(z) v_0 + f(z) v_0 - f(z) g(z) | \leq | v_0 | \cdot | w_0 - f(z) | + | f(z) | \cdot | v_0 - g(z) | < \epsilon $$
+which proves the theorem. \qedsymbol
+
+
+\section{Extended Complex Plane}
+It should be noted here that not all limits exist - sometimes there isn't any value that a function gets closer and closer to. The most obvious case of this is unbounded functions. For example, the limit $ \lim_{z \to 0 + 0 i} \frac{1}{z} $ doesn't exist, since the function takes on increasingly larger and larger values that depart from any finite value. Nonetheless, the function values do, in a sense, get closer and closer to infinity, since they're increasing without bound. To work with limits such as these, it's often useful to add in a new complex number representing infinity to the existing definition of the field. Indeed, when we generalize this idea to arbitrary dimensions over arbitrary fields, we arrive at higher dimensional projective space.
+\nn
+The \ti{extended complex plane} is what we term the complex plane together with a point $ \infty $ representing infinity, which has the property that
+$$ \forall z \in \C: | z | < | \infty | $$
+One common way to visualize the point at infinity is with the \ti{Riemann sphere}, which is a kind of stereographic projection. The idea is to map the entire complex plane onto a sphere by "wrapping" it up, in such a way so as to allow the point at infinity to have a natural mapping on the sphere we can work with visually. We visualize the unit sphere, here known as the Riemann sphere, centered at the origin, with the complex plane cutting it in half; we map points $ z $ on the complex plane to points on the sphere by considering the line through $ z $ and the north pole of the sphere. The point where the line intersects the sphere is the point on the sphere corresponding to $ z $. This gives a bijective correspondence in which points with less than unit magnitude are mapped to the southern hemisphere of the Riemann sphere, points on the unit circle mapped to themselves, and points outside the unit circle mapped to the northern hemisphere. Geometrically, this is a pleasing mapping since it preserves much of the structure and order of the complex plane, mapping nearby points to nearby points, free of rotation or translation. Notice that no point in $ \C $ corresponds to the north pole itself, but as we consider points with increasingly larger magnitude, their mapped points approach the north pole. Thus, we can visualize $ \infty $ as the point corresponding to the north pole.
+\nn
+\tb{(Theorem) Properties of limits at infinity}: \ti{For $ z_0, w_0 \in \C $,}
+\begin{enumerate}
+    \item $ \lim_{z \to z_0} f(z) = \infty \iff \lim_{z \to z_0} \frac{1}{f(z)} = 0 $
+    \item $ \lim_{z \to \infty} f(z) = w_0 \iff \lim_{z \to 0} f(\frac{1}{z}) = w_0 $
+    \item $ \lim_{z \to \infty} f(z) = \infty \iff \lim_{z \to 0} \frac{1}{f(\frac{1}{z})} = 0 $
+\end{enumerate}
+\Pf TODO
+
+\section{Continuity}
+Having introduced limits, we can now define the concept of continuity.
+\nn
+\tb{(Definition) Continuity}: \ti{A function $ f $ is \tb{continuous} at a point $ z_0 $ if}
+$$ \lim_{z \to z_0} f(z) = f(z_0) $$
+\In Continuity at a point simply means that the function is defined at the point, but also that it "smoothly approaches" its value at the point; the surroundings of the point seamlessly turn into the function's value at the point. Continuity on a set thus means that the function's values everywhere on the set are smoothly and seamlessly approached by the point's neighborhood. It captures very intuitive notions of what it means for a function to be well-behaved, for its values at points to flow continuously without any jumps, tears, rips, or holes. It extends the intuitive notion of continuity for real functions, which associates continuous functions to those with smooth graphs free of holes, jumps, or tears. Another way to look at continuous functions is those for which small changes in the domain correspond to small changes in the function's value.
+\nn
+Notice that implicit in this definition is that the limit exists and that $ f $ is defined at $ z_0 $. We say that $ f $ is continuous on a region $ R $ of $ \C $ if $ f $ is continuous at every point of $ R $. Next, let's prove that the property of continuity is closed under function composition, addition, and multiplication.
+\nn
+\tb{(Theorem) Composition of continuous functions is continuous}: \ti{Let $ f $ and $ g $ be complex-valued functions defined on $ \C $. If both $ f $ and $ g $ are continuous, so is the composition $ f \circ g $.}
+\n
+\Pf We wish to prove that $ \lim_{z \to z_0} f(g(z)) = f(g(z_0)) $, for any $ z_0 \in \C $. Unpacking the definition, this is equivalent to proving
+$$ \forall \epsilon \in \R^+: \exists \delta \st | z - z_0 | < \delta \rightarrow | f(g(z)) - f(g(z_0)) | < \epsilon $$
+Choose any $ \epsilon \in \R^+ $; we'll complete the proof by providing such a $ \delta $ as defined above. Let $ w = g(z) $ and $ w_0 = g(z_0) $. Since $ f $ is continuous, we must have $ \lim_{w \to w_0} f(w) = f(w_0) $, which means
+$$ \exists \gamma \in \R^+ \st | w - w_0 | < \gamma \rightarrow | f(w) - f(w_0) | < \epsilon $$
+By definition, $ | w - w_0 | < \gamma $ if and only if $ | g(z) - g(z_0) | < \gamma $, and since $ g $ is continuous and hence $ \lim_{z \to z_0} g(z) = g(z_0) $, we have
+$$ | z - z_0 | < \delta \rightarrow | g(z) - g(z_0) | < \gamma $$
+for some $ \delta \in \R^+ $. It follows that $ | z - z_0 | < \delta \rightarrow | f(g(z)) - f(g(z_0)) | < \epsilon $, and since $ \epsilon $ and $ z_0 $ were arbitrary, this completes the proof. \qedsymbol
+\nn
+The following theorem is a direct consequence of our intuition of continuity.
+\nn
+\tb{(Theorem) Continuous functions have smooth values}: \ti{If a function $ f $ is continuous and non-zero at $ z_0 $, then there exists a neighborhood of $ z_0 $ over which $ f $ is non-zero.}
+\n
+\Pf Assume for the sake of contradiction that every neighborhood of $ z_0 $ contains a zero of $ f $. Since $ f $ is continuous at $ z_0 $, for any positive real $ \epsilon $ we choose, there's some positive real $ \delta $ for which
+$$ | z - z_0 | < \delta \rightarrow | f(z) - f(z_0) | < \epsilon $$
+Thus, we can choose $ \epsilon < | f(z_0) | $, since $ f(z_0) \neq 0 \rightarrow | f(z_0) | > 0 $. By assumption, the $ \delta $-neighborhood of $ z_0 $ is guaranteed to contain a zero of $ f $, call it $ w_0 $. Then since $ f(w_0) = 0 $, it follows that
+$$ | w_0 - z_0 | < \delta \text{ but } | f(w_0) - f(z_0) | = | f(z_0) | < \epsilon $$
+which contradicts our choice of $ \epsilon $. Thus, there must exist some neighborhood of $ z_0 $ containing no zeros of $ f $. \qedsymbol
+\n
+\In Intuitively, this proposition makes sense since if there were zeros arbitrarily close to a non-zero value, $ f $ would need to perform a discontinuous jump to get from the zero values to the non-zero value at $ z_0 $, which should be impossible since $ f $ is continuous. This is an example of the continuity of a function enforcing the constraint that the function's values must smoothly and continuously approach a fixed value.
+\n
+We now introduce another notion of continuity, which is much stronger than the original version defined above. This stronger counterpart will be a more global analog to the relatively local definition of continuity we began the section with.
+\nn
+\tb{(Definition) Uniform continuity}: \ti{A function $ f $ is \tb{uniformly continuous} if given any $ \epsilon \in \R^+ $, there exists $ \delta \in \R^+ $ such that}
+$$ \forall z, w: | z - w | < \delta \rightarrow | f(z) - f(w) | < \epsilon $$
+\n
+\In The original definition of continuity, which ostensibly looks identical to the above definition, differs in one subtle yet critical way - the $ \epsilon $ and $ \delta $ that bound co-domain and domain distances, respectively, depend on $ z $ and $ w $, whereas in the above definition, the bounding margins of error are the same for every pair of points in the domain. Thus, continuity enforces a kind of local nearness, in the sense that when the inputs to $ f $ are close enough, the outputs are near each other too. This is local in the sense that how close is close enough depends on which points we're talking about; for some pairs of points, the margin of error required is much stricter than for others, to enforce the same degree of nearness in the output. This means that a function can be continuous, meaning it maps "close by" inputs to close by outputs, yet stretch out the degree to which the outputs' distance depends on the input distance to infinity. Uniformly continuous functions are further restricted in that how close inputs are required to be in order to enforce a certain degree of nearness in our outputs is global - the same margin of error works throughout the domain. This means that not only do uniformly continuous functions map close by inputs to close by outputs, but the degree to which the distance or nearness of the outputs depends on that of the inputs is unchanging, or at least, bounded. This idea is made clear by the theorem, which we don't prove in this section, that uniformly continuous functions have bounded derivatives. We defined continuity above in terms of limits; from this perspective, uniformly continuous functions, like continuous ones, have limits equal to their value at a point, but for uniformly continuous functions the rate of convergence of the limit is the same for every value.
+\nn
+Before ending the section, we take a brief look at complex series and convergence, defined analogously to their real counterparts, followed by an introduction to the topological concept of compactness. Given a sequence of complex numbers $ \{ z_n \}_{n \in \N} $ we write
+$$ w = \lim_{n \to \infty} z_n $$
+to mean the sequence converges to $ w $, which is true if for any $ \epsilon \in \R^+ $, $ \exists N \in \N \st \forall n \geq N: | z_n - w | < \epsilon $. In other words, the $ z_n $ converge to $ w $ if given any margin of error we can find a point in the sequence where the gap between $ w $ and the points of the sequence is within the margin. This formalizes the intuitive idea of the $ z_n $ becoming arbitrarily close to $ w $.
+\nn
+Let's now move on to our discussion of compact sets, which we'll start by introducing several basic concepts from general topology.
+\nn
+\tb{(Definition) Supremum and infimum}: \ti{Let $ T $ be set with a partial order, and $ S $ be a subset of $ T $. Then the \tb{supremum} of $ S $ is the least upper bound on $ S $ in $ T $, i.e. the least element of $ T $ that's greater than or equal to every element of $ S $. The \tb{infimum} of $ S $ is the greatest lower bound on $ S $ in $ T $, i.e. the greatest element of $ T $ that's less than or equal to every element of $ S $.}
+\n
+\indent $ \bullet $ Partial order: A partial order on a set is a generalization of a total order on a set, which is simply an order relation $ > $ which is defined for every pair of elements in the set. A partial order is the same, but may remain undefined for some pairs of elements, reflecting that the elements fall into certain "classes", within which they are comparable, but outside which they aren't.
+\nn
+To define compactness, we first define a specific kind of limit point.
+\nn
+\tb{(Definition) Accumulation point}: \ti{A point $ z_0 $ is an \tb{accumulation point} of set $ S \subset \C $ if every open set containing $ z_0 $ also contains infinitely many points of $ S $.}
+\nn
+Thus, whereas a limit point is guaranteed a single element of $ S $ in every neighborhood, the notion of an accumulation point strengthens the definition by requiring infinitely many points (not just one) of $ S $ to be in every open set containing the point (not just neighborhoods). Whereas the limit points of a set $ S $ are the points which are "close to" $ S $, but not necessarily in $ S $ (such as "holes" or "gaps" in $ S $), accumulation points are stronger versions of this definition in general, and represent points which a set or sequence gets "infinitely close to". Over the complex numbers, however, the definitions coincide, since any open set containing a limit point $ z_0 $ contains infinitely many neighborhoods of $ z_0 $, and hence infinitely many points of $ S $. We can easily adapt this definition to sequences by defining an accumulation point of a sequence $ \{ z_n \}_{n \in \N} $ to be any point such that $ \forall \epsilon \in \R^+: $ infinitely many $ z_n $ are within $ \epsilon $ of the point.
+\nn
+\tb{(Definition) Compact}: \ti{$ S \subset \C $ is \tb{compact} if every sequence of points in $ S $ has an accumulation point in $ S $.}
+\n
+\In Compactness is often viewed as the next best thing to finiteness. It imposes many of the desirable properties we enjoy when working with finite sets on infinite sets. Based on the definition above, we allow $ S $ to be infinite, but impose the requirement that it's impossible for any sequence to "escape" from $ S $, either by exploding to infinity or accumulating at a point not in $ S $. The very natural concept of finiteness can be viewed as two more fundamental properties in disguise - discreteness and compactness. It's very common to work with sets which are both discrete and compact (i.e. finite), and so the two concepts become strongly pychologically associated, but when working with continuous sets we often want to relax the requirement of discreteness, allowing for (by the cardinality definition) infinite sets which are still "finite" in some sense. The following properties hold for finite sets:
+\begin{enumerate}
+    \item All functions over a finite set are bounded.
+    \item All functions over a finite set have a maximum.
+    \item (\ti{Infinite pigeonhole principle}) All sequences in a finite set have constant subsequences.
+    \item All covers have finite sub-covers.
+\end{enumerate}
+\indent Compactness can be seen as imposing the requirement that $ S $ be "just finite enough" for the above properties to hold when we consider continuous functions, convergent subsequences, and open covers.
+\nn
+It's a well known result that this definition is equivalent to the following two additional definitions.
+\begin{enumerate}
+    \item \ti{$ S $ is compact if every infinite subset has an accumulation point.}
+    \item \ti{$ S $ is compact if every open cover of $ S $ admits a finite subcover of $ S $.}
+    \item \ti{$ S $ is compact if every sequence has a convergent (in $ S $) subsequence.}
+\end{enumerate}
+In general topology, the second definition is the most commonly used one, and generalizes the best. An open cover is simply a union of open sets which contains $ S $, and the definition states that from any such (infinite) union, we can choose finitely many components and still cover $ S $. This can be intuitively viewed as the pigeonhole principle, a foundational property of finite sets, adapted for general topological spaces - we can always cram the elements of a compact set into finitely many neighborhoods. The third definition is known as \ti{sequential compactness}, and though it's equivalent to the finite subcovers definition over products from $ \R $ and $ \C $, and in general any metric space, it fails in generic topological spaces. However, in $ \C $ it reinforces the intuition that compact sets "imprison" points with their finiteness by making it impossible for any sequence to slip away from the set.
+\n
+We now introduce the complex analog of the corresponding theorem in real analysis, which characterizes compact sets in $ \C $.
+\nn
+\tb{(Theorem) Complex analog of Heine-Borel theorem}: \ti{A set of complex numbers if compact if and only if it's closed and bounded.}
+\n
+\Pf Letting $ S $ be an arbitrary set of complex numbers, let's look at the sufficient direction first. Assuming $ S $ is compact, we need to show that it's both closed and bounded. To show that it's closed, let $ p $ be an arbitrary boundary point of $ S $, so we need to show that $ p \in S $. By definition, every neighborhood of $ p $ contains at least one point of $ S $ and one point not in $ S $, so we can define the sequence $ \{ r_n \} $, for $ n \in \N $, by
+$$ r_n \in S \cap \mathcal{N}_{\frac{1}{n}}(p) $$
+It follows that $ \lim_{n \to \infty} r_n = p $, since for any $ \epsilon \in \R^+ $, we can define $ N = \lceil \epsilon^{-1} \rceil $, so that $ \frac{1}{N} < \epsilon $ and hence
+$$ \forall n \geq N: r_n \in \mathcal{N}_{\frac{1}{n}}(p) \subset \mathcal{N}_{\frac{1}{N}}(p) \rightarrow | r_n - p | < \frac{1}{N} < \epsilon $$
+Thus, $ p $ is an accumulation point of $ \{ r_n \} $. $ S $ is compact, so $ p \in S $, proving that $ S $ is closed. Next, let's prove that $ S $ is bounded. Assume for the sake of contradiction that $ S $ is unbounded, so
+$$ \forall R \in \R^+: \exists p_R \in S \st | p_R | > R $$
+Consider the sequence $ \{ p_n \} $, for $ n \in \N $. Since the sequence is contained completely in $ S $, and $ S $ is compact, it has an accumulation point, say $ p $. Let $ m = | p | $; then
+$$ | p | < | p_m | < | p_{m + 1} | < \cdots $$
+which implies
+$$ | p - p_{m + k} | < | p - p_{m + k + 1} |, \forall k \in \N $$
+In other words, for $ n = m, m + 1, \cdots $, the points of the sequence get further and further from $ p $, which means there's certainly a neighborhood of $ p $ containing a finite number of points (indeed, there are neighborhoods of $ p $ containing no points) of the sequence, contradicting the definition of $ p $ as an accumulation point. Thus, $ S $ must be bounded.
+\n
+\indent Let's now move on to the necessary direction. Suppose $ S $ is closed and bounded, and let $ \{ z_n \} $, $ n \in \N $ be a sequence of complex numbers in $ S $. Let $ z_n = x_n + i y_n $ for $ x_n, y_n \in \R $. Since $ S $ is bounded,
+$$ \exists R \in \R^+ \st \forall n: | z_n | < R $$
+which means $ | x_n |, | y_n | < R $ as well. Thus, the real sequences $ \{ x_n \} $ and $ \{ y_n \} $ are contained in the interval $ [ -R, R ] \in \R $. We wish to show that $ \{ x_n \} $ and $ \{ y_n \} $ have accumulation points $ x $ and $ y $, so we can then prove that $ x + i y $ is an accumulation point of $ \{ z_n \} $. To do this, we inductively define $ I_0 = [ -R, R ] $ and $ I_k $ to be the half-interval (one of the two intervals obtained by splitting an interval by its midpoint) which contains infinitely many $ x_n $. It follows by induction that $ I_k $ are well-defined and guaranteed to exist, since $ I_0 $ certainly contains infinitely many $ x_n $ and if $ I_{k - 1} $ contains infinitely many points, one of its half-intervals must as well.
+\n
+Then the infinite intersection of the $ I_k $ is non-empty, so we may choose
+$$ x \in \bigcap_{k = 0}^\infty I_k $$
+Every neighborhood of $ x $ contains some $ I_k $, for $ k $ large enough, and hence contains infinitely many $ x_n $; thus, $ x $ is an accumulation point of $ \{ x_n \} $. We can repeat the process, defining $ I_k $ in terms of the $ y_n $ instead, to obtain an accumulation point $ y $ of $ \{ y_n \} $. Then $ z = x + i y $ is an accumulation point of $ \{ z_n \} $ (note that this is not necessarily true if $ S $ isn't closed), proving that $ S $ is compact. \qedsymbol 
+\nn
+We intuitively characterized compact sets as to continuous functions what finite sets are to general functions. We'll now prove the four results connecting continuous functions, compact sets, and open sets discussed in the intuition behind the definition of compactness. For this intuition to hold, we'd expect continuous functions to preserve compactness. The next theorem shows that this is in fact the case (we use the notation $ f(S) $ to denote the image of $ f $).
+\nn
+\tb{(Theorem) Continuous functions preserve compact domains}: \ti{Let $ f: S \rightarrow \C $ be a continuous function, for $ S \subset \C $. If $ S $ is compact, so is $ f(S) $.}
+\n
+\Pf Any sequence $ \{ w_n \}_{n \in \N}\subset f(S) $ can be expressed as $ \{ f(z_n) \}_{n \in \N} $ for $ z_n \in S $. Since $ S $ is compact, $ \{ z_n \} $ has an accumulation point, say $ z $, in $ S $. We'll prove that $ f(z) $ is an accumulation point of $ \{ f(z_n) \} $. Recall that since $ f $ is continuous,
+$$ \forall \epsilon \in \R^+: \exists \delta \in \R^+ \st | z - z_n | < \delta \rightarrow | f(z) - f(z_n) | < \epsilon $$
+holds for any $ z_n $. Given any neighborhood $ \mathcal{N}_\epsilon(f(z)) $, we can find a $ \delta $ such that
+$$ z_k \in \mathcal{N}_\delta(z) \rightarrow | z - z_k | < \delta \rightarrow | f(z) - f(z_k) | < \epsilon \rightarrow f(z_k) \in \mathcal{N}_\epsilon(f(z)) $$
+since $ f $ is continuous. $ z $ is an accumulation point, so the neighborhood $ \mathcal{N}_\delta(z) $ contains infinitely many $ z_k $ from the sequence $ \{ z_n \} $, which means $ \mathcal{N}_\epsilon(f(z)) $ contains infinitely many $ f(z_k) $ from the sequence $ \{ f(z_n) \} $. $ \epsilon $ was arbitrary, so this holds for every neighborhood of $ f(z) $, proving that $ \{ w_n \} $ has an accumulation point. \qedsymbol
+\nn
+Next, let's prove the intuitive idea that since compactness imposes a kind of non-discrete or continuous finiteness on a set, continuous functions are prevented from escaping to infinity, the same way any function can't grow without bound over a finite set. The theorem applied to real-valued functions, since the notion of a maximum has no meaning over $ \C $, which is unordered, but it's common to use the below theorem on the magnitudes of complex numbers.
+\nn
+\tb{(Theorem) Continuous functions attain maxima over compact sets}: \ti{Let $ S $ be a compact set of complex numbers, and $ f: S \rightarrow \R $ be a continuous function. Then $ f $ has a maximum on $ S $.}
+\n
+\Pf The theorem follows easily from the above theorem and Heine-Borel theorem: $ S $ is compact and $ f $ is continuous, so $ f(S) $ is compact, which means $ f(S) $ is closed and bounded, which means $ M = \sup(f(S)) \in S $, which means $ f $ has a maximum over $ S $ (namely, $ M $). \qedsymbol
+\nn
+Based on the previous theorem, it makes sense that since continuous functions are bounded over compact sets, it ought to be impossible for them to infinitely stretch or contract; more formally, we'd expect them to be uniformly continuous.
+\nn
+\tb{(Theorem) Continuous functions are uniformly continuous over compact sets}: \ti{Let $ f: S \rightarrow \C $ be a continuous function, for compact set of complex numbers $ S $. Then $ f $ is uniformly continuous.}
+\n
+\Pf We provide a proof by contradiction - suppose $ f $ is not uniformly continuous, so that for and $ \epsilon \in \R^+ $, we have
+$$ \forall \delta \in \R^+: \forall z, w \in S: | z - w | < \delta \text{ but } | f(z) - f(w) | \geq \epsilon $$
+We can use this result to find two sequences $ ( z_n ), ( w_n ) $, for $ n \in \N $, such that
+$$ | z_n - w_n | < \frac{1}{n} \text{ but } | f(z_n) - f(w_n) | \geq \epsilon $$
+if we take $ \delta = n^{-1} $. It follows that $ \lim_{n \to \infty} (z_n - w_n) = 0 $. $ S $ is compact, so we can find subsequences $ ( z_{n_{i}} ) \subset ( z_n ) $ and $ ( w_{n_{j}} ) \subset ( w_n ) $ which converge, say to $ z $ and $ w $ respectively. Since the sequences' distances approach zero, it follows that $ z = w $, which means $ | f(z) - f(w) | = 0 $. But the condition
+$$ \forall n: | f(z_n) - f(w_n) | \geq \epsilon $$
+would seem to imply that $ \lim_{n \to \infty} | f(z_n) - f(w_n) | = | f(z) - f(w) | \geq \epsilon > 0 $, a contradiction. \qedsymbol
+\nn
+Let's now prove that the finite subcover definition of copmactness is equivalent to our definition which is based on accumulation points of sequences.
+\nn
+\tb{(Theorem) Compact sets are guaranteed finite subcovers}: \ti{Let $ S $ be a compact set of complex numbers. Then any open cover $ \{ U_i \}_{i \in \N} $, so that}
+$$ S \subseteq \bigcup_i U_i, \textit{ where } U_i \textit{ is open } $$
+\indent \ti{contains a finite subcover.}
+\n
+\Pf Assuming $ S $ is compact, we wish to show the existence of some $ \{ U_{i_k}, k = 1, \cdots, n \} \subset \{ U_i \} $  so that $ S $ is contained in their union. First, let's remove redundant covers: define $ \{ U_{i_k} \} $ by choosing the $ U_{i_k} $ for which
+$$ S \cap U_{i_k} \not \subseteq \bigcup_{i \neq i_k} U_i $$
+That covers for which the above does not hold are redundant in the sense that the following continues to hold:
+$$ S \subseteq \bigcup_{i_k} U_{i_k} $$
+It follows that for every such $ i_k $, $ \exists z_k \in U_{i_k} \cap S \st \forall i \neq i_k: z_k \not \in U_i $. The $ z_k $'s then define a sequence $ (z_k) $ in $ S $. We'll show that there are only finitely many such $ z_k $, which will show that $ \{ U_{i_k} \} $ is a finite subcover of the original open cover.
+\n
+\indent Assume for the sake of contradiction that $ (z_k) $ is an infinite sequence. Since $ S $ is compact, there's an accumulation point $ z $ in $ S $. $ S $ is covered by the $ U_{i_k} $, so $ z \in U_{i_p} $ for some $ p $. It follows that $ \forall k \neq p: z \not \in U_{i_k} $, since if we did have $ z \in U_{i_k} $ for some $ k \neq p $ then we could choose a small enough neighborhood of $ z $ so as to be fully contained in $ U_{i_p} \cap U_{i_k} $; this neighborhood is guaranteed to contain infinitely many $ z_k $, as $ z $ is an accumulation point, which violates our assumption. However, $ U_{i_p} $ is open, so there exists a neighborhood of $ z $ that's fully contained in $ U_{i_p} $; this neighborhood is guaranteed to contain infinitely many $ z_k $, which contradicts the assumption underlying the construction of the $ z_k $. This proves the sufficient direction.
+\n
+\indent Let's now prove the necessary direction. Suppose every open cover of $ S $ is guaranteed a finite subcover. We'll show that $ S $ is closed and bounded, and hence compact by the complex analog of the Heine-Borel theorem. First, let's show that $ S $ is bounded; suppose it isn't. Then we can find a sequence $ ( z_n )_{n \in \N} $ in $ S $ which explodes to infinity, i.e.
+$$ \lim_{n \to \infty} | z_n | = \infty $$
+Let $ D_r $ be the open disk of radius $ r $ centered at the origin. Then
+$$ U = \bigcup_{n \in \N} D_n = \C $$
+is obviously an open cover of $ S $. However, any finite subset $ \{ U_{m_1}, \cdots, U_{m_p} \} $ can't cover $ S $, since the union would fail to contain any $ z_k $ with $ | z_k | > \max \limits_{1 \leq j \leq p} m_j $. This contradicts our assumption, and thus $ S $ must be bounded.
+\n
+To show that $ S $ is closed, let $ z $ be a boundary point of $ S $ and assume for the sake of contradiction that $ z \not \in S $. Recall that the closure of a set is the set with its limit points; for each $ n \in \N $, define $ V_n = \text{ closure of } \mathcal{N}_{\frac{1}{n}}(z) $. Since $ z $ is a boundary point not in $ S $, every $ V_n $ is guaranteed to contain at least one point of $ S $. Now define $ U_n = \C - V_n $. Since $ V_n $ is a closure, and hence is closed, $ U_n $ is open; moreover,
+$$ U = \bigcup_{n \in \N} U_n = \C - \bigcap_{n \in \N} V_n = \C - \{ z \} $$
+Since $ z \not \in S $, $ U $ is an open cover of $ S $. However, any finite subset $ \{ U_{m_1}, \cdots, U_{m_p} \} $ can't cover $ S $, since by definition it would fail to contain the points in $ S $ contained in $ V_m $, where $ m = \max \limits_{1 \leq j \leq p} m_j $. This contradicts our assumption; hence, $ S $ is closed.
+\n
+Since $ S $ is both closed and bounded, it follows that it's compact. \qedsymbol
+
+\section{Differentiation}
+We are now ready to define complex derivatives.
+\nn
+\tb{(Definition) Derivative}: \ti{The \tb{derivative} of a complex function $ f $ at a point $ z_0 $ is defined as}
+$$ f'(z_0) = \lim_{z \to z_0} \frac{f(z) - f(z_0)}{z - z_0} $$
+\indent $ \bullet $ We'll also use the term \ti{holomorphic}, a stronger condition that means that a function is differentiable infinitely often, so that every one of its derivatives is differentiable as well. In fact, this is an even stronger condition than smoothness for a function.
+\nn
+Often we denote the derivative $ \frac{df}{dz} $. Notice that the above definition implicitly implies that the limit at $ z $ exists and is equal to the value of $ f $, and thus differentiability implies continuity. Although the derivative is defined the same way as it's defined in the context of real functions, the complex analog has much different implications. However, due to the similarity of the definitions, all the basic properties of the derivative do carry over:
+\begin{enumerate}
+    \item Sum rule: $ \frac{d}{dz} (f + g) = \frac{df}{dz} + \frac{dg}{dz} $
+    \item Product rule: $ \frac{d}{dz}(f g) = \frac{df}{dz} g + f \frac{dg}{dz} $
+    \item Quotient rule: $ \frac{d}{dz}\left( \frac{f}{g} \right) = \frac{\frac{df}{dz} g - f \frac{dg}{dz}}{g^2} $
+    \item Power rule: $ \frac{d}{dz}(z^n) = n z^{n - 1} $
+    \item Chain rule: $ \frac{d}{dz}(f \circ g) = \frac{d f}{d g} \frac{d g}{d z} $
+\end{enumerate}
+As in algebraic geometry, a \ti{holomorphic isomorphism} between open sets $ U, V $ is a holomorphic function $ f: U \rightarrow V $ whose inverse is also holomorphic. However, after these basic properties, we shall find that being holomorphic is a much stricter condition than real differentiability, and imposes much more structure and order onto the function. Ultimately, this is because holomorphic functions are constrained to obey two following foundational relations, known as the \ti{Cauchy-Riemann equations}.
+
+\subsection{Cauchy-Riemann Conditions}
+Let's derive the Cauchy-Riemann equations from scratch. Let $ f $ be a complex-valued function over open set $ U $. Write $ f $ in terms of its real and imaginary parts:
+$$ f(x + i y) = u(x, y) + i v(x, y) $$
+If $ f $ is differentiable, the limit
+$$ f'(z) = \lim_{h \to 0} \frac{f(z + h) - f(z)}{h} $$
+exists. $ h $ is a complex number and can approach zero from any direction. Taking $ h $ to be real, the limit reduces to a real derivative, and we obtain
+$$ f'(z) = \frac{\partial f}{\partial x} = \frac{\partial u}{\partial x} + \frac{\partial v}{\partial x} $$
+If we let $ h $ be imaginary, we instead obtain
+$$ f'(z) = \frac{1}{i} \frac{\partial f}{\partial y} = -i \frac{\partial u}{\partial y} + \frac{\partial v}{\partial y} $$
+Thus, $ \frac{\partial f}{\partial x} = -i \frac{\partial f}{\partial y} $. Equating real and imaginary parts, we obtain the Cauchy-Riemann equations:
+$$ \begin{aligned}
+    \frac{\partial u}{\partial x} &= \frac{\partial v}{\partial y} \\
+    \frac{\partial u}{\partial y} &= - \frac{\partial v}{\partial x}
+\end{aligned} $$
+Notice that the additional implied constraints here are that $ u $ and $ v $ are differentiable, and their partial derivatives are continuous. The above two equations in conjuntion with these constraints are taken together to be the Cauchy-Riemann equations. Complex functions are holomorphic if and only if they satisfy the Cauchy-Riemann equations.
+
+\subsection{Intuition for Cauchy-Riemann Conditions}
+The Cauchy-Riemann equations have several intuitive interpretations. From a geometric perspective, the condition that $ \frac{\partial f}{\partial x} = - i \frac{\partial f}{\partial y} $ means that if we view $ f $ not as a complex-valued function but as a vector field from $ U $ to $ \R^2 $, it would have a Jacobian matrix of the form
+$$ J_f = \begin{bmatrix}
+    a & - b \\
+    b & a
+\end{bmatrix} $$
+where $ a = u_x = v_y, b = v_x = - u_y $. The above matrix follows the same pattern as the rotation matrix
+$$ R_\theta = \begin{bmatrix}
+    \text{cos}(\theta) & - \text{sin}(\theta) \\
+    \text{sin}(\theta) & \text{cos}(\theta)
+\end{bmatrix} $$
+and in fact we can write $ a = m_1 \text{cos}(\theta), b = m_2 \text{sin}(\theta) $ for suitable $ m_1, m_2, \theta $, which gives us
+$$ J_f = R_\theta M \text{ where } M = \begin{bmatrix} m_1 & m_2 \end{bmatrix}^\intercal $$
+In other words, the Jacobian is simply the composition of a rotation and a scaling. This allows us to geometrically interpret $ f $ as a transformation which takes the complex plane and acts on it by first scaling it, then rotating it. In particular, such a transformation preserves angles, mapping orthogonal (at a set of points) to orthogonal curves. As we shall see in the next section, this is a necessary and sufficient function for $ f $ to be a conformal mapping. This geometric intuition fits well with the intuition of a (real) differentiable function as a function that's locally linear (this intuition follows for real functions from Taylor's theorem, since the non-linear terms vanish as we approach the center of the Taylor expansion; it also follows from the definition of a derivative, which implies that $ f(x + h) \approx f(x) + f'(x) h $), since mappings preserve angles behave more and more like simple expansions or contractions the smaller and smaller scale we work on - they are locally linear.
+\nn
+The above argument does have one issue, however - even real functions from $ \R^2 $ to itself which have Jacobians of the above form still don't enjoy all the nice properties that holomorphic complex functions do. To explain this, let's present the above argument from another angle, which also has the side benefit of deriving the Cauchy-Riemann equations. In both real and complex analysis, the one prominent motivation for the definition of differentiability as categorizing precisely those functions which can be locally approximated by linear functions. This applies to both real differentiable functions and complex differentiable functions (which are, of course, trivially real differentiable as well); the difference between the two is subtle - whereas we require our local approximation functions to be linear in the real case, in the complex case we require the locally approximation functions to be \ti{complex linear}.
+\n
+Let $ g $ be a function from $ \R^2 $ to itself, and $ f $ be a function from $ \C $ to itself. Then what the above difference means is that whereas both
+$$ \frac{dg}{dx}(ix) = i \frac{dg}{dx}(x), \frac{df}{dz}(iz) = i \frac{df}{dz}(z) $$
+hold, only in the latter case do we also require that the differentiation operator commutes with the operator representing multiplication by $ i $. Let $ T $ be the operator representing multiplication by $ i $. Because the field of complex numbers is built off the notion of multiplying by $ i $, the action of $ T $ is fundamental to the structure of $ \C $; the difference between requiring real differentiation to be linear and requiring complex differentiation to be complex linear means that only in the former case do we also require the operator of complex differentiation to commute with $ T $; in the real case, no such restriction is made. This additional commutativity restriction makes all the difference in the world, and accounts for the vast differences between real differentiable functions and complex holomorphic functions.
+\n
+Let's look at how the above discussion implies the Cauchy-Riemann equations. The expression
+$$ f = u + i v $$
+for functions $ u, v $ over $ \R^2 $ allows us to view $ f $ as a function from the real plane to itself as well: $ f(x, y) = (u(x, y), v(x, y)) $. This in turn allows us to consider its Jacobian:
+$$ J_f = \begin{bmatrix}
+    \frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} \\
+    \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}
+\end{bmatrix} $$
+Multiplication by $ i $ has the geometric interpretation of rotating by ninety degrees (this is why the imaginary axis of the complex plane is vertical), and hence we have
+$$ T = \begin{bmatrix}
+    0 & -1 \\
+    1 & 0
+\end{bmatrix} $$
+The requirement that complex differentation be complex linear, equivalent to the requirement that the operator of complex differentiation commutes with multiplication by $ i $, can hence be written $ J_f T = T J_f $. In other words,
+$$ \begin{bmatrix}
+    \frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} \\
+    \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}
+\end{bmatrix} \begin{bmatrix}
+    0 & -1 \\
+    1 & 0
+\end{bmatrix} = \begin{bmatrix}
+    0 & -1 \\
+    1 & 0
+\end{bmatrix} \begin{bmatrix}
+    \frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} \\
+    \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}
+\end{bmatrix} $$
+which implies the Cauchy-Riemann equations. Thus, the crux of why holomorphic functions are so well-behaved is that being holomorphic forces functions to satisfy the Cauchy-Riemann equations, a highly non-trivial requirement that imposes a lot of structure on the function (namely, that it must commute with multiplication by $ i $).
+
+\section{Conformal Maps}
+A \ti{conformal map} is a function that locally preserves angles. In this section, we'll be more precise about what this means, and show that holomorphic functions are conformal maps. First, let's formalize the notion of locally preserving angles. Let $ U $ be an open set in $ \C $ and let $ \gamma: [a, b] \rightarrow U $ be a curve in $ U $. Then we parameterize the curve as
+$$ \gamma(t) = x(t) + i y(t) $$
+Assuming $ \gamma $ is differentiable, it follows that
+$$ \gamma'(t) = x'(t) + i y'(t) $$
+Geometrically, $ \gamma'(t) $ is the tangent vector to the curve at $ t $, and thus defines the direction of the curve at that point. We define the angle between two curves $ \gamma $ and $ \eta $ at a point $ t_0 $ to be the angle between the curves' tangent vectors at the point, i.e.
+$$ \text{ angle between $ \gamma, \eta $ at $ t $ } = \text{ angle between $ \gamma'(t), \eta'(t) $ } $$
+Let's now show that holomorphic functions preserve angles.
+\nn
+\tb{(Theorem) Holomorphic functions are conformal maps}: \ti{Let $ f: U \rightarrow \C $ be a holomorphic function, and $ \gamma, \eta: [a, b] \rightarrow U $ be curves $ \C $, where $ U $ is an open set. Then the angle between $ f \circ \gamma $ and $ f \circ \eta $ at any point is the same as the angle between $ \gamma $ and $ \eta $ at that point.}
+\n
+\Pf Let $ \theta $ be the angle between $ \gamma $ and $ \eta $ at some point $ t \in [ a, b ] $. Then
+$$ \cos(\theta) = \frac{\gamma'(t)^\intercal \eta'(t)}{|| \gamma'(t) ||_2 \cdot || \eta'(t) ||_2} $$
+By the chain rule, $ (f \circ \gamma)'(t) = f'(\gamma) \gamma'(t) $ and $ (f \circ \eta)'(t) = f'(\eta) \eta'(t) $. The angles in question are the same if and only if their cosines are the same, which means we wish to show that
+$$ \frac{\gamma'(t)^\intercal \eta'(t)}{|| \gamma'(t) ||_2 \cdot || \eta'(t) ||_2} = \frac{(f'(\gamma) \gamma'(t))^\intercal (f'(\eta) \eta'(t))}{|| f'(\gamma) ||_2 \cdot || f'(\eta) ||_2 \cdot || \gamma'(t) ||_2 \cdot || \eta'(t) ||_2} $$
+which is only the case if
+$$ (f'(\gamma) \gamma'(t))^\intercal (f'(\eta) \eta'(t)) = || f'(\gamma) ||_2 \cdot || f'(\eta) ||_2 \cdot \gamma'(t)^\intercal \eta'(t) $$
+This follows easily, since
+$$ (f'(\gamma) \gamma'(t))^\intercal (f'(\eta) \eta'(t)) = \gamma'(t)^\intercal f'(\gamma)^\intercal f'(\eta) \eta'(t) = (f'(\gamma)^\intercal f'(\eta))(\gamma'(t)^\intercal \eta'(t)) $$
+TODO
+
+\end{document}

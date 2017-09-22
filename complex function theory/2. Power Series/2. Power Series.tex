@@ -1,0 +1,467 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[margin=0.5in]{geometry}
+
+\newcommand*{\tb}{\textbf}
+\newcommand*{\ti}{\textit}
+\newcommand*{\n}{\newline}
+\newcommand*{\nn}{\newline \newline}
+\newcommand*{\Pf}{\indent \ensuremath{\bullet} \textit{Proof}: }
+\newcommand*{\In}{\indent \ensuremath{\bullet} \textit{Intuition}: }
+\newcommand*{\Mo}{\indent \ensuremath{\bullet} \textit{Motivation}: }
+\newcommand*{\Co}{\indent \ensuremath{\bullet} \textit{Corollary}: }
+\newcommand*{\No}{\indent \ensuremath{\bullet} \textit{Notation}: }
+\newcommand*{\N}{\mathbb{N}}
+\newcommand*{\Q}{\mathbb{Q}}
+\newcommand*{\R}{\mathbb{R}}
+\newcommand*{\C}{\mathbb{C}}
+\newcommand*{\st}{\text{ s.t. }}
+
+\begin{document}
+
+\title{Power Series}
+\author{Piyush Patil}
+\maketitle
+
+Polynomials are the central to many fields of study in mathematics, and their many properties are well studied. In this chapter, we'll look at alternate ways of defining holomorphic functions, namely, in terms of infinite-degree polynomials.
+
+\section{Formal Power Series}
+Although we'll eventually want to think of power series as merely infinite-degree extensions of polynomials, in order to rigorously consider power series we'll need to begin with a more formal analysis. To do so, we turn to the early view of polynomials in algebraic geometry, where polynomials are viewed not as functions but as elements of a ring with precisely defined operations. In such a ring, (one-variable) polynomials are completely determined by a set of numbers $ (a_0, \cdots, a_n) $ from the underlying field, in this case $ \C $, and are written
+    $$ a_0 + a_1 X + a_2 X^2 + \cdots + a_n X^n $$
+It's important to specify that $ X $ is not a variable that ranges over the complex numbers or the domain of a function; rather, it's simply a "placeholder letter" we use for notational convenience, known as an \ti{indeterminate}. Thus, we manipulate polynomials only as expressions above and not as functions. A formal power series, then, is a natural generalization of this idea - whereas the above polynomial, though written as if it were a function of $ X $, is really just an expression representing the sequence of numbers $ (a_0, \cdots, a_n) $, we'll define a formal power series to the the exact same thing but represented by an infinite sequence.
+\nn
+\tb{(Definition) Formal power series}: \ti{Given an infinite sequence $ (a_n)_{n \in \N} $ of complex numbers, the corresponding \tb{formal power series} is the following expression in the indeterminate $ X $:}
+    $$ \sum_{n \in \N} a_n X^n $$
+The coefficients $ X^n $ are really only used to specify the order of the sequence. We often denote a polynomial with the expression $ f(X) $, calling the polynomial $ f $, but again it's important to remember that $ f(X) $ is a formal expression and not a function. We define the \ti{constant term} of $ f $ to be $ a_0 $. We also take finite-degree polynomials to be formal power series, considering the rest of the absent $ X^k $ to have coefficients that are zero. We define the \ti{sum} of two power series as
+    $$ \sum_{n \in \N} a_n X^n + \sum_{n \in \N} b_n X^n := \sum_{n \in \N} c_n X^n \text{ where } c_n = a_n + b_n $$
+and the \ti{product} of two power series to be
+    $$ \sum_{n \in \N} a_n X^n \cdot \sum_{n \in \N} b_n X^n := \sum_{n \in \N} c_n X^n \text{ where } c_n = \sum_{k = 0}^n a_k b_{n - k} $$
+We can also define an operation for scalar multiplication - for $ \alpha \in \C $, define
+    $$ \alpha \cdot \sum_{n \in \N} a_n X^n := \sum_{n \ in \N} c_n X^n \text{ where } c_n = \alpha a_n $$
+We define the \ti{zero power series} to be the series given by $ a_n = 0, \forall n $. Finally, we define a notion of inverse for a power series.
+\nn
+\tb{(Definition) Inverse}: \ti{The \tb{inverse} of formal power series $ f $ is the formal power series $ g $ given by}
+    $$ f g = 1 $$
+It can be verified that the addition and multiplication operators defiend above distribute and are associative and commutative; thus, the set of formal power series, including the zero power series, forms a ring.
+\nn
+\tb{(Definition) Order}: \ti{The order of a formal power series $ f $ given by $ ( a_n )_{n \in \N} $ is}
+    $$ \text{ord}(f) = k \text{ where } \forall j < k: a_j = 0 \text{ but } a_k \neq 0 $$
+In other words, the order of a formal power series is just the index of the first non-zero coefficient, i.e. where the power series really "starts". It follows from definitions that for power series $ f, g $,
+    $$ \text{ord}(f + g) = \min(\text{ord}(f), \text{ord}(g)) \text{ and } \text{ord}(f g) = \text{ord}(f) + \text{ord}(g) $$
+Notice that if $ g $ is the inverse of $ f $, then $ f $ is obviously the inverse of $ g $; moreover, if the inverse of $ f $ exists, we must have $ \text{ord}(f) = 0 $, i.e. it must have a non-zero constant term (for otherwise how could the product with any other formal power series end up as one). The converse is true as well.
+\nn
+\tb{(Theorem) Order zero power series have inverses}: \ti{Let $ f $ be a formal power series. If $ \text{ord}(f) = 0 $ then $ f $ has an inverse.}
+\n
+\Pf Letting $ f = \sum_{n \in \N} a_n x^n $, suppose $ \text{ord}(f) = 0 $, so that $ a_0 \neq 0 $. We'll prove the existence of a polynomial
+    $$ g = \sum_{n \in \N} b_n x^n $$
+such that $ f g = 1 $. Let
+    $$ f g = \sum_{n \in \N} c_n x^n = 1 $$
+so that $ c_0 = 1 $ and $ c_n = 0 $ for $ n > 0 $. By definition,
+    $$ c_n = \sum_{k = 0}^n a_k b_{n - k} $$
+We'll prove that $ \forall n \in \N^+: \exists b_1, \cdots b_n \st c_n = 0 $ (we can set $ b_0 = a_0^{-1} $) by induction on $ n $. Suppose this holds up to some number $ n $. Then
+    $$ c_{n + 1} = a_0 b_{n + 1} + \sum_{k = 1}^{n + 1} a_k b_{n + 1 - k} = 0 \rightarrow b_{n + 1} = \frac{1}{a_0} \sum_{k = 1}^{n + 1} a_k b_{n + 1 - k} $$
+so that $ b_1, \cdots, b_{n + 1} $ make $ c_{n + 1} = 0 $ as desired. The base case of $ n = 1 $ is easily satisfied:
+    $$ a_0 b_1 + a_1 b_0 = a_0 b_1 + \frac{a_1}{a_0} \rightarrow b_1 = - \frac{a_1}{a_0^2} $$
+This holds for every $ c_n $ with $ n > 1 $, and we ensured that $ c_0 = 1 $, so it follows that $ f g = 1 $. \qedsymbol
+\nn
+Let's introduce some more concepts from algebraic geometry on the manipulation of polynomials, extending them to apply to formal power series. Namely, we'll introduce the notion of \ti{composition}, based on our understanding of polynomials as functions, and of polynomial congruence modulo another polynomial, based on our view of polynomials as algebraic elements of a ring.
+\nn
+\tb{(Definition) Composition}: \ti{Let $ f = \sum_{n \in \N} a_n x^n $ be a formal power series, and $ h $ be a formal power series with non-zero order. We define the \tb{composition}}
+    $$ f \circ h = a_0 + \sum_{n \in \N^+} a_n h^n $$
+\indent \ti{where $ h^n $ is the $ n^{\text{th}} $ power of $ h $.}
+\nn
+We require $ h $ to have no constant term to preserve $ f $'s constant term; this will be important later. It's not difficult to show that, as expected, composition distributes over addition and multiplication.
+\nn
+\tb{(Definition) Congruence}: \ti{Formal series $ f = \sum_{n \in \N} a_n x^n $ and $ g = \sum_{n \in \N} b_n x^n $ are \tb{congruent} modulo $ x^n $ if}
+    $$ \forall m < n: a_m = b_m $$
+\indent \ti{in which case we write $ f \equiv g \pmod{x^n} $.}
+\nn
+Notice that this associates every formal series with a canonical representation modulo any $ x^n $ (namely, the series whose first $ n $ terms coincide with $ f $'s and whose remaining terms are zero), the same way the analogous congruence classes divide the integers into canonical residue classes. It's a simple exercise in algebra to show that the expected properties of a congruence relation hold:
+    $$ f_1 \equiv f_2 \pmod{x^n} \text{ and } g_1 \equiv g_2 \pmod{x^n} \rightarrow f_1 + g_1 \equiv f_2 + g_2 \pmod{x^n} \text{ and } f_1 g_1 \equiv f_2 g_2 \pmod{x^n} $$
+Moreover, if $ h_1 \equiv h_2 \pmod{x^n} $ and $ \text{ord}(h_1), \text{ord}(h_2) > 0 $ then
+    $$ f_1 \circ h_1 \equiv f_2 \circ h_2 \pmod{x^n} $$
+We conclude this section by defining the final algebraic operation for formal power series - quotients. We can define the field of fractions of the ring of formal power series, which involves terms of the form $ \frac{f}{g} $ for formal power series $ f $ and $ g $. We say
+    $$ \frac{f_1}{g_1} \equiv \frac{f_2}{g_2} \text{ if } f_1 g_2 = f_2 g_1 $$
+To explicitly find the coefficients defining the quotient of two formal power series (which, as we'll see below, is a formal power series as well), we simply compute the inverse of $ g $. Let's look at a more elegant way of computing the inverse: let $ g = \sum_{n \in \N} b_n x^n $. Suppose $ b_0 = 1 $ (we make this assumpion for convenience, but the argument easily generalizes beyond it). Recall that from the definition of the geometric series, we have
+    $$ \frac{1}{1 - r} = 1 + r + r^2 + \cdots $$
+and hence
+    $$ (1 - r)(1 + r + r^2 + \cdots) = 1 $$
+Thus, the inverse of $ \sum_{n \in \N} r^n $ is $ (1 - r) $. We can use this to find an inverse for $ g $; first, write
+    $$ g = 1 - r \text{ where } r = - b_1 x - b_2 x^2 - \cdots $$
+so that the inverse of $ g $ is
+    $$ \frac{1}{g} := 1 + r + r^2 + \cdots = \left( \sum_{n \in \N} x^n \right) \circ \left( - \sum_{n \in \N^+} b_n x^n \right) $$
+assuming of course that $ g \neq 0 $. To generalize this result beyond the assumption $ b_0 = 1 $, let $ m = \text{ord}(g) $ and write
+    $$ g = b_m x^m + b_{m + 1} x^{m + 1} + \cdots \text{ as } g = b_m x^m \cdot \left( 1 + \frac{b_{m + 1}}{b_m} x + \frac{b_{m + 2}}{b_m} x^2 + \cdots \right) $$
+so the above argument can be applied to the right term of the product. We stated above that $ \frac{f}{g} $ is a formal power series, but this has a caveat. If we carry out the full process above to find $ \frac{1}{g} $, and multiply by $ f $, we'd find that the resulting series is a power series involving a finite number of terms in which $ x $ has a negative power:
+    $$ \frac{f}{g} = \sum_{n = -m}^\infty c_n x^n \text{ for some } m \text{ and } c_n $$
+This is, in fact, a special kind of Laurent series, which we'll study later, and is very useful when considering functions that are almost holomorphic (except at finitely many points).
+
+\section{Convergent Power Series}
+Having defined a purely formal and symbolic notion of power series, we'll now merge those ideas with the intuitively familiar idea of an infinite series of complex numbers. In other words, we'll start treating formal power series as infinite polynomial functions rather than simply algebraic elements of a ring. First, let's brush up on series of complex numbers.
+\n
+We define series the same way we do in real analysis: given a sequence $ ( z_n )_{n \in \N} $ of complex numbers, define the \ti{partial sum}
+    $$ s_n = \sum_{n = 0}^n z_n $$
+Then we define the series
+    $$ \sum_{n \in \N} z_n = \lim_{n \to \infty} s_n $$
+The series \ti{converges} if the limit on the left converges, in which case the limit is the \ti{sum of the series}.
+\nn
+\tb{(Definition) Absolute convergence}: \ti{Let $ \sum_{n \in \N} z_n $ be a series of complex numbers. The series \tb{converges absolutely} if the real positive series}
+    $$ \sum_{n \in \N} | z_n | $$
+\indent \ti{converges. A convergent series that isn't absolutely convergent is called \tb{conditionally convergent}.}
+\n
+\In Due to the nature of limiting processes, infinite series don't retain all the properties of finite sums. For example, as we'll see later, general infinite series can attain different values depending on what order the terms are added up in; in other words, associativity and commutativity are not preserved. Absolute convergence is a strong enough property for a series to have such that these "nice" properties enjoyed by finite sums do carry over to absolutely convergent series. As expected, absolutely convergent series are convergent (proved below). Intuitively, if the series of magnitudes of the terms of a series converge, this tells us that the original series does converge but moreover that this is because of a strong, natural reason - the terms of the series approach zero, getting smaller and smaller, and also that the consecutive differences between the sizes of the terms vanishes too. Conditionally convergent series do converge but the fact that the series of magnitudes doesn't tells us that the original series only converges because of the way the terms "cancel out" over time, not because the series' terms get smaller and smaller. This is why the order in which we add the series matters.
+\n
+\indent $ \bullet $ \ti{Proof that absolutely convergent implies convergent}: Suppose $ \sum_{n \in \N} | z_n | $ converges. Then, defining
+    $$ s_m = \sum_{n = 0}^m | z_n | \text{ and } t_m = \sum_{n = 0}^m z_n $$
+it follows that $ \lim_{m \to \infty} s_m = s \in \C $. Then $ (s_m)_{m \in \N} $ is a Cauchy sequence, which means
+    $$ \forall \epsilon \in \R^+: \exists M \in \N \st n, m > M \rightarrow | s_n - s_m | < \epsilon $$
+Then for any $ \epsilon \in \R^+ $,
+    $$ | t_n - t_m | = \left \lvert \sum_{j = \min(n, m)}^{\max(n, m)} z_j \right \rvert \leq \sum_{j = \min(n, m)}^{\max(n, m)} | z_j | = s_{\max(n, m)} - s_{\min(n, m)} = | s_n - s_m | < \epsilon $$
+where $ n, m > M $ for appropriately chosen $ M $ (which is guaranteed to exist since the sequence of $ s_m $'s is Cauchy). It follows that $ ( t_m )_{m \in \N} $ is Cauchy as well, which means it converges since $ \C $ is complete (this follows easily from the completeness of $ \R $, which itself follows from the construction of $ \R $ as the completion of $ \Q $). Hence $ \lim_{m \to \infty} t_m = t \in \C $ for some $ t $. Thus,
+    $$ \sum_{n \in \N} z_n = t $$
+and so the sum converges. \qedsymbol
+\nn
+Let's now take a look at some tests for convergence. We begin with a standard, rather obvious test.
+\nn
+\tb{(Theorem) Comparison test}: \ti{Let $ \sum_{n \in \N} r_n $ be a sequence of non-negative real numbers which converges, and $ \sum_{n \in \N} z_n $ be a sequence of complex numbers. If $ \forall n: | z_n | \leq r_n $ then the series converges absolutely.}
+\n
+\Pf Define the sequences of partial sums
+    $$ s_m = \sum_{n = 0}^m | z_n |, t_m = \sum_{n = 0}^m r_m $$ 
+We must show that $ ( s_m )_{m \in \N} $ converges, given that $ ( r_m )_{m \in \N} $ converges. $ ( s_m ) $ is bounded, because
+    $$ \forall m \in \N: 0 \leq s_m = | z_0 | + \cdots + | z_m | \leq r_0 + \cdots + r_m = t_m \leq t := \lim_{j \to \infty} t_j $$
+where the final inequality follows from $ t_{m + 1} = r_{m + 1} + t_m $ and $ r_{m + 1} \geq 0 $. In fact, the same holds for $ s_m $:
+    $$ \forall m \in \N: s_{m + 1} = | z_{m + 1} | + s_m \rightarrow s_m \leq s_{m + 1} $$
+Thus, $ ( s_m ) $ is a bounded, non-decreasing sequence. The remainder of the proof follows from the definition
+    $$ s = \sup \left( \{ s_m, m \in \N \} \right) $$
+since we can then prove that $ \lim_{m \to \infty} s_m = s $. To prove this, suppose for the sake of contradiction that for any $ \epsilon \in \R^+ $ and any $ N \in \N $, we can find $ m' > N $ such that $ | s - s_{m'} | = s - s_{m'} \geq \epsilon $. Then $ s - \epsilon $ is an upper bound on $ \{ s_m, m \in \N \} $ since
+    $$ \forall m \in \N: \exists m' \st m' > m \text{ and } s_{m'} \leq s - \epsilon $$
+Clearly, $ s - \epsilon < s $, which contradicts $ s $ being the least upper bound. Hence, such $ m' $ can never exist, and so $ ( s_m ) $ must converge to $ s $, showing that $ \sum_{n \in \N} z_n $ is absolutely convergent.
+\n
+This hinges on $ s $ even existing; we haven't proven that the supremum of the $ \{ s_m, m \in \N \} $ exists. This follows from the more general lemma that any bounded set $ A $ in $ \R $ has a least upper bound in $ \R $, which we prove as follows. Let $ U $ be the set of upper bounds of $ A $ (guaranteed to be non-empty since $ A $ is bounded). Then $ U $ be bounded below, since if it weren't $ A $ wouldn't be either. At least one lower bound of $ U $ must be greater than or equal to every element of $ A $, since otherwise we'd have some element of $ U $ less than some element of $ A $. Thus,
+    $$ \exists r \in \R \st \forall a \in A, u \in U: a \leq r \leq u $$
+which means $ r $ is an upper bound of $ A $, and $ r = \min(U) $. Hence $ r = \sup(A) $. \qedsymbol
+\nn
+Next, we prove the main "nice property" afforded by absolute convergence that we touched on earlier, namely that associativity and commutativity hold.
+\nn
+\tb{(Theorem) Absolutely convergent series can be rearranged}: \ti{Any rearrangement of the terms of an absolutely convergent series converges absolutely to the same value as the original series.}
+\n
+\Pf Let $ \sum_{n \in \N} z_n $ be the original series, and $ \sum_{n \in \N} z_{\sigma(n)} $ be the rearrangement (so $ \sigma: \N \rightarrow \N $ is a bijection of the indices). Define the partial sums
+    $$ s_m = \sum_{n = 0}^m z_n \text{ and } t_m = \sum_{n = 0}^m z_{\sigma(n)} $$
+and let $ L = \lim_{m \to \infty} s_m $. We'll show that $ t_m $ converges to $ L $.
+    $$ | t_m - L | = | (t_m - s_N) + (s_N - L) | \leq | t_m - s_N | + | s_N - L | $$
+Fix $ \epsilon \in \R^+ $. We know that there's some $ n_1 $ such that if $ N \geq n_1 $ then we can make $ | s_N - L | < \frac{\epsilon}{2} $. Let's show that the same holds for $ | t_m - s_N | $ if we make $ m $ and $ N $ large enough. Consider the sequence of remainders of the absolute series:
+    $$ r_m = \sum_{n = m + 1}^\infty | z_n | $$
+Since the sum converges absolutely, $ \lim_{m \to \infty} r_m = 0 $, so there's some $ n_2 $ such that if $ N \geq n_2 $ then $ | r_N | < \frac{\epsilon}{2} $. Fix $ N \geq \max(n_1, n_2) $. The central idea to the rest of the proof is that if we make $ m $ large enough, we can get the sum representing $ t_m $ to contain each $ z_0, \cdots, z_N $, which makes each of those terms cancel in the difference $ t_m - s_N $, leaving behind a quantity precisely like the above sequence of remainders. More formally, there exist $ m_1, \cdots, m_N $ which bijectively map to the first $ N $ integers, ie $ \{ 0, \cdots, N \} = \{ \sigma(m_1), \cdots, \sigma(m_N) \} $. This means that if we let $ m \geq \max(m_1, \cdots, m_N) $ then
+    $$ | t_m - s_N | = \left \vert \sum_{n \in I} z_n \right \vert $$
+where $ I = \{ k \in \{ 0, \cdots, N \} \st \sigma(k) > N \} $ is the set of the remaining subscripts from $ t_m $ which don't match up with the first $ N $ integers. It follows that
+    $$ | t_m - s_N | = \left \vert \sum_{n \in I} z_n \right \vert \leq \sum_{n \in I} | z_n | \leq \sum_{n = N + 1}^\infty | z_n | = r_{N + 1} < \frac{\epsilon}{2} $$
+and hence
+    $$ | t_m - L | \leq | t_m - s_N | + | s_N - L | \leq \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon $$
+for large enough $ m, N $, which means
+    $$ \sum_{n \in \N} z_n = \sum_{n \in \N} z_{\sigma(n)} = L \in \C $$
+proving the theorem. \qedsymbol
+\nn
+This is the converse to the theorem we alluded to earlier in the definition of absolute convergence, Riemann's theorem, that conditionally convergent series aren't commutative. The above theorem demonstrates why the definition of absolute convergence is a useful one - the condition is sufficiently strong to force infinite series to conform to all the nice properties of regular addition, such as commutativity, that we enjoy. The reason we introduced this section with the basics of infinite series is to allow us to investigate sequences and series of complex-valued functions, which will then allow us to extend formal power series to complex functions in themselves, and take a look at when they converge. All this theory provides the scaffolding on which we'll define the theory of analytic functions, which underlie the study of complex analysis as a whole. With this roadmap in mind, let's move on to sequences of complex functions.
+\n
+When it comes to sequences of functions, there's two main types of convergence we can define. The first is the most natural and intuitive definition of convergence, and simply builds on top of the definition of convergence for sequences of complex numbers.
+\nn
+\tb{(Definition) Pointwise convergence}: \ti{Let $ ( f_n ) $ be a sequence of functions defined over $ S \subseteq \C $. Then the sequence \tb{converges pointwise} to a function $ f: S \rightarrow \C $ if}
+    $$ \forall z \in S: \lim_{n \to \infty} f_n(z) = f(z) $$
+However, we can define a stronger notion of convergence which is often more useful. First, let's define a norm, which is essentially a function on a space which generalizes the notion of size or magnitude beyond numbers; norms must satisfy basic axioms to behave as magnitudes, namely a norm $ || \cdot || $ over a set $ S $ satisfies, for every $ z \in \C $ and $ s, t \in S $
+\begin{enumerate}
+    \item Absolute homogeneity: $ || z s || = | z | \cdot || s || $
+    \item Triangle inequality: $ || s + t || \leq || s || + || t || $
+    \item Separation of points: $ || s || = 0 \rightarrow s = 0 $
+\end{enumerate}
+It's difficult to define a norm on the set of all complex functions, but for bounded functions there's a fairly natural definition we can turn to. The canonical norm is the \ti{sup norm}, based on the notion of supremum.
+\nn
+\tb{(Definition) Sup norm}: \ti{Let $ S $ be a set of complex numbers and $ f $ be a bounded function on $ S $. Define the \tb{sup norm}, also known as the \tb{uniform norm}, of $ f $ by}
+    $$ || f || = \sup_{z \in S} | f(z) | $$
+Thus, the "size" of a bounded function is tethered to either its largest attained value, or the asymptotically approached least upper bound. The notion of the sup norm is critical to defining the stronger definition of convergence for sequences of functions. 
+\nn
+\tb{(Definition) Uniform convergence}: \ti{Let $ ( f_n )_{n \in \N} $ be a sequence of functions defined on $ S \subseteq \C $. Then the sequence \tb{converges uniformly} to a function $ f: S \rightarrow \C $ if}
+    $$ \forall \epsilon \in \R^+: \exists N \in \N \st n \geq N \rightarrow || f - f_n || < \epsilon $$
+\In First notice that uniform convergence implies pointwise convergence, since if the largest difference between $ f_n $ and $ f $ can be made arbitrarily small, every difference can and hence every pointwise sequence converges as well. This is why uniform convergence is stronger than pointwise convergence. Intuitively, we think of pointwise convergence as splitting the sequence of functions into sequences of points, which all converge. However, just because the every sequence of points in the domain converges to the corresponding value of $ f $, doesn't mean that the sequence of functions itself necessarily converges to $ f $ in the sense that we want, since the way in which each pointwise sequence converges is completely independent of any other. In other words, for a given margin of error, we have no idea which of the pointwise sequences will be close enough to the limit to be within the margin; some may be, but it's possible that infinitely many aren't. How far we need to travel down each sequence to get within the margin of error can vary wildly among the pointwise sequences; in the worst case, for a given $ \epsilon $ it's possible for the pointwise sequences' $ N $'s to not even be bounded. Uniform convergence, on the other hand, guarantees that for any margin of error each pointwise sequence, there's a single point after which every sequence fits in the margin of error. Intuitively, this means that every pointwise sequence converges at the same speed - they converge uniformly with each other at the same rate, independent of what point in $ S $ we're considering. Given $ \epsilon $, pointwise converge requires each pointwise sequence corresponding to a point $ z \in S $ to have its own $ N $, whereas uniform convergence makes no mention of any $ z \in S $ at all and simply requires an $ N $ that works for every pointwise sequence.
+\nn
+Uniform convergence guarantees that a sequence of functions converges to a function in the way we expect - the largest distance between the sequence and the function becomes arbitrarily small, so that the sequence gradually approximates and conforms to the limiting function better and better (this isn't always the case with pointwise convergence). Let's take a look at one way to tell if a sequence of functions converges uniformly. It's not a surprising test, as it generalizes a well known theorem concerning sequences of complex numbers.
+\nn
+\tb{(Theorem) Cauchy's criterion}: \ti{If a sequence of functions $ ( f_n )_{n \in \N} $ defined over $ S \subseteq \C $ is a Cauchy sequence, then it converges uniformly.}
+\n
+\Pf We'll first show that the sequence converges pointwise to a function we'll construct from each of the pointwise limits, and then show that the sequence in fact uniformly converges to the same limit. Define $ f: S \rightarrow \C $ by
+    $$ f(z) = \lim_{n \to \infty} f_n(z) \text{ for } z \in S $$
+This function is well defined, because the fact that $ ( f_n )_{n \in \N} $ is Cauchy means that for any $ \epsilon \in \R^+ $ we can find an $ N $ for which
+    $$ n, m \geq N \rightarrow || f_n - f_m || = \sup_{z \in S} | f_n(z) - f_m(z) | < \epsilon $$
+which of course means that for every $ z \in S $, the sequence $ ( f_n(z) )_{n \in \N} $ is Cauchy, and hence converges (to $ f(z) $, by definition) since $ \C $ is complete.
+\n
+Fix $ \epsilon \in \R^+ $. We'll now show that the sequence converges uniformly to $ f $. We know that
+    $$ \exists N(\epsilon) \st \forall z \in S: n, m \geq N(\epsilon) \rightarrow | f_n(z) - f_m(z) | < \epsilon $$
+    $$ \forall z \in S: \exists N(\epsilon, z) \st n \geq N(\epsilon, z) \rightarrow | f(z) - f_n(z) | < \epsilon $$
+where the $ N $'s above are defined to be the minimal such values. If $ \{ N(\epsilon, z), z \in S \} $ were bounded by any $ M \in \N $, it would follow that for every $ z \in S $ if $ n \geq M \geq N(\epsilon, z) $ then $ | f(z) - f_n(z) | < \epsilon $, and the theorem would be proved. Assume for the sake of contradiction that this isn't the case, ie that the $ N(\epsilon, z) $ are unbounded in terms of $ z $. Then there's a $ w \in S $ for which $ N(\epsilon, w) > N(\frac{\epsilon}{2}) $, and we can choose $ n, m $ with $ N(\frac{\epsilon}{2}) \leq n < N(\epsilon, w) \leq N(\frac{\epsilon}{2}, w) \leq m $. It follows that
+    $$ | f(w) - f_n(w) | \geq \epsilon $$
+However, it also follows that $ \forall z \in S: | f_n(z) - f_m(z) | < \frac{\epsilon}{2} $, and hence
+    $$ | f(w) - f_n(w) | = | (f(w) - f_m(w)) + (f_m(w) - f_n(w)) | \leq | f(w) - f_m(w) | + | f_m(w) - f_n(w) | \leq \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon $$
+which is a contradiction. Hence the $ N(\epsilon, z) $ must be bounded with $ z $, and the theorem follows. \qedsymbol
+\nn
+Notice that a consequence of the above proof is that if the functions in the sequence are bounded, so is the limiting function. We can now define series of functions the same way we defined series in terms of sequences: Letting $ S $ be a set of complex numbers and $ ( f_n )_{n \in \N} $ be a sequence of functions over $ S $, the series $ \sum_{n \in \N} f_n $ \ti{converges uniformly} to a function $ f $ if
+    $$ \lim_{n \to \infty} s_n = f \text{ uniformly, where } s_m = \sum_{n = 0}^m f_n $$
+Similarly, the series \ti{converges absolutely} if
+    $$ \forall z \in S: \sum_{n \in \N} | f_n(z) | \text{ converges } $$
+This brings is to an analogous test for convergence to the one we looked at for series of complex numbers.
+\nn
+\tb{(Theorem) Comparison test for series of functions}: \ti{Let $ ( c_n )_{n \in \N} $ be a sequence of non-negative real numbers such that $ \sum_{n \in \N} c_n $ converges. If $ ( f_n )_{n \in \n} $ is a sequence of functions such that $ || f_n || \leq c_n $ for every $ n $, then $ \sum_{n \in \N} f_n $ converges absolutely and uniformly.}
+\n
+\Pf Clearly the sum converges absolutely, since for any $ z \in S $ (where $ S $ is the shared domain of the $ f_n $), by assumption $$ || f_n(z) || \leq c_n $$ and so the absolute series converges by the comparison test for series of real numbers.
+\n
+To prove uniform convergence, first define the sequence of partial sums by letting $ s_m: S \rightarrow \C $ be given by
+    $$ s_m(z) = \sum_{n = 0}^m f_n(z) $$
+It suffices to show that $ ( s_m )_{m \in \N} $ is Cauchy. Since $ \sum_{n \in \N} c_n $ converges, it's sequence of partial sums, which we denote with $ ( C_m )_{m \in \N} $, is Cauchy, which means for any $ m_1 < m_2 $,
+    $$ || s_{m_1} - s_{m_2} || = \left \vert \left \vert \sum_{n = m_1}^{m_2} f_n \right \vert \right \vert \leq \sum_{n = m_1}^{m_2} || f_n || \leq \sum_{n = m_1}^{m_2} c_n = | C_{m_1} - C_{m_2} | $$
+The difference on the far right can be made arbitrarily small if we choose $ m_1, m_2 $ large enough, which means the difference on the far left can be as well, and hence $ ( s_m )_{m \in \N} $ is Cauchy and therefore uniformly converges. \qedsymbol
+\nn
+We prove one final theorem on series of functions before turning to power series. The following theorem is intuitively appealing, as it aligns with our intuition of uniform convergence as a strong enough assumption for all the functions in a sequence to "converge together" to their limiting function. Because the convergence is uniform, the continuity of the functions of the sequence ought to be enough to guarantee to continuity of the limiting function; if none of the functions in the sequence make large spontaneous jumps in their values, then the limiting function can't either, since the fact that the functions approach, at every value at the same speed, the limiting function means that the smoothness of the functions carries over. This is made formal in the proof below.
+\nn
+\tb{(Theorem) Continuous convergent sequences have continuous limits}: \ti{Let $ ( f_n )_{n \in \N} $ be a sequence of continuous functions that converges uniformly to a function $ f $. Then $ f $ is continuous.}
+\n
+\Pf Let $ z_0 $ be an arbitrary point in the shared domain of the $ f_n $, and $ \epsilon $ be an arbitrary positive real number. We'll show the existence of a $ \delta $-neighborhood of $ z_0 $ which $ f $ maps to inside the $ \epsilon $-neighborhood of $ f(z_0) $, proving the continuity of $ f $.
+\n
+For any $ z $ in the domain of the $ f_n $,
+    $$ | f(z) - f(z_0) | = | (f(z) - f_n(z)) + (f_n(z) - f_n(z_0)) + (f_n(z_0) - f(z_0)) | \leq | f(z) - f_n(z) | + | f_n(z) - f_n(z_0) | + | f_n(z_0) - f(z_0) | $$
+Since $ ( f_n )_{n \in \N} $ uniformly converge to $ f $, we can choose $ n $ large enough for both $ | f(z) - f_n(z) | $ and $ | f_n(z_0) - f(z_0) | $ to be bounded by $ \frac{\epsilon}{3} $. Since $ f_n $ is continuous, there exists a $ \delta \in \R^+ $ for which $ | z - z_0 | < \delta $ implies $ | f_n(z) - f_n(z_0) | < \frac{\epsilon}{3} $. It follows that
+    $$ | z - z_0 | < \delta \rightarrow | f(z) - f(z_0) | \leq | f(z) - f_n(z) | + | f_n(z) - f_n(z_0) | + | f_n(z_0) - f(z_0) | \leq \frac{\epsilon}{3} + \frac{\epsilon}{3} + \frac{\epsilon}{3} = \epsilon $$
+This holds for every $ z_0 $ and $ \epsilon $, and thus $ f $ is continuous. \qedsymbol
+\nn
+We're now ready to move on to power series, which we'll think of as formal power series that are viewed as complex functions. We introduce them as a series of functions given by
+    $$ \sum_{n \in \N} f_n \text{ where } f_n(z) = a_n z^n $$
+for $ a_n \in \C $. Notice that a special case of the comparison test implies that if
+    $$ \sum_{n \in \N} | a_n | r^n $$
+converges for some $ r \in \R^+ $, the power series above converges uniformly and absolutely over the closed disk of radius $ r $. This brings us to the idea of a \ti{radius of convergence} - the function $ f(z) = \sum_{n \in \N} a_n z^n $ converges for certain values of $ z $, and diverges for others; the above example shows that we can apply the comparison test to show that the function might converge over a certain disk. It turns out that this is always the case, ie that the values of $ z $ for which $ f $ converges and the values for which it diverges are separated precisely by a circular boundary; convergent values lie in some disk.
+\nn
+\tb{(Theorem) Existence of a radius of convergence}: \ti{Let $ \sum_{n \in \N} a_n z^n $ be a power series which doesn't converge absolutely over all of $ \C $. Then there exists a non-negative real number $ r $ such that the power series converges absolutely only over the unit disk of radius $ r $.}
+\n
+\Pf Let $ f(z) = \sum_{n \in \N} a_n z^n $. If the series doesn't converge absolutely anywhere, simply taking $ r = 0 $ completes the proof, so suppose $ f $ does converge absolutely at some point $ z $, so that
+    $$ \sum_{n \in \N} | a_n z^n | = \sum_{n \in \N} | a_n | \cdot | z |^n \text{ converges } $$
+Then for any $ w \in \C $ with $ | w | \leq | z | $, we have
+    $$ | a_n | \cdot | w |^n \leq | a_n | \cdot | z |^n $$
+and hence by the comparison test $ f $ converges absolutely at $ w $. This holds for any point with magnitude bounded by $ | z | $, so it follows that $ f $ converges on the closed disk of radius $ | z | $. Since $ f $ doesn't converge absolutely on all of $ \C $ by assumption, the set
+    $$ \{ | z |, \text{ where } z \in \C \st f \text{ converges absolutely at } z \} $$
+is bounded and hence has a supremum, call it $ z_0 $. Letting $ r = | z_0 | $, it follows by the above argument that $ f $ converges absolutely over the unit disk of radius $ r $; moreover $ f $ doesn't converge at points with magnitude exceeding $ r $, by definition of $ z_0 $, proving the theorem. \qedsymbol
+\nn
+Notice that a corollary of the theorem that uniformly convergent sequences of continuous functions have continuous limits implies that power series are continuous functions within their radius of convergence; this follows by simply applying the theorem to the sequence of partial sums of a power series. If a power series does converge at every point, we say it has infinite radius of convergence. Every power series has some radius of convergence, since they must all converge at zero. Given that both sequences and series are completely determined by the coefficients, it isn't surprising that we can determine the radius of convergence of a power series by looking at the coefficients. To see how this is done, first let's first go over a useful notion of boundedness on real sequences, and explore how it relates to convergence. We'll use the following definition, which is very useful in and of itself, to show how one can explicitly determine the radius of convergence of a power series.
+\nn
+\tb{(Definition) Limit superior and inferior}: \ti{Let $ ( x_n )_{n \in \N} $ be a sequence of real numbers. We define the \tb{limit superior} and \tb{limit inferior} to be, respectively,}
+    $$ \liminf_{n \to \infty} x_n = \lim_{n \to \infty} \left( \inf_{m \geq n} x_m \right) \text{ and } \limsup_{n \to \infty} x_n = \lim_{n \to \infty} \left( \sup_{m \geq n} x_n \right) $$
+\n
+\In Whether or not a (real) sequence converges, it may have multiple accumulation points. The limit inferior and limit supremum refer to the smallest and largest, respectively, points of accumulation. Another way of looking at it is to consider "almost upper bounds" - numbers which act as an upper bound for all but finitely many terms of the sequence. The limit superior, then, is just the smallest almost upper bound, and the limit inferior is the largest almost lower bound. The two represent bounds which ignore "outliers" (terms of the sequence that are large or small but uncharacteristically (with respect to most of the sequence) so); bounds which hold up to infinity, for every remainder sequence. If the limit of a sequence is its "last" term, then the limit superior is the largest of the "final terms", while the limit inferior is the smallest. Thus, it makes intuitive sense that the limit exists only when the limit superior and limit inferior agree, in which case the upper and lower bounds ought to gradually converge to each other:
+    $$ \lim_{n \to \infty} x_n = \limsup_{n \to \infty} x_n = \liminf_{n \to \infty} x_n $$
+It follows that if $ \lambda $ is the limit superior of the sequence, then
+    $$ \forall \epsilon \in \R^+: \exists \text{ only finitely many } x_n \st x_n \geq \lambda + \epsilon $$
+An analogous result holds for the limit inferior, of course.
+\n
+\indent $ \bullet $ \ti{Properties}: For real sequence $ ( s_n ) $ and $ ( t_n ) $ of non-negative numbers, let $ s = \liminf s_n $ and $ t = \limsup t_n $. Then
+    $$ \limsup (s_n + t_n) \leq t + s $$
+    $$ \limsup (s_n t_n) \leq t s \text{ if } s \neq 0 $$
+\nn
+This brings us to our first way of determining the radius of convergence of a power series.
+\nn
+\tb{(Theorem) Root test}: \ti{Let $ \sum_{n \in \N} a_n z^n $ be a power series, and $ r $ be its radius of convergence. Then}
+    $$ r = \frac{1}{\limsup | a_n |^{\frac{1}{n}}} $$
+\Pf Let $ r $ be defined as above; we'll show that it's the radius of convergence. First, fix $ w \in \C $ such that $ | w | < r $. To show that the power series converges at $ w $, let 
+    $$ \lambda = \limsup | a_n |^{\frac{1}{n}} = \frac{1}{r} $$
+so that for any $ \epsilon \in \R^+ $, there's an $ N $ for which $ n \geq N \rightarrow | a_n |^{\frac{1}{n}} < \lambda + \epsilon $, which of course means $ | a_n | < (\lambda + \epsilon)^n $. Now consider that since $ | w | < \frac{1}{\lambda} $, we can find an $ \epsilon $ such that $ | w | < \frac{1}{\lambda + \epsilon} < \frac{1}{\lambda} $; in this case, letting $ N $ be the number associated with $ \epsilon $ described above, we have
+    $$ n \geq N \rightarrow | a_n w^n | = | a_n | \cdot | w |^n < ( (\lambda + \epsilon) \cdot | w | )^n $$
+and hence
+    $$ \sum_{n \geq N} | a_n w^n | < \sum_{n \geq N} ( (\lambda + \epsilon) \cdot | w | )^n $$
+The geometric series on the right converges, since $ (\lambda + \epsilon) \cdot | w | < 1 $, and therefore so does the series on the left, which is the remainder series of our original power series. It follows that
+    $$ \sum_{n \in \N} | a_n w^n | = \sum_{n = 0}^N | a_n w^n | + \sum_{n \geq N} | a_n w^n | $$
+converges. Thus, the power series converges everywhere in the open disk of radius $ r $.
+\n
+Conversely, if $ | w | > r $, then we can apply a symmetric argument: for any $ \epsilon \in \R^+ $, there's an $ N $ for which $ n \geq N \rightarrow | a_n |^{\frac{1}{n}} > \lambda - \epsilon $ which means $ | a_n | > (\lambda - \epsilon)^n $. Since $ | w | > \frac{1}{\lambda} $, there's an $ \epsilon $ such that $ | w | > \frac{1}{\lambda - \epsilon} > \frac{1}{\lambda} $; in this case, letting $ N $ be the number associated with $ \epsilon $ as described above, we have
+    $$ n \geq N \rightarrow | a_n w^n | = | a_n | \cdot | w |^n > ( (\lambda - \epsilon) \cdot | w | )^n $$
+and hence
+    $$ \sum_{n \geq N} | a_n w^n | > \sum_{n \geq N} ( (\lambda - \epsilon) \cdot | w | )^n $$
+The geometric series on the right diverges since $ (\lambda - \epsilon) \cdot | w | > 1 $, and hence so does the remainder series on the right, which means the original power series diverges at $ w $. It follows that $ r $ is the radius of convergence. \qedsymbol
+\nn
+Notice that it follows as a corollary that convergent power series are, term by term, bounded by a geometric series. Specifically, for any $ A > \frac{1}{r} $, there exists a $ C $,
+    $$ | a_n | \leq C A^n $$
+Moreover we can force $ C =  1 $ by taking $ A $ large enough.
+
+\section{Relations Between Formal and Convergent Power Series}
+We'll now take a look at the relationship between formal power series and convergent power series, and use this relationship to define analytic functions in the next section. Specifically, we'll look at elementary operations, as defined on formal power series, on convergent power series and see if the result remains convergent. The operations in question are addition, multiplication, division, and composition.
+
+\subsection{Sums and Products}
+We begin with a quite unsurprising basic result.
+\nn
+\tb{(Theorem) Convergence is closed under addition and multiplication}: \ti{Let $ f $ and $ g $ be formal power series which converge absolutely on the open disk of radius $ r $, and let $ \alpha \in \C $. Then $ f + g $, $ f g $, and $ \alpha f $ all converge on the disk.}
+\n
+\Pf If $ f $ and $ g $ both converge, then clearly the sum does too, since if it didn't at least one of the summands couldn't have finite magnitude. The same logic applies to multiplication of $ f $ by $ \alpha $. To prove that the product converges, let
+    $$ f = \sum_{n \in \N} a_n X^n, g = \sum_{n \in \N} b_n X^n \text{ and } f g = \sum_{n \in \N} c_n X^n \text{ where } c_n = \sum_{k = 0}^n a_k b_{n - k} $$
+By the root test
+    $$ \frac{1}{r} = \limsup | a_n |^{\frac{1}{n}} = \limsup | b_n |^{\frac{1}{n}} $$
+If we can prove that
+$$ \lambda := \limsup | c_n |^{\frac{1}{n}} < \frac{1}{r} $$
+then it follows that the radius of convergence of $ f g $ is larger than $ r $ and hence that the product converges over the disk. By definition of the limit superior, $ r^{-1} $ is an upper bound on all but finitely many $ | a_n |^{n^{-1}} $ and $ | b_n |^{n^{-1}} $, which means
+    $$ \exists \alpha \in \R^+ \st \forall n \in \N: | a_n |, | b_n | \leq \frac{\alpha}{r^n} $$
+    $$ \rightarrow | a_k b_{n - k} | = | a_k | \cdot | b_{n - k} | \leq \frac{\alpha}{r^k} \cdot \frac{\alpha}{r^{n - k}} = \frac{\alpha^2}{r^n} $$
+    $$ \rightarrow | c_n | = \left \vert \sum_{k = 0}^n a_k b_{n - k} \right \vert \leq \sum_{k = 0}^n | a_k b_{n - k} | \leq (n + 1) \cdot \frac{\alpha^2}{r^n} $$
+    $$ \rightarrow | c_n |^{\frac{1}{n}} \leq \frac{(\alpha^2 \cdot (n + 1))^{\frac{1}{n}}}{r} $$
+It remains to show that
+    $$ \lambda = \frac{1}{r} \lim_{n \to \infty} \sup_{m \geq n} (\alpha^2 \cdot (m + 1))^{\frac{1}{m}} $$
+The function $ f(x) = (\alpha^2 \cdot (x + 1))^{\frac{1}{x}} $ has derivative
+    $$ f'(x) = \frac{f(x) \cdot (x - (x + 1) \log(\alpha^2 \cdot (x + 1)))}{x^2 \cdot (x + 1)} $$
+Since $ x + 1 > x $ and $ \log(\alpha^2 \cdot (x + 1)) > 1 $ for $ x > \frac{e}{\alpha^2} - 1 $, we can choose $ \alpha $ to be larger than $ \sqrt{e} $ and guarantee that $ f'(x) \leq 0 $ for all positive $ x $, which means $ f $ is decreasing, and hence
+    $$ \sup_{m \geq n} f(m) = f(n) \rightarrow \lambda = \lim_{n \to \infty} f(n) = \exp \left( \lim_{n \to \infty} \log(f(n)) \right) = \exp \left( \lim_{n \to \infty} \frac{\log(\alpha^2 \cdot (n + 1))}{n} \right) = e^0 = 1 $$
+since $ \log(\alpha^2 \cdot (n + 1)) < n $ for sufficiently large $ n $. It follows that $ \lambda < r^{-1} $, proving the theorem. \qedsymbol
+\nn
+This theorem cements the intuition that we can use formal power series to define functions, in terms of convergent series of complex numbers. The question remains, however, of showing that this correspondence is well-defined. Towards this end, the relevent question is: if two formal power series give rise to the same complex function on some neighborhood of zero, are they equal as formal power series? This is equivalent to asking if a power series corresponds to the zero function, are all of its coefficients zero? The following two theorems assures us that this is the case, and in fact that we can make an even stronger statement.
+\nn
+\tb{(Theorem) Power series are determined by their values around zero}: \ti{Let $ f = \sum_{n \in \N} a_n X^n $ and $ g = \sum_{n \in \N} b_n X^n $ be convergent power series with $ f(x) = g(x) $ for infinitely many points $ x $ that accumulate around zero. Then $ f = g $, ie}
+    $$ \forall n \in \N: a_n = b_n $$
+\Pf Let $ A = \{ z \in \C \st f(z) = g(z) \} $ so that $ A $ accumulates around zero. Define
+    $$ h(z) = f(z) - g(z) = \sum_{n \in \N} c_n z^n \text{ where } c_n = a_n - b_n $$
+We wish to prove that $ \forall n: c_n = a_n - b_n = 0 $. We'll show by induction on $ m $ that $ \forall m: c_m = 0 $. Let's consider the base case, of showing that $ c_0 = 0 $. We can write
+    $$ h(z) = c_0 + r(z) \text{ where } r(z) = \sum_{n = 1}^\infty c_n z^n $$
+$ r $ converges anywhere that $ f $ does and hence is continuous at every $ w \in A $. Clearly, $ r(0) = 0 $, and since $ A $ accumulates at zero, this means that we can always find a $ w \in A $ so as to make $ r(w) $ arbitrarily small, and so
+    $$ \forall \epsilon \in R^+: \exists w \in A: \st | r(w) | < \epsilon $$
+Since $ c_0 = h(w) - r(w) = - r(w) $, we have
+    $$ | c_0 | = | r(w) | < \epsilon $$
+We can make $ \epsilon $ arbitrarily small, and hence $ | c_0 | = 0 $ and therefore $ c_0 = 0 $, which proves the base case. For the inductive step, if we assume $ c_0 = \cdots = c_m = 0 $ so that
+    $$ h(z) = \sum_{n = m + 1}^\infty c_n z^n = z^{m + 1} \cdot (c_{m + 1} + c_{m + 2} z + \cdots) = z^{m + 1} h_{m + 1}(z) \text{ where } h_{m + 1}(z) = \sum_{n \in \N} c_{m + 1 + n} z^n $$
+We can choose non-zero $ w \in A $, which gives
+    $$ h(w) = w^{m + 1} h_{m + 1}(w) = 0 \rightarrow h_{m + 1}(w) = 0 $$
+This is true for infinitely many $ w $, which accumulate around zero, and so we can apply the base case to prove that the first coefficient of $ h_{m + 1} $ is zero, ie
+    $$ c_{m + 1} = 0 $$
+which proves the inductive step. The proof follows by induction. \qedsymbol
+\nn
+The above theorem acts as a kind of uniqueness theorem for power series, since it shows that power series are only unique up to their values around zero.
+\nn
+\tb{(Theorem) Positive-order power series are guaranteed non-zero neighborhoods about the origin}: \ti{Let $ f = \sum_{n \in \N} a_n X^n $ be a non-constant power series with positive order and positive radius of convergence. Then there exists a neighborhood of the origin over which $ f(z) \neq 0 $ for any $ z \neq 0 $ in the neighborhood.}
+\n
+\Pf Since $ f $ has positive order, $ a_0 = 0 $, which means $ f(0) = 0 $. Assume for the sake of contradiction that no such non-zero neighborhood about the origin exists. Then, letting $ A $ be the set of zeros of $ f $, $ A $ accumulates about zero. Since the zero power series is also zero over $ A $, $ f $ shares infinitely many values that accumulate about the origin with the zero power series, and therefore by the above theorem must equal the zero power series, so that
+    $$ \forall n: a_n = 0 $$
+This proves the theorem. \qedsymbol
+
+\subsection{Quotients}
+Let's now turn to the analysis of quotients of power series in the convergent case. First, let's introduce a convenient notation for comparing and bounding power series that we'll make frequent use of. Given power series $ f(X) = \sum_n a_n X^n $ and power series $ \phi(X) = b_n X^n $, where $ \phi $ has real, non-negative coefficients, we say $ f $ is \tb{dominated} by $ \phi $, denoted $ f \prec \phi $ if
+    $$ \forall n: | a_n | \leq b_n $$
+It's clear that this generalized inequality is transitive, and moreover well-defined over addition and multiplication, ie
+    $$ f \prec \phi \text{ and } g \prec \psi \rightarrow f + g \prec \phi + \psi \text{ and } f g \prec \phi \psi $$
+Let's now look at some basic theorems concerning quotients of power series. Recall that a power is invertible, meaning it has an inverse with which its product is one, if and only if it's order is zero. First, as one would expect, the inverse of a convergent power series is itself convergent. Intuitively, it would be strange if this weren't the case, since if a power series converges but its inverse didn't, their product couldn't be one.
+\nn
+\tb{(Theorem) Inverses of convergent power series are convergent}: \ti{Let $ f $ be an invertible power series with non-zero radius of convergence, and let $ g $ be the inverse of $ f $. Then $ g $ also has a non-zero radius of convergence.}
+\n
+\Pf By definition, $ f g = 1 $. If we can prove that
+    $$ \forall z \in \mathcal{N}_r(0): (f g)(z) = f(z) g(z) $$
+where $ r $ is the radius of convergence of $ f $, then it follows that in the disk of convergence, $ g(z) = \frac{1}{f(z)} $ and hence $ g $ converges when $ f $ does, and the theorem follows. To prove this equivalence, let
+    $$ g = \sum_{n \in \N} b_n X^n \text{ and } (f g) = \sum_{n \in \N} c_n X^n \text{ where } c_n = \sum_{k = 0}^n a_k b_{n - k} $$
+Define the partial sums
+    $$ s_m = \sum_{n = 0}^m a_n X^n, t_m = \sum_{n = 0}^m b_n X_n, u_m = \sum_{n = 0}^m c_n X^n $$
+It follows that
+    $$ s_m t_m = \sum_{n_1 = 0}^m a_{n_1} z^{n_1} \sum_{n_2 = 0}^m b_{n_2} z^{n_2} = \sum_{n_1 = 0}^m \sum_{n_2 = 0}^m a_{n_1} b_{n_2} z^{n_1 + n_2} = \sum_{n = 0}^{2 m} \left( a_0 b_n + a_1 + b_{n - 1} + \cdots + a_{n - 1} b_1 + a_n b_0 \right) z^n = \sum_{n = 0}^{2 m} c_n z^n = u_{2 m} $$
+and hence we have
+    $$ \forall z \in \mathcal{N}_r(0): f(z) g(z) = \left( \lim_{m \to \infty} s_m(z) \right) \left( \lim_{m \to \infty} t_m(z) \right) = \lim_{m \to \infty} s_m(z) t_m(z) = \lim_{m \to \infty} u_{2 m}(z) = \lim_{m \to \infty} u_m(z) = (f g)(z) $$
+which proves the theorem. \qedsymbol
+\nn
+The closure of convergence under quotients of power series follows by defining the quotient of two power series in terms of the inverse of the second, and applying the analogous result on convergence to the product.
+
+\subsection{Composition}
+Finally, we move on to the last operation of formal power series - composition - and relate it to convergent power series. There isn't too much substantive theory here, and we really only want to show that the notion of convergence is closed under the composition of power series.
+\nn
+\tb{(Theorem) Composition of convergent power series is convergent}: \ti{Let}
+    $$ f(z) = \sum_{n \in \N} a_n z^n \textit{ and } g(z) = \sum_{n \in \N} b_n z^n $$
+\indent \ti{be convergent power series with $ \textnormal{ord}(g) > 0 $, where $ f $ is absolutely convergent over the disk of radius $ r $, and there exists $ s > 0 $ such that}
+    $$ \sum_{n \in \N} | b_n | s^n \leq r $$
+\indent \ti{Then the formal power series obtained by the composition of $ f $ and $ g $,}
+    $$ h(X) = f(g(X)) = \sum_{n \in \N} a_n \cdot \left( \sum_{m \in \N} b_m X^m \right)^n $$
+\indent \ti{converges absolutely over the disk of radius $ s $, and moreover $ \forall z \in \mathcal{N}_s(0): h(z) = f(g(z)) $.}
+\n
+\Pf Notice that we can write
+    $$ h(X) = \sum_{n \in \N} a_n \cdot \left( \sum_{m \in \N} b_m X^m \right)^n = \sum_{n \in \N} a_n g(X)^n $$
+It follows that for any $ z $ with $ | z | < s $,
+    $$ | g(z) | \leq \sum_{n \in \N} | b_n | s^n \leq r $$
+and hence $ g $ converges at $ z $. Moreover,
+    $$ | h(z) | = | f(g(z)) | = \left \vert \sum_{n \in \N} a_n g(z)^n \right \vert \leq \sum_{n \in \N} | a_n | | g(z) |^n \leq \sum_{n \in \N} | a_n | r^n $$
+Since $ f $ is absolutely convergent, the last series on the right converges, and hence $ h $ converges absolutely at $ z $. \qedsymbol
+
+\section{Analytic Functions}
+We've spent the chapter thus far examining a rigorous foundation for power series. The purpose of doing so was the fully develop the machinery to motivate, define, and manipulate analytic functions, the central objects of study in complex analysis.
+\nn
+\tb{(Definition) Analytic}: \ti{A function $ f: \C \rightarrow \C $ defined on some neighborhood of $ z_0 \in \C $ is \tb{analytic} at $ z_0 $ if there exists some power series with coefficients $ ( a_n )_{n \in \N} $ and some radius $ r > 0 $ such that}
+    $$ \forall z \in \mathcal{N}_r(z_0): \sum_{n \in \N} a_n \cdot (z - z_0)^n \ti{ converges, and } \sum_{n \in \N} a_n \cdot (z - z_0)^n = f(z) $$
+\Mo The condition of a function being analytic is actually quite a strong one, since the condition that the function is representable at a point as a power series centered at the point implies that the function locally (around $ z_0 $) behaves as if it were a generalized or "infinite-dimensional" polynomial. It's not difficult to show that many of the foundational properties of polynomials, such as closure under addition, multiplication, and composition, and continuity, extend to power series. Moveover, one of the defining properties of polynomials concerns their zeros - they are forced to have precisely as many zeros as their degree; any more, and they degenerate to the zero function. From the theorem we proved in the last section, we have the analogous theorem below, which imposes a similar generalized condition on the zeros of analytic functions, which "grounds" the function with a limited, rigid number of degrees of freedom in the same way the fundamental theorem of algebra does to polynomials.
+\nn
+\tb{(Theorem) Principle of Permanence}: \ti{An analytic function whose set of zeros accumulates about 0 is the zero function.}
+\nn
+We say that $ f $ is analytic on an open set $ U $ if it's analytic at every point of $ U $. The uniqueness theorem that power series are determined by the values around zero tells us that on any neighborhood of a point, the power series representing an analytic function at that point is unique over that neighborhood. Further, the last section's results tell us that the class of analytic functions is closed under addition, multiplication, quotients, and composition. Clearly, power series themselves induce functions that are analytic over their regions of convergence.
+
+\section{Differentiation of Power Series}
+We'll now investigate one of the most foundational results in complex function theory - the equivalence of holomorphicity and analyticity. In particular, it would seem that analytic functions, which locally behave as generalized polynomials, ought to have nice well-behaved derivatives that also behave like polynomials. After all, these properties (namely, the closure of polynomials under differentiation) are crucial to the field of polynomials, and we'd like those properties to extend to analytic functions. It turns out that this intuition is correct, and moreover that the derivative of an analytic function can also be expressed as a power series, and that this power series is exactly as one would expect. Specifically, we can obtain the power series representaion of the derivative of an analytic function by simply differentiating the power series representation of the function "term by term".
+\nn
+\tb{(Theorem) Derivative of analytic functions}: \ti{Let $ f $ be an analytic function on the disk of radius $ r $, with}
+    $$ \forall z \in \mathcal{N}_r(0): f(z) = \sum_{n \in \N} a_n z^n $$
+\indent \ti{Then $ f $ is holomorphic, and the derivative $ f' $ is analytic on the disk of radius $ r $, with}
+    $$ \forall z \in \mathcal{N}_r(0): f'(z) = \sum_{n \in \N} n a_n z^{n - 1} $$
+\Pf First note that
+    $$ \begin{aligned}
+        \forall h \in \C \st | z - h | < r: \frac{f(z + h) - f(z)}{h} &= \frac{1}{h} \sum_{n \in \N} a_n \cdot ((z + h)^n - z^n) = \frac{1}{h} \sum_{n \in \N} a_n \cdot \left( n h z^{n - 1} + {n \choose 2} h^2 z^{n - 2} + \cdots + h^n \right) \\
+        &= \sum_{n \in \N} n a_n z^{n - 1} + \sum_{n \in \N} a_n \sum_{k = 2}^n {n \choose k} h^{k - 1} z^{n - k}
+    \end{aligned} $$
+Both on the far right must converge, since they're given by the difference of $ f $ at two values where it exists. Thus we have
+    $$ f'(z) = \lim_{h \to 0} \frac{f(z + h) - f(z)}{h} = \sum_{n \in \N} n a_n z^{n - 1} + \lim_{h \to 0} h \sum_{n \in \N} a_n \sum_{k = 2}^n {n \choose k} h^{k - 2} z^{n - k} = \sum_{n \in \N} n a_n z^{n - 1} $$
+Finally, since $ n^{\frac{1}{n}} \rightarrow 1 $ as $ n \rightarrow \infty $, it follows that
+    $$ \limsup_n | n a_n |^\frac{1}{n} = \limsup_n | a_n |^\frac{1}{n} $$
+and hence the two series representing $ f'(z) $ and $ f(z) $ respectively have the same radius of convergence.
+\qedsymbol
+\nn
+Thus far we've investigated functions that can be represented as power series. Let's now derive an explicit expression for this representation, known as the \ti{Taylor series expansion}. An analytic function $ f $ is expressable as 
+    $$ f(z) = \sum_{n \in \N} a_n z^n $$
+for $ z $ in some neighborhood of the origin. It follows that
+    $$ f(0) = a_0 + a_1 \cdot 0 + a_2 \cdot 0^2 + \cdots = a_0 $$
+We know that $ f $ is holomorphic, and so we can make the same argument to show that
+    $$ f'(0) = 0 \cdot a_0 + 1 \cdot a_1 + 2 \cdot a_2 \cdot 0 + 3 \cdot a_3 \cdot 0^2 + \cdots = a_1 $$
+Further,
+    $$ f''(0) = \sum_{n \in \N} n \cdot (n - 1) a_n 0^{n - 2} = 2 a_2 + 0 + \cdots \rightarrow a_2 = \frac{f''(0)}{2} $$
+In general, we keep moving down the line to some $ a_k $, and accumulate $ k $ factors of $ n, n - 1, n - 2 $, and so on. We can show by induction that in general
+    $$ a_k = \frac{f^{(k)}(0)}{k!} $$
+This is that Taylor expansion about zero. In general, the Taylor expansion about a point $ z_0 $ at which $ f $ is analytic is given by
+    $$ f(z) = \sum_{n \in \N} a_n \cdot (z - z_0)^n \text{ where } a_n = \frac{f^{(n)}(z_0)}{n!} $$
+We can go the other direction as well, integrating the power series of $ f $ to obtain
+    $$ g(z) := \sum_{n \in \N} \frac{a_n}{n + 1} z^{n + 1} $$
+This series has terms absolutely smaller than $ a_n $, and hence has radius of convergence at least the same radius of convergence as $ f $. Such a function $ g $ such that $ g' = f $ is called the \ti{primitive} of $ f $. It follows that analytic functions always have primitives and derivatives. Note that this implies, since the class of analytic functions is closed under differentiation and integration as shown above, analytic functions are infinitely differentiable.
+
+\section{Inverse and Open Mapping Theorems}
+This chapter began with an introduction to formal power series, which defined basic operations on these formal structures in such a way as to naturally generalize polynomials to infinite dimensions. Next, we introduced infinite series of complex numbers and even functions and defined a suitable notion of convergence for them, and then connected these infinite series to formal power series. All this was motivation for introducing one of the most fundamental and important concepts in complex function theory - analyticity, which we introduced in the next section, which we then linked to the notion of differentiability and holomorphic functions. Having motivated and introduced the main concept of this chapter, in the final two sections we'll explore some of the immediate consequences of the theory we've developed thus far, relating analyticity to certain topological principles about the complex plane that reveal the immense structure and order of the condition of complex differentiability or analyticity, conditions which impose subtle but powerful symmetry on functions.
+\nn
+We begin by exploring when analytic functions are invertible, not in the quotient sense of power series, but under composition. Invertible, differentiable (and hence continuous) functions between spaces are of special interest in point-set topology and general functional analysis, since they act as structure-preserving maps that keep certain general topological properties invariant.
+\nn
+\tb{(Definition) Analytic isomorphism}: \ti{Let $ f $ be an analytic function on open set $ U $ to some set $ V $. We say that $ f $ is an \tb{analytic isomorphism} if it's surjective, its image $ f(U) $ is open, and there exists an analytic function $ g: V \rightarrow U $ such that}
+    $$ f \circ g = \text{id}_V \ti{ and } g \circ f = \text{id}_U $$
+In other words, an analytic isomorphism is an analytic bijection between open sets that's invertible under composition. This is a standard special case of defining a morphism between two structures; it must be analytic over open sets to preserve the properties we care about, must be a bijection to ensure that it's a full mapping between the structures, and must have an inverse mapping so that $ U $ and $ V $ can be considered symmetrically equal in some sense defined by $ f $. We say that $ f $ is a \ti{local analytic isomorphism}, or that it's \ti{locally invertible}, at $ z_0 \in \C $ if there exists an open set $ U $ containing $ z_0 $ such that $ f $ is an analytic isomorphism on $ U $. The following theorem relates analyticity and power series to the condition of local invertibility.
+\nn
+\tb{(Theorem) Inverse function theorem}: \ti{Let $ f(X) $ be a formal power series with order one. Then there exists a unique formal power series $ g(X) $ such that}
+    $$ f(g(X)) = g(f(X)) = X $$
+\indent \ti{Moreover, $ f $ is convergent precisely when $ g $ is. Finally, if $ f $, now viewed as a function, is analytic on open set $ U $, then $ f $ is a local analytic isomorphism on every $ z_0 \in U \st f(z_0) \neq 0 $.}
+\n
+\Pf We'll prove the three statements of the proof one by one. First, let's prove the unique existence of $ g $. Let
+    $$ f(X) = \sum_{n = 1}^\infty a_n X^n \text{ and } g(X) = \sum_{n \in \N} b_n X^n $$
+so that
+    $$ f(g(X)) = \sum_{n = 1}^\infty a_n g(X)^n $$
+We want to solve the equation
+    $$ a_1 \sum_{n \in \N} b_n X^n + a_2 \cdot \left( \sum_{n \in \N} b_n X^n \right)^2 + a_3 \cdot \left( \sum_{n \in \N} b_n X^n \right)^3 + \cdots = X $$
+Matching coefficients, this reduces to the system of equations
+    $$ \begin{cases}
+        a_1 b_1 &= 1 \\
+        a_1 b_k &= C_k
+    \end{cases} $$
+where
+    $$ C_k = \text{ coefficient of $ X^k $ in } \sum_{n = 2}^\infty a_n \cdot \left( \sum_{m \in \N} b_m X^m \right)^n $$
+If we expand the powers of $ g(X) $ and combine like terms, we'll find that $ C_k $ is always a polynomial in $ b_0, \cdots, b_k $. Let's prove this by induction on $ k $. First, notice that in $ g(X)^k $, each of the $ b_n $ in $ g $ will be raised to the $ k^{\text{th}} $ power, and hence after combining like terms, the resulting coefficients will not be included in any of the coefficients to $ X^p, p < k $. Thus, we need only consider
+    $$ \sum_{n = 2}^\infty a_n \cdot \left( \sum_{m \in \N} b_m X^m \right)^n = \sum_{n = 2}^{k - 1} P_n(b_0, \cdots, b_n) $$
+    %$$ \sum_{n = 2}^k a_n \cdot \left( \sum_{m \in \N} b_m X^m \right)^n = \sum_{n = 2}^{k - 1} a_n \cdot \left( \sum_{m \in \N} b_m X^m \right)^n + a_k \cdot \left( \sum_{m \in \N} b_m X^m \right)^k =  +  a_k \cdot \left( \sum_{m \in \N} b_m X^m \right)^k $$
+where $ P $ is some polynomial, equal to the sum on the left by our inductive hypothesis. TODO
+
+%\tb{(Theorem) Open mapping theorem}: Theorem 6.2
+
+\section{Local Maximum Modulus Principle}
+
+\end{document}
