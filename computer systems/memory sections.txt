@@ -1,0 +1,4 @@
+	memory sections
+
+- Talk about how each thread has both a user stack (where local memory is stored within specific scopes (recall 61c)) and a kernel stack (where local memory not for thread functions but for kernel functions (eg syscalls) pertaining to the thread (eg syscalls called by the thread) are stored)
+- Mention that threads within a process have their own private stacks, but share the heap, data, and code sections of the same memory
