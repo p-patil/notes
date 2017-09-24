@@ -1,0 +1,78 @@
+						NEUROSCIENCE
+-Started July 17, 2016
+-Written around <date finished>
+			FOUNDATIONS
+1. History of Neuroscience
+-Origins of neuroscience: We have evidence to believe that even our prehistoric ancestors understood that the brain was vital to life. As early as 7000 years ago, in a process known as trepanation, there's evidence of people boring holes into other peoples' skulls, and the subjects' skull showing signs of healing afterwards, suggesting that trepanation was a primitive kind of surgery, speculated to have been targeted at curing headaches and mental disorders by giving trapped evil spirits in the head an escape route. However, until the time of Hippocrates it was widely believed that the heart was the most critical component of consciousness, and was seen as the seat of the soul and the organ which stored memories.
+	-Ancient Greece: During the time of Hippocrates, around the fourth century B.C., who was considered the father of modern medicine, Greek scholars believed the brain to be the organ of sensation, given its proximity to major sensory organs such as the eyes. Hippocrates also believed the brain to be the source of intelligence, but this view was not universally accepted. Aristotle was one prominent critic of this view; he believed the brain to be a radiator for cooling blood that was overheated by the heart.
+	-Roman Empire: The most important medical figure in Roman medicine was the Greek physician Galen, who lived around 150 C.E. He believed in the Hippocratic view of the brain, and performed many careful animal dissections. Galen drew a distinction between the cerebrum and the cerebellum, and thought that given the hard texture of the cerebellum and the soft constitution of the cerebrum, that the cerebrum was the source of sensations while the cerebellum controlled muscle movement. Galen also found that the brain is partially hollow, with the hollow spaces, called ventricles, containing fluid. This, in Galen's mind, supported the theory that the body functioned according to a balance or four vital fluids, called humors.
+	-Renaissance up to the 19th century: Galen's view of the brain was the prevailing view for about 1500 years. During the Renaissance, the anatomist Andreas Vesalius added much more detail to the understanding of the brain's anatomy, but did not challenge Galen's ventricular theory of brain function. The philosopher Rene Descartes was one chief advocate of the fluid-mechanical theory of the brain. During the 17th and 18th centuries, scientists began to examine the brain more closely and started to move away from the traditional ventricular theory. THey observed a distinction in two types of brain tissue - gray matter and white matter. Because white matter was continuous with the nerves of the body, they correctly believed it to contain the fibers that bring information to and from the gray matter, which was responsible for intelligence, and for processing that information. By the end of the 18th century, the brain had been completely dissected, and its major anatomical features were well known. Scientists understood the difference between the brain and the spinal cord, and the network of nerves throughout the body which relay information to and from the brain. During this time, a major breakthrough in neuroanatomy was made: the identification of ridges and valleys, known as gyri (gyrus for singular) and sulci (sulcus for singular), in the brain; these are the well-known "folds" in the brain. This observation led to speculation that different brain functions might be localized to different bumps in the brain.
+	-19th century: The 19th century was a major revolution in neuroscience; more would be learned about the brain than had been learned in all of human history up to that point. These breakthroughs are the foundation on which modern neuroscience rests. There were four key insights:
+		-Nerves as wires: First, there was the discovery that electricity is significantly involved in brain activity. It was found that when certain nerves are stimulated electrically, corresponding muscles would twitch; it was later discovered that the brain itself generates electricity, suggesting that neural communication occurs through electrical signals, not through the movement of fluid. It was also discovered that nerves contain small, thin filaments called nerve fibers, and that although the cutting of entire nerves would terminate both sensation and motor control, which suggested that nerves could communicate bidirectionally (from the brain to muscles and from muscles / organs to the brain), it was later found that nerve fibers carry unidirectional signals, and their bundling together to compose nerves gives nerves bidirectional capabilities. For example, before connecting to the spinal cord, nerves branch into two nerve fibers - the dorsal nerve fiber connects to the back of the spinal cord and carries sensory information, while the ventral nerve fiber connects to the front of the spinal cord and transmits information to muscles. These discoveries were made by Scottish physician Charles Bell and French physiologist Francois Magendie. There are 31 pairs of nerves leaving the spinal cord, connecting to the skin and to muscles.
+		-Localization of brain functions: The discovery that nerve fibers have localized, separate functions led to the hypothesis that brain functions might also be localized to different, separate parts of the brain. In the early 1800s, Bell proposed that the cerebellum is the origin of motor fibers, and controls motion, whereas sensory fibers end in the cerebrum, which processes sensory input. The method Bel and Magendie used to test their theory, which was to test if a certain body part has a certain function by destroying the body part and observing for the lack of the function, is known as the experimental ablation method. French physiologist Marie-Jean-Pierre Flourens used this method in birds to show that the cerebellum does play a role in the coordination of movement, and then the cerebrum is involved in sensation and perception. However, Flourens also put forward the idea that all regions in the cerebrum participate equally in all cerebral functions, which is false. French neurologist Paul Broca was the figure who firmly solidified the acceptance of the theory of localized brain functions, when he dissected the brain of a man who could understand language but who couldn't speak, and found a lesion on his left frontal lobe. Based on this case, and several others, Broca believed that the left frontal lobe was the region of the cerebrum responsible for speech production. Soon after, solid experimental evidence of brain function localization in animals followed.
+			-Phrenology: Austrian medical student Franz Joseph Gall proposed the theory that if brain functions are localized, the bumps on the brain's surface (gyri and sulci) might have different functions as well. He thought that bumps in the skull correlated with bumps in the brain's surface, and attempted to relate various personality traits to the dimensions of the skull. He measured the dimensions of hundreds of peoples' skulls, across a wide range of personalities, in a practice known as phrenology. Phrenology was never taken seriously by the mainstream scientific community, and was harshly criticized by Flourens, on the (correct) grounds that the shape of the skull is not correlated with the shape of the brain, and with additional experimental ablations disproving Gall's theory.
+		-Evolution of the nervous system: At the same time as many of these key insights in neuroscience were occurring, Darwin's revolutionary theory of natural selection was proposed. Darwin also observed that that many mammalian species display similar behavior in certain situations (for example, the response when a mammal is frightened is more or less the same - dilated pupils, increase in heart rate, etc.). This justified relating animal experiments to human physiology.
+		-Neurons as the functional unit of the brain: Advances in the resolving power of microscopes allowed scientists to examine tissues at high magnifications, which led to German zoologist Theodor Schwann proposing what would become known as cell theory. Cell theory was the idea that all tissues are composed of microscopic units called cells. In this vein, by 1900, it became commonly accepted that a specific kind of brain cell, the neuron, was the basic functional unit of the nervous system.
+-Modern neuroscience: Today, neuroscience is conducted in several different ways, and has profound impacts on society. It's become clear the the brain as a whole is extremely complex, so the break down the complexity in understanding the brain, scientists take the reductionist approach - breaking the brain down into smaller pieces that can be systematically experimentally analyzed. The size of the piece being analyzed determines the level of analysis, and ascend by complexity, from molecular, to cellular, to systems-based, to behavioral, to cognitive.
+	-Levels of analysis:
+		-Molecular neuroscience: This sub-field is concerned with the specific molecules and compounds involved in the nervous system, and how they affect brain function. Molecules play very diverse roles in the brain, from messengers enabling communication to guards controlling what can enter the brain.
+		-Cellular neuroscience: Cellular neuroscience is one layer of complexity above molecular, and studies how molecules work together to give neurons the properties they have. This sub-field is concerned primarily with neurons, their functions and anatomy, how they work, what types of neurons there are, etc.
+		-Systems neuroscience: Collections of neurons connected together form complex circuits which work to perform a common, high-level function (e.g. vision, movement, etc.). Systems neuroscience studies these separate modules, and how they process and analyze information, form perceptions, how we make decisions, etc.
+		-Behavioral neuroscience: Another layer of complexity above systems neuroscience, behavioral neuroscience is concerned with how different neural systems work together to produce integrated, even higher-level behaviors, such as memory, mood, differences in behavior with respect to gender, age, etc., dreams and their purpose, etc. This sub-field is primarily concerned with observed but not rigidly defined, more abstract behaviors seen in the brain, which are given rise to by the specific, modular neural systems throughout the brain.
+		-Cognitive neuroscience: The highest layer of abstraction, cognitive neuroscience studies very abstract and even less rigidly definable characteristics of the (human) brain, such as self-awareness, intelligence, imagination, language, etc. This sub-field studies how brain activity gives rise to what we commonly accept to be the mind.
+	-Types of neuroscience research: Neuroscience research can be broadly broken down into three types - clinical, experimental, and theoretical.
+		-Clinical neuroscience research: This is typically performed by physicians such as neurologists, psychiatrists, and neurosurgeons, and try to deduce brain functions from the behavioral effects of brain damage.
+		-Experimental neuroscience research: This forms the bedrock of all modern medical brain treatments of the nervous system. This is practiced by neuroanatomists, neurophysiologists, neuropharmacologists, molecular neurobiologists, etc., all of whom experimentally attempt to deduce brain functions.
+		-Theoretical neuroscience research: This is the youngest of the three disciplines of research, and involves using mathematical and computational tools to understand the brain at all levels of analysis. Theoretical neuroscientists attempt to make sense of the massive amounts of data about the brain produced by experimental neuroscientists.
+
+2. Neurons and Glia
+
+
+3. Neuronal Membranes (at rest)
+
+4. Action Potentials
+
+5. Synaptic Transmission
+
+6. Neurotransmitter Systems
+
+7. Structure of the Nervous System
+
+			SENSORY AND MOTOR SYSTEMS
+8. Chemistry of our Senses
+
+9. The Eye
+
+10. The Central Visual System
+
+11. The Auditory and Vestibular Systems
+
+12. The Somatic Sensory System
+
+13. Spinal Control of Movement
+
+14. Brain Control of Movement
+
+			THE BRAIN AND BEHAVIOR
+15. Chemical Control of the Brain and Behavior
+
+16. Motivation
+
+17. Sex and the Brain
+
+18. Brain Mechanisms of Function
+
+19. Brain Rhythms and Sleep
+
+20. Language
+
+21. The Resting Brain, Attention, and Consciousness
+
+22. Mental Illness
+
+			THE CHANGING BRAIN
+23. Wiring the Brain
+
+24. Memory Systems
+
+25. Molecular Mechanisms of Learning
