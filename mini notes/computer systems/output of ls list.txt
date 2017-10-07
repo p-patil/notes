@@ -1,0 +1,7 @@
+ls -l output headers:
+
+	file permissions | number of links | owner name | owner group | file size (bytes) | time last modified | name
+
+file permissions format:
+	is_directory (-/d for no/yes), user's (i.e. owner) permissions, group's permissions, other's permissions
+	order: r (readable), w (writable), x (executable)
