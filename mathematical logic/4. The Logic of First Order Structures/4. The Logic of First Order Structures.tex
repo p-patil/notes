@@ -46,11 +46,11 @@ We begin by defining isomorphisms, i.e. structure-preserving bijective mappings,
     \item Preservation of constant symbols: For each constant $ c_i $ in the domain of $ I $,
         $$ f(I(c_i)) = J(c_i) $$
     \item Preservation of function symbols: For each function symbol $ F_i $ in the domain of $ I $,
-        $$ \ti{ for every } a_1, \cdots, a_{\pi(F_i)}, b \in M: I(F_i)(a_1, \cdots, a_{\pi(F_i)}) = b \ti{ if and only if } J(F_i)(f(a_1), \cdots, f(a_{\pi(F_i)})) = b $$
+        $$ \ti{ for every } a_1, \cdots, a_{\pi(F_i)}, b \in M: I(F_i)(a_1, \cdots, a_{\pi(F_i)}) = b \ti{ if and only if } J(F_i)(f(a_1), \cdots, f(a_{\pi(F_i)})) = f(b) $$
     \item Preservation of predicate symbols: For each preservation symbol $ P_i $ in the domain of $ I $,
         $$ \ti{ for every } a_1, \cdots, a_{\pi(P_i)} \in M: (a_1, \cdots, a_{\pi(P_i)}) \in I(P_i) \ti{ if and only if } (f(a_1), \cdots, f(a_{\pi(P_i)})) \in J(P_i) $$
 \end{enumerate}}
-As usual, a morphism is simply a structure-preserving mapping between general mathematical objects (or more precisely, categories), and an isomorphism is a sufficiently strong such mapping for which we can conclude that the two objects are in fact the same, structurally. Given two structures for which we can associate every object in the universe of one with a unique object in the universe of the other, and moreover for which the interpretation of constant, function, and predicate symbols is the same with respect to the respective objects, it follows that the structures are merely relabelings of each other. Note that isomorphisms are closed under composition and inverses.
+We often write $ \M \cong \mathcal{N} $ to denote that $ \M $ is isomorphic to $ \mathcal{N} $. As usual, a morphism is simply a structure-preserving mapping between general mathematical objects (or more precisely, categories), and an isomorphism is a sufficiently strong such mapping for which we can conclude that the two objects are in fact the same, structurally. Given two structures for which we can associate every object in the universe of one with a unique object in the universe of the other, and moreover for which the interpretation of constant, function, and predicate symbols is the same with respect to the respective objects, it follows that the structures are merely relabelings of each other. Note that isomorphisms are closed under composition and inverses.
 \nn
 To emphasize that isomorphisms are structure-preserving, it should be true that they preserve satisfiability. We prove this in the following theorem, which tells us that if we replace a universe's objects with the associated (through an isomorphism) objects of a different universes, satisfiability is preserved under the image of the isomorphism. In general, remapping objects like this might destroy the structure and render certain formulas satisfied or unsatisfied differently from the source universe, but because isomorphisms are designed to preserve logical structure, this is not the case.
 \nThm{Isomorphisms preserve satisfiability}{Suppose $ f: M \rightarrow N $ is an isomorphism between the $ \LA $-structures $ \M = (M, I) $ and $ \mathcal{N} = (N, J) $. If $ \nu $ is any $ \M $-assignment, then the composition $ f \circ \nu $ is an $ \mathcal{N} $-assignment, and further}
@@ -72,6 +72,24 @@ Next, let's use this result to prove the analogous result on formulas, again on 
 The above theorem suggests that isomorphic structures are equivalent, at least in terms of which formulas they satisfy and which they don't. More trivially, if it's the case that two structures satisfy precisely the exact same sentences (a special case of the above theorem that's independent of assignments), we say the structures, say $ \M $ and $ \mathcal{M} $, are \ti{elementarily equivalent}, and write $ \M \equiv \mathcal{N} $.
 
 \section{Substructures and elementary substructures}
+In this section, we consider structures that contain other structures, and characterize different notions of containment and ways of determining substructure relationships.
+\nDef{Substructure}{Let $ \M = (M, I) $ and $ \mathcal{N} = (N, J) $ be $ \LA $-structures. $ \M $ is a \tb{substructure} of $ \mathcal{N} $, denoted $ \M \subseteq \mathcal{N} $, if $ M \subseteq N $ and the following hold:}
+\InDef{\begin{enumerate}
+    \item Interpretations agree on constants: $ \forall c_i \in \mathcal{A}: I(c_i) = J(c_i) $.
+    \item Interpretations agree on functions: $ \forall F_i \in \mathcal{A}: I(F_i) \text{ is the restriction of } J(F_i) \text{ to } M $.
+    \item Interpretations agree on predicates: $ \forall P_i \in \mathcal{A}: I(P_i) = J(P_i) \cap M^{\pi(P_i)} $.
+\end{enumerate}}
+It turns out that substructure relationships hold precisely when we have a form of elementary equivalence, which is strong enough to automatically guarantee the above properties.
+\nThm{Substructures prove the same atomic formulas}{Let $ \M = (M, I) $ and $ \mathcal{N} = (N, J) $ be $ \LA $-structures with $ M \subseteq N $. Then $ \M \subseteq \mathcal{N} $ if and only if}
+\InThm{
+    $$ \forall \text{ atomic $ \LA $-formulas $ \phi $, $ \M $-assignments $ \nu $}: (\M, \nu) \vDash \phi \iff (\mathcal{N}, \nu) \vDash \phi $$
+}
+\Pf{TODO}
+This theorem inspires the following definition, which formalizes the above property as a similar but distinct property from elementary equivalence.
+\nDef{Elementary substructure}{Let $ \M $ and $ \mathcal{N} $ be $ \LA $-structures with $ \M \subseteq \mathcal{N} $. $ \M $ is an \tb{elementary substructure} of $ \mathcal{N} $ if}
+\InDef{
+    $$ \forall \text{ atomic $ \LA $-formulas $ \phi $, $ \M $-assignments $ \nu $}: (\M, \nu) \vDash \phi \iff (\mathcal{N}, \nu) \vDash \phi $$
+In which case we write $ \M \preceq \mathcal{N} $.}
 
 \section{Definable Sets and Tarski's Criterion}
 
