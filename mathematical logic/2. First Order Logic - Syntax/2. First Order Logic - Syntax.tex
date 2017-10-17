@@ -69,7 +69,6 @@ As convenient shorthand, we'll typically refer to unit-length terms (e.g. $ \lan
 Because of the structure of our terms and the way they are generated hierarchically by continuing to "wrap" inside functions, we have another analogous theorem on the sequence structure of terms.
 \nThm{No proper initial segments}{For any $ \tau \in T $, no proper initial segment of $ \tau $ is in $ T $.}
 \Pf{TODO same as proof for $ \proplang $}
-
 Having defined a base "field" of terms, let's turn to the actual formulas, on which truth values will be defined, which are created using these terms.
 
 \section{Formulas}
@@ -102,7 +101,6 @@ As before, we prove readability results on the predicate language, confirming th
 \end{enumerate}
 Further, in any of these cases the expression is unique.}
 \Pf{TODO same}
-
 As before, the proof of the uniqueness claim in the readability theorem hinges on the analogous lemma that no proper initial segment of a formula is also a formula. Let's now move on to consider ideas of scope and different kinds of variables, characterized by their scope.
 
 \section{Free and Bound Variables}
@@ -127,6 +125,7 @@ Recall that the whole point of introducing logical quantifiers was to allow us t
     \item $ a_{j_1 + 1} = \forall $ and $ a_{j_1 + 2} = x_i $ (and, of course, $ a_{j_1} = ( $ by readability).
     \item $ \langle a_{j_1}, \cdots, a_{j_2} \rangle $ is a formula.
 \end{enumerate}}
+\n
 In other words, occurrence of logical quantifiers have as their scope precisely the most immediate containing subformula (which we proved must exist). Notice that although variables can be used alongside logical quantifiers, as placeholders local to the scope of the quantifier for use in making a statement over the domain of discourse referred to within that scope, they can also appear in other contexts and for other purposes, such as, for instance, in functions or predicates. It's helpful to distinguish between these two uses of variables, since in the former case we're using them in a purely local setting, so that the variable really only has meaning with respect to its surrounding scope and doesn't, in contrast with the variables appearing in functions or predicates, have any intrinsic meaning of referrent of its own. In other words, variables used by logical quantifiers are, in a sense, bound to that quantifier's scope and lose meaning outside that scope. This inspires the following definition.
 \nDefn{Free and bound variables}{Let $ \phi $ be a formula containing variable $ x_i $. An occurrence of $ x_i $ in $ \phi $ is \tb{free} if it's not within the scope of any occurrence of $ \forall x_i $ in $ \phi $; otherwise, the variable is \tb{bound}. If there exists a free occurrence of $ x_i $, then we say $ x_i $ is a \tb{free variable}; otherwise $ x_i $ is a \tb{bound variable}.}
 Formulas with only bound variables are more self-contained then those containing free variables, since every bound variable concretely refers to a certain domain of discourse. Free variables, on the other hand, refer to some external referrent that's not defined within any scope of the formula, so in order for the formula to have actual meaning as a logical statement, we require its free variables to have well-defined external references. We'll distinguish between these two formulas, motivated by the intuition that formulas with only bound variables are properly defined elements of our predicate language than their counterparts with free variables.
