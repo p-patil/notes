@@ -75,9 +75,9 @@ The above theorem suggests that isomorphic structures are equivalent, at least i
 In this section, we consider structures that contain other structures, and characterize different notions of containment and ways of determining substructure relationships.
 \nDef{Substructure}{Let $ \M = (M, I) $ and $ \mathcal{N} = (N, J) $ be $ \LA $-structures. $ \M $ is a \tb{substructure} of $ \mathcal{N} $, denoted $ \M \subseteq \mathcal{N} $, if $ M \subseteq N $ and the following hold:}
 \InDef{\begin{enumerate}
-    \item Interpretations agree on constants: $ \forall c_i \in \mathcal{A}: I(c_i) = J(c_i) $.
-    \item Interpretations agree on functions: $ \forall F_i \in \mathcal{A}: I(F_i) \text{ is the restriction of } J(F_i) \text{ to } M $.
-    \item Interpretations agree on predicates: $ \forall P_i \in \mathcal{A}: I(P_i) = J(P_i) \cap M^{\pi(P_i)} $.
+    \item Interpretations agree on constants: $ \forall c_i \in \A: I(c_i) = J(c_i) $.
+    \item Interpretations agree on functions: $ \forall F_i \in \A: I(F_i) \text{ is the restriction of } J(F_i) \text{ to } M $.
+    \item Interpretations agree on predicates: $ \forall P_i \in \A: I(P_i) = J(P_i) \cap M^{\pi(P_i)} $.
 \end{enumerate}}
 \n
 Thus, a substructure is a substructure for which its containing superstructure restricts down to the structure completely.
@@ -93,6 +93,8 @@ This theorem inspires the following definition, which formalizes the above prope
 \InDef{
     $$ \forall \ti{$ \LA $-formulas $ \phi $, $ \M $-assignments $ \nu $}: (\M, \nu) \vDash \phi \iff (\mathcal{N}, \nu) \vDash \phi $$
 In which case we write $ \M \preceq \mathcal{N} $.}
+\n
+An elementary substructure relationship is modeled off the elementary equivalence relation, but we strengthen the required condition by requiring that both structures not only satisfy the same sentences (which is sufficient for elementary equivalence), but that they satisfy the same formulas with parameters from the substructure. This is a more appropriate way of combining elementary equivalence and the substructure relation.
 
 \section{Definable Sets and Tarski's Criterion}
 Let's start this section by introducing definable sets. We'll give the formal definition below, followed by an explanation of the motivation.
@@ -174,7 +176,7 @@ The function we created above simply stretches the beginning of the subinterval 
 Given that our language is a singleton with the proposition
     $$ P, \ti{ where } \pi(P) = 2, \st I(P) = \{ (a, b) \in \R^2 \st a < b \} $$
 where $ I $ is our interpretation function, we are restricted to defining sets using the order relation. Then, any formula we construct will be some logical connectives over a combination ordering constraints, and so if we use the formula to define a set, the elements of the set satisfy some combination of ordering constraints. Elements satisfying ordering constraints are either single points or intervals of points with endpoints defined by the constraints, and so we'd expect sets defined this way to be collections of intervals (some of which may be infinite).
-\nThm{Definable sets in $ (R, <) $ are built out of intervals}{Let $ X \subseteq $ be finite and $ A \subseteq \R $. Then $ A $ is definable in $ (\R, <) $ with parameters from $ X $ if and only if $ A $ is a finite union of intervals whose endpoints are in $ X $.}
+\nThm{Definable sets in $ (\R, <) $ are built out of intervals}{Let $ X \subseteq $ be finite and $ A \subseteq \R $. Then $ A $ is definable in $ (\R, <) $ with parameters from $ X $ if and only if $ A $ is a finite union of intervals whose endpoints are in $ X $.}
 \Pf{Clearly, if $ A $ is a finite union of intervals with endpoints in $ X $, we can construct the formula
     $$ \phi(x, x_1, \cdots, x_n) = \left( P(x, x_1) \lor \bigvee_{i = 1}^{n - 1} (P(x_i, x) \land P(x, x_{i + 1})) \lor P(x_n, x) \right) $$
 so that for $ t \in \R $, $ \phi[t, t_1, \cdots, t_n] $, where $ X = \{ t_1, \cdots, t_n \} $ and $ t_i < t_{i + 1} $, states that $ t $ is in one of the intervals defined by the points of $ X $. For the other direction, if $ A $ is definable in $ (\R, <) $ with parameters from $ X $, then we can write
@@ -191,12 +193,44 @@ Let's begin with some preliminary set theoretic definitions.
     $$ \bigcup_{i \in I} A_i $$
 \InThm{is also countable.}
 \Pf{TODO}
-\Thm{Uncountabilty of the reals}{The set of real numbers are not countable.}
+When an $ \LA $-structure has a countable universe, we often simply say that the structure is countable.
+\nThm{Uncountabilty of the reals}{The set of real numbers are not countable.}
 \Pf{TODO Cantor's diagonalization.}
 
-
 \section{Lowenheim-Skolem Theorem}
+Here, we'll show that upon applying the Tarski-Vaught test, we can show that every structure has a countable elementary substructure.
+\nThmn{Lowenheim-Skolem theorem}{Let $ \mathcal{N} $ be an $ \LA $-structure. Then $ \mathcal{N} $ has an elementary substructure $ \M = (M, I) $, where $ M $ is countable.}
+\Pf{We can apply Tarski's criterion to any countable $ M \subseteq N $, so that showing that for every non-empty $ A \subseteq N $ that's definable with parameters from $ M $ has an element from $ M$ is sufficient. We'll build such a set inductively by defining an ascending chain of sets, each of which is a subset of $ N $, and looking at the "limit" of the construction. The result will be countable, as its the limit of countably many inclusionary sets; to be able to apply the Tarski-Vaught test, we'll need to ensure that for each set $ M_k $ in the construction, sets definable with parameters from $ M_k $ are non-empty in the restriction of $ \mathcal{N} $ to $ M_k $.
+\nn
+To begin the construction, take $ M_0 = \emptyset $, and for any larger $ k $, build $ M_{k + 1} $ as follows. First, enumerate the definable (with parameters from $ M_k $) subsets of $ N $ as $ \{ A_i, i \in \N \} $. Then we can define
+    $$ M_{k + 1} := M_k \cup \{ a_i, i \in \N \} $$
+where $ a_i \in A_i $. Note that $ M_{k + 1} $ clearly contains $ M_k $, is countable since it's the union of countable sets, and, crucially, that every non-empty set $ A \subseteq N $ that's definable with parameters from $ M_k $ contains an element from $ M_{k + 1} $. Taking the limit, we define
+    $$ M := \bigcup_{k \in \N} M_k $$
+$ M $ is countable since it's the countable union of countable sets. To apply the Tarski-Vaught test to $ M $, consider that if we have a non-empty set $ A \subseteq N $ that's definable with parameters from $ M $, then $ A $ is definable with parameters from some $ M_k $ (for sufficiently large $ k $), and so, by construction, $ A $ contains an element of $ M_{k + 1} $ and thus an element of $ M $. Thus, the Tarski-Vaught test applies, and it only remains to verify that the restriction of $ \mathcal{N} $ down to $ M $ forms a valid $ \LA $-structure. TODO}
 
 \section{Arbitrary Dense Total Orders}
+Recall that when we first explored dense orders, as an instructive special case to study automorphism methods for determining definable sets, we stuck to the prototypical example $ (\R, <) $, ending the section with a corollary that the elementary substructures of $ (\R, <) $ are all dense total orders without endpoints. In this section, we'll see which of those methods we can extend to arbitrary dense orders.
+\nn
+Let $ \M = (M, <) $ be a dense total order without endpoints. Recall that this simply means that $ < $ imposes a total order on $ M $ (so that every pair of elements in $ M $ is comparable with $ < $), that $ M $ is \ti{dense} under this order (meaning, $ M $ has topological properties characteristic of dense spaces, namely that $ \forall x, y \in M: x < y \rightarrow \exists z \in M \st x < z < y $) and thus has sufficient granularity to avoid gaps, and has no endpoints, meaning is unbounded in both directions, towards positive and negative infinity. Unfortunately, there exist $ \M $'s for which the only automorphism is the identity function. In fact, some of these $ \M $'s are even substructures of $ \mathcal{R} := (\R, <) $. Hence, we can't directly apply the same method of checking if an automorphism preserves a set as a litmus test for definability. To explore our available methods, we begin with a strong description of different types of dense total orders.
+\nThm{Countable dense total orders are rationals}{Let $ \M = (M, <_M) $ be a countable (so $ M $ is countable) dense total order without endpoints. Then $ \M $ and $ (\Q, <) $ are isomorphic.}
+\Pf{Enumerate $ M $ as $ \{ m_i, i \in \N \} $ and $ \Q = \{ q_i, i \in \N \} $, both of which are possible because both sets are countable. We'll construct a bijection $ f: M \rightarrow \Q $ recursively. We'll iteratively build a sequence of functions, each extending the domain the previous in such a way as to preserve order throughout the construction.
+\nn
+First, let $ f_0 $ be a function on the empty domain, with no values, as a starting point. Then, define $ f_{n + 1} $ inductively as follows: let $ a_1, \cdots, a_k $ be the (ordered) domain of $ f_n $ (throughout the construction, we'll keep the domains finite, so this is possible) and define $ f_{n + 1}(a_i) = f_n(a_i), 1 \leq i \leq k $. Next, we extend $ f_n $'s domain by adding $ m_{n + 1} $ to the domain, if it's not already in the domain (note that, inductively, the $ m_n $'s must also be in the domain, in addition to some extra elements, so $ k \geq n $), in a way that preserves order. Consider the three cases:
+\begin{enumerate}
+    \item $ m_{n + 1} <_M a_1 $: define $ f_{n + 1}(m_{n + 1}) = q_j $ where $ j $ is the smallest integer such that $ q_j < f_{n + 1}(a_1) $ (this is possible since the rationals have no least element).
+    \item $ a_k <_M m_{n + 1} $: define $ f_{n + 1}(m_{n + 1}) = q_j $ where $ j $ is the smallest integer such tha $ q_j > f_{n + 1}(a_k) $ (this is possible since the rationals have no greatest element).
+    \item $ a_i <_M m_{n + 1} <_M a_{i + 1} $: define $ f_{n + 1}(m_{n + 1}) = q_j $ where $ j $ is the smallest integer such that $ f_{n + 1}(a_i) < q_j < f_{n + 1}(a_{i + 1}) $ (this is possible since the rationals are dense under $ < $).
+\end{enumerate}
+If $ m_{n + 1} $ wasn't already in the domain of $ f_{n + 1} $, we've now added it in such a way as to ensure that $ f_{n + 1} $ remains order-preserving. Finally, now that we've added $ m_{n + 1} $ to the domain, we'll add $ q_{n + 1} $ to the range (if it's not already there). This is to ensure that our iterative construction indeed progresses towards a bijection. The key is that, if $ q_j $ is not already in the range of $ f_{n + 1} $, let $ f(m_j) = q_{n + 1} $ where $ j $ is the least integer such that $ f_{n + 1} $ remains order-preserving. This involves a similar breakdown into three cases as above, depending on where $ q_{n + 1} $ lies in the ordering relative to $ f_{n + 1}(a_1), \cdots, f_{n + 1}(a_k) $. Above, each of the cases was resolved by exploiting the properties that $ \Q $ has no endpoints and is dense; $ M $ shares these properties, and so, $ m_j $ is well defined.
+\nn
+We can now build the bijection $ f $ by defining
+    $$ \ti{ for $ m \in M $: } f(m) = q \iff \exists n \st f_n(m) = q $$
+Every $ m_n \in M $ was added to the domain of $ f_n $ and therefore $ f $, so $ f $ is defined over all of $ M $, and every $ q_n $ was added to the range of $ f_n $ and therefore $ f $, so $ f $ is surjective. It remains to prove that $ f $ is injective, but this follows from $ f $ being order-preserving. Thus, $ f $ is a bijection, and is order-preserving, and therefore is an isomorphism.}
+It turns out that not only are countable dense total orders isomorphic to $ \Q $, but that any dense total order (without endpoints) is elementarily equivalent to $ \Q $ (if not isomorphic).
+\nThm{Dense total orders are elementarily equivalent to $ \Q $}{Let $ \M $ be a dense total order without endpoints. Then $ \M \equiv (\Q, <) $, and further for $ X \subseteq M $, if $ A $ is a definable (with parameters from $ X $) subset of $ M $, then $ A $ is a finite union of intervals with endpoints in $ X $.}
+\Pf{Even though $ \M $ may not be countable itself, preventing us from applying the above theorem regarding the rationals, by the downward Lowenheim-Skolem theorem, $ \M $ does have an elementary substructure $ \M_0 $ that's countable. Then $ \M_0 $ is isomorphic to $ (\Q, <) $ which means $ \M_0 \equiv (\Q, <) $. Thus, we have that $ \M $ satisfies the same sentences as $ \M_0 $ (since the latter is an elementary substructure) and that $ \M_0 $ satisfies the same sentences as $ (\Q, <) $ (since they're elementarily equivalent); therefore, $ \M \equiv (\Q, <) $.
+\nn
+The second statement, that definable sets are finite unions of intervals, follows from the first. Recall that we showed that, for both $ (\R, <) $ and its substructure $ (\Q, <) $, definable sets are finite unions of intervals with endpoints in $ X $. If $ \M $ is countable, it's isomorphic to $ (\Q, <) $ and therefore any definable set $ A $ has an isomorphic correspondent in $ (\Q, <) $ which is the finite union of intervals with endpoints in the isomorphic correspondent of $ X $, from which it follows that $ A $ is a finite union of intervals with endpoints in $ X $. Otherwise, since $ \M $ can't be finite (it's dense), it must be uncountable. We can apply the Lowenheim-Skolem theorem to find a countable, elementary substructure of $ \M $ which contains $ A $'s parameters (from $ X $); since this substructure is isomorphic to $ (\Q, <) $, the restriction of $ A $ to the substructure is indeed a finite union of intervals with endpoints in $ X $. If $ A $ wasn't a finite union of intervals, then its restriction couldn't be either (TODO why?), and so the theorem follows.}
+Thus, though we couldn't directly apply automorphism methods to arbitrary dense total orders without endpoints, we could, through the downward Lowenheim-Skolem theorem, find countable elementary substructures, which we showed were isomorphic to the ordered rationals, and leverage automorphism methods on the rationals, which do work.
 
 \end{document}
