@@ -53,8 +53,8 @@ In other words, we combine sequences by simply concatenating them. We can now fo
 \nDef{Propositional language}{The \tb{propositional language} $ \proplang $ is the smallest set of finite sequences of symbols satisfying the following.}
 \InDef{\begin{enumerate}
     \item $ \proplang $ contains every propositional symbol, i.e. $ \forall n \in \N: A_n \in \mathcal{L}_0 $.
-    \item $ \proplang $ is closed under negation, i.e. $ \forall \text{ finite sequences } s: (\neg s) \in \mathcal{L}_0 $.
-    \item $ \proplang $ is closed under implication, i.e. $ \forall \text{ finite sequences } s, t: (s \rightarrow t) \in \mathcal{L}_0 $.
+    \item $ \proplang $ is closed under negation, i.e. $ \forall \text{ finite sequences } s \in \proplang: (\neg s) \in \mathcal{L}_0 $.
+    \item $ \proplang $ is closed under implication, i.e. $ \forall \text{ finite sequences } s, t \in \proplang: (s \rightarrow t) \in \mathcal{L}_0 $.
 \end{enumerate}}
 \Defcont{We refer to elements of $ \proplang $ as \tb{propositional formulas}, or simply formulas for short.}
 All we've done here is specify that the language we're using needs to contain our propositional symbols as a starting point, as well as contain compound sentences which are formed by operating on propositional symbols, which is done by either negating a symbol, inverting the truth value, or linking two symbols with an implication, chaining the truth values together unidirectionally (bidirectional chaining, of course, can be built from the implication using the logical operators we'll soon define). Of course, there are infinitely many sets satisfying these properties, but most of these will also contain superfluous elements which have nothing to do with our propositional language; what we really want is a set which satisfies the above axioms, and nothing more. We accomplish this by forcing our language to be the smallest such set.

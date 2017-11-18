@@ -1,0 +1,157 @@
+\documentclass{article}
+
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath, amssymb, changepage, amsthm}
+
+\begin{document}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\text{\normalfont\ T}}
+\newcommand{\F}{\text{\normalfont\ F}}
+\newcommand{\ti}{\textit}
+\newcommand{\tb}{\textbf}
+\newcommand{\n}{\leavevmode \newline}
+\newcommand{\nn}{\leavevmode \newline \newline}
+\def \Def#1#2{\begin{adjustwidth}{0.85cm}{0.85cm} \tb{(Definition) #1}: \ti{#2} \end{adjustwidth}}
+\def \nDef#1#2{\n \Def{#1}{#2}}
+\def \Defn#1#2{\Def{#1}{#2} \n}
+\def \nDefn#1#2{\n \Defn{#1}{#2}}
+\def \Defcont#1{\begin{adjustwidth}{0.85cm}{0.85cm} \ti{#1} \end{adjustwidth} \n}
+\def \InDef#1{\ti{\begin{adjustwidth}{0.85cm}{0.85cm} #1 \end{adjustwidth}}}
+\def \Thm#1#2{\begin{adjustwidth}{0.85cm}{0.85cm} \tb{(Theorem) #1}: \ti{#2} \end{adjustwidth}}
+\def \nThm#1#2{\n \Thm{#1}{#2}}
+\def \Thmn#1#2{\Thm{#1}{#2} \n}
+\def \nThmn#1#2{\n \Thmn{#1}{#2}}
+\def \InThm#1{\ti{\begin{adjustwidth}{0.85cm}{0.85cm} #1 \end{adjustwidth}}}
+\def \Pf#1{\begin{adjustwidth}{0.85cm}{0.85cm} \textit{Proof}: #1 \qedsymbol \end{adjustwidth} \n}
+\newcommand{\st}{\textnormal{ s.t. }}
+\newcommand{\proplang}{\mathcal{L}_0}
+\newcommand{\predlang}{\mathcal{L}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\LA}{\predlang_\A}
+
+\title{Logic of First Order Structures}
+\author{Piyush Patil}
+\date{October 27, 2017}
+\maketitle
+
+The bulk of this chapter is devoted to building up to Godel's completeness theorem and the necessary theory.
+
+\section{The Notion of Proof}
+We'll begin by building on our understanding of first-order logic and the associated structures, and going up a level of abstraction by using these ideas to cement our notions of proofs, validity, and truth. First, we define the first-order analog to a tautology, regarded as an absolute first-order truth.
+\nDefn{Validity}{An $ \predlang $-formula $ \phi $ is a \tb{validity} if it's satisfied in every interpretation, i.e. for every $ \predlang $-structure $ \M $ and $ \M $-assignment $ \nu $, $ (\M, \nu) \vDash \phi $.}
+Though validities are quite uninteresting first-order formulas, the set of validities does have some illuminating properties; we'll show later tha a formula is valid if and only if it can be proven. The idea of proof, however, first requires us to speak of logical axioms. We'll port over our logical axoims from propositional logic, but in order to add axioms that make use of quantifiers, we'll need to first extend the idea of substitution and the substitution theorem from first-order logic.
+\nDefn{Substitutable}{Let $ \phi $ be an $ \predlang $-formula $ \tau $ be a term. For any free variable $ x_i $ in $ \phi $, $ \tau $ is \tb{substitutable} for $ x_i $ in $ \phi $ if every variable of $ \tau $ is free for $ x_i $ in $ \phi $ (recall that this means, for variable $ x_j $ of $ \tau $, that none of the occurrences of $ x_i $ in $ \phi $ are in the scope of $ \forall x_j $). Analogously, for constant $ c_i $ in $ \phi $, $ \tau $ is \tb{substitutable} for $ c_i $ in $ \phi $ if, for every variable $ x_j $ of $ \tau $, no occurrence of $ c_i $ is within the scope of $ \forall x_j $.}
+This is simply stating that if we were to replace all the $ x_i $'s in $ \phi $ with $ \tau $, none of the newly introduced variables from $ \tau $ interfere with copies in $ \phi $, which we obviously don't want since the meanings variables carry in a term or formula is local to that formula, and they ought not to clash. We use
+    $$ \phi(x_1, \cdots, x_n; \tau_1, \cdots, \tau_n) $$
+to denote the substitution of term $ \tau_i $ for variable $ x_i $ in the formula $ \phi $ in which $ x_i $ is free (assuming every term is substitutable for its corresponding variable). We use analogous notation for the substitution of terms for constants.
+\nDef{Logical axioms}{The set of logical axioms is denoted $ \Delta $ and is defined as the smallest set of $ \predlang $-formulas which satisfy the following closure conditions}
+\InDef{\begin{enumerate}
+    \item $ \Delta $ contains propositional tautologies: The following are logical axioms
+    \begin{enumerate}
+        \item Group I axioms
+        \begin{enumerate}
+            \item $ ((\phi_1 \rightarrow (\phi_2 \rightarrow \phi_3)) \rightarrow ((\phi_1 \rightarrow \phi_2) \rightarrow (\phi_1 \rightarrow \phi_3))) $
+            \item $ (\phi_1 \rightarrow \phi_1) $
+            \item $ (\phi_1 \rightarrow (\phi_2 \rightarrow \phi_1)) $
+        \end{enumerate}
+        \item Group II axioms
+        \begin{enumerate}
+            \item $ (\phi_1 \rightarrow ((\neg \phi_1) \rightarrow \phi_2)) $
+        \end{enumerate}
+        \item Group III axioms
+        \begin{enumerate}
+            \item $ (((\neg \phi_1) \rightarrow \phi_1) \rightarrow \phi_1) $
+        \end{enumerate}
+        \item Group IV axioms
+        \begin{enumerate}
+            \item $ ((\neg \phi_1) \rightarrow (\phi_1 \rightarrow \phi_2)) $
+            \item $ (\phi_1 \rightarrow ((\neg \phi_2) \rightarrow (\neg (\phi_1 \rightarrow \phi_2)))) $
+        \end{enumerate}
+    \end{enumerate}
+    \item Formulas that are true over a domain can be substituted: For $ \predlang $-formula $ \phi $ and term $ \tau $ which is substitutable for $ x_i $ in $ \phi $,
+        $$ ((\forall x_i \phi) \rightarrow \phi(x_i; \tau)) \in \Delta $$
+    \item Quantifiers split over implication: For $ \predlang $-formulas $ \phi_1, \phi_2 $,
+        $$ ((\forall x_i (\phi_1 \rightarrow \phi_2)) \rightarrow ((\forall x_i \phi_1) \rightarrow (\forall x_i \phi_2))) \in \Delta $$
+    \item Quantifiers are vacuous on bound variables: For $ \predlang $-formula $ \phi $ and bound variable $ x_i $ of $ \phi $,
+        $$ (\phi \rightarrow (\forall x_i \phi)) \in \Delta $$
+    \item Reflexivity axioms: For variable $ x_i $,
+        $$ (x_i \hat{=} x_i) \in \Delta $$
+    \item Changing variables doesn't change formulas: For $ \predlang $-formulas $ \phi_1, \phi_2 $, and variable $ x_j $ that's substitutable for $ x_i $ in both formulas,
+        $$ \ti{ if } \phi_1(x_i; x_j) = \phi_2(x_i; x_j) \ti{ then } ((x_i \hat{=} x_j) \rightarrow (\phi_1 \rightarrow \phi_2)) \in \Delta $$
+    \item Quantifiers are degenerate on true formulas: For $ \predlang $-formula $ \phi $,
+        $$ (\phi \rightarrow (\forall x_i \phi)) \in \Delta $$
+\end{enumerate}}
+We can now define an extended (from propositional logic) notion of proof. As before, we'll work over sets $ \Gamma $ of formulas which will serve as specific axioms, in addition to the logical axioms above.
+\nDef{$ \Gamma $-proof}{Let $ \Gamma \subseteq \predlang $ be a set of $ \predlang $-formulas and $ \phi \in \predlang $. Then $ \Gamma $ \tb{proves} $ \phi $, denoted}
+    $$ \Gamma \vdash \phi $$
+\InDef{if there exists a sequence of formulas $ (\phi_1, \cdots, \phi_n) $ such that
+\begin{enumerate}
+    \item $ \phi_1 $ is an axiom, i.e. $ \phi_1 \in \Gamma \cup \Delta $
+    \item $ \phi_n = \phi $
+    \item For $ 1 \leq i \leq n $, either $ \phi_i \in \Gamma \cup \Delta $ or there exist $ j, k < i $ in the sequence where $ \phi_j = (\phi_k \rightarrow \phi) $.
+\end{enumerate}
+We call the sequence $ (\phi_1, \cdots, \phi_n) $ a \tb{deduction} of $ \phi_n $ from $ \Gamma $.}
+Intuitively, the sequence of formulas represent steps in the logical progression composing a proof of the truth of $ \phi $. The proof must start at an axiom, and end at the statement we want to prove (i.e. $ \phi $); intermediate steps of the proof must either by axioms themselves, or must follow, through modus ponens, from a previous statement (i.e. there's a statement in the proof and another statement which says the current statement follows from the former).
+
+\section{Soundness}
+First, we define analogous concepts to consistency and satisfiability, which we previously considered in propositional logic. These are the heart of the requisites to Godel's completeness theorem.
+\nDefn{Consistent}{Let $ \Gamma $ be a set of formulas. $ \Gamma $ is \tb{consistent} if for every formula $ \phi \in \proplang $, if $ \Gamma \vdash \phi $ then $ \Gamma \not \vdash (\neg \phi) $.}
+\Defn{Satisfiable}{Let $ \Gamma $ be a set of formulas. $ \Gamma $ is \tb{satisfiable} if there exists a structure $ \M $ and a $ \M $-assignment $ \nu $ such that $ (\M, \nu) \vDash \Gamma $.}
+The Godel's completeness theorem extends the result we proved in propositional logic, that a set of axioms being logically consistent - which we intuitively take to mean as axiom system having no holes or gaps in the logical progression that follows from it, so that it never doubles back on itself or proves contradictory things (which of course, from the theorem that inconsistent systems can prove any formula, completely destroys any notion of meaningfulness in the system) - and being satisfiable - intuitively meaning that there exists some concrete interpretation of logical symbols over a universe of object within which our axioms are all true, indicating that there is indeed a way for the arbitrarily chosen meaningless formulas to attain a notion of validity and become self-evident - are actually the same thing. We'll state the theorem below without proof, and work up to the proof throughout the chapter.
+\nThmn{Godel's completeness theorem}{Let $ \Gamma $ be a set of formulas. Then $ \Gamma $ is consistent if and only if $ \Gamma $ is satisfiable.}
+One direction of the lemma is simpler than the other; that consistency follows from satisfiability is evident from the intuition that if a structure (and assignment) satisfies a set of axioms, then because of the nature of the structure and our definition of satisfiability, which we designed to encode the logical laws of our language (such as the definition of implication, for example), the structure should satisfy every deductive consequence of $ \Gamma $ and only those consequences. This is precisely what the soundness lemma tells us:
+\nThmn{Soundness lemma}{Let $ \Gamma $ be a set of formulas and $ \phi \in \proplang $ such that $ \Gamma \vdash \phi $. Then for any structure $ \M $ and $ \M $-assignment $ \nu $ for which $ (\M, \nu) \vDash \Gamma $, we have $ (\M, \nu) \vDash \phi $.}
+\Pf{TODO tedious af}
+
+\section{Deduction and Generalization Theorems}
+Let's first state the deduction theorem, which formalizes the intuition that saying $ \phi_1 $ "implies" $ \phi_2 $ or that $ \phi_2 $ "follows from" $ \phi_1 $ (for formulas $ \phi_1, \phi_2 $) simly means that if we assume $ \phi_1 $ to be true, then $ \phi_2 $ is forced to also be true. The idea of assuming a formula to be true is codified by simply taking it as an axiom.
+\nThm{Deduction lemma}{Let $ \Gamma $ be a set of formulas and $ \phi_1, \phi_2 \in \proplang $. Then}
+    $$ \Gamma \cup \{ \phi_1 \} \vdash \phi_2 \ti{ if and only if } \Gamma \vdash (\phi_1 \rightarrow \phi_2) $$
+\Pf{Let's first prove the necessary direction. Suppose that $ \langle \theta_1, \cdots, \theta_n \rangle $ is a $ \Gamma $-proof of $ (\phi_1 \rightarrow \phi_2) $. Then
+    $$ \langle \theta_1, \cdots, \theta_{n - 1}, (\phi_1 \rightarrow \phi_2), \phi_1, \phi_2 \rangle $$
+is a deduction from $ \Gamma \cup \{ \phi_1 \} $ as required, and so $ \Gamma \cup \{ \phi_1 \} \vdash \phi_2 $.
+\n
+Conversely, suppose that $ \Gamma \cup \{ \phi_1 \} \vdash \phi_2 $, and let $ \langle \theta_1, \cdots, \theta_n \rangle $ be a deduction from $ \Gamma \cup \{ \phi_1 \} $ of $ \phi_2 $. Let's prove this by induction - suppose that for any $ j < n $, $ \Gamma \vdash (\phi_1 \rightarrow \theta_i) $. We'll prove that $ \Gamma \vdash (\phi_1 \rightarrow \theta_j) $. Because $ \theta_j $ is part of a deduction, either $ \theta = \phi_1 $ or $ \theta_j \in \Gamma \cup \Delta $ or $ \theta_{i_1}, \theta_{i_2} := (\theta_{i_1} \rightarrow \theta_j) $ are in the deduction.
+\n
+In the first case, since $ (\phi_1 \rightarrow \phi_1) $ is a propositional tautology, and hence we must have $ \Gamma \vdash (\phi_1 \rightarrow \theta_j) $.
+\n
+In the second case, where $ \theta_j \in \Gamma \cup \Delta $, we can use the fact that $ (\theta_j \rightarrow (\phi_1 \rightarrow \theta_j)) \in \Delta $ is a tautology and so $ \langle \theta_j, (\theta_j \rightarrow (\phi_1 \rightarrow \theta_j)), (\phi_1 \rightarrow \theta_j) \rangle $ is a deduction showing that $ \Gamma \vdash (\phi_1 \rightarrow \theta_j) $.
+\n
+In the third case, where there are $ i_1, i_2 $ such that $ \theta_{i_2} = (\theta_{i_1} \rightarrow \theta_j) $. By the inductive hypothesis, we can assume that $ \Gamma \vdash (\phi_1 \rightarrow \theta_{i_1}) $ and that $ \Gamma \vdash (\phi_1 \rightarrow \theta_{i_2}) = (\phi_1 \rightarrow (\theta_{i_1} \rightarrow \theta_j)) $. Because
+    $$ ((\phi_1 \rightarrow (\theta_{i_1} \rightarrow \theta_j)) \rightarrow ((\phi_1 \rightarrow \theta_{i_1}) \rightarrow (\phi_1 \rightarrow \theta_j))) \in \Delta $$
+intuitively we see that since $ (\phi_1 \rightarrow \theta_{i_1}) $, $ (\phi_1 \rightarrow (\theta_{i_1} \rightarrow \theta_j)) $ are both proven by $ \Gamma $, $ \theta_j $ should be too. This is made formal by the axiom above, which shows that the following
+$$ \begin{gathered}
+    \langle \alpha_1, \cdots, \alpha_{n - 1}, \\
+    (\phi_1 \rightarrow \theta_j), \\
+    (\phi_1 \rightarrow (\theta_{i_1} \rightarrow \theta_j)), \\
+    \beta_1, \cdots, \beta_{m - 1}, \\
+    ((\phi_1 \rightarrow (\theta_{i_1} \rightarrow \theta_j)) \rightarrow ((\phi_1 \rightarrow \theta_{i_1}) \rightarrow (\phi_1 \rightarrow \theta_j))), \\
+    ((\phi_1 \rightarrow \theta_{i_1}) \rightarrow (\phi_1 \rightarrow \theta_j)), \\
+    (\phi_1 \rightarrow \theta_j) \rangle \nonumber
+\end{gathered} $$
+is a $ \Gamma $-deduction for $ (\phi_1 \rightarrow \theta_j) $, where $ \langle \alpha_1, \cdots, \alpha_{n - 1} \rangle $ is a deduction for $ (\phi_1 \rightarrow \theta_{i_1}) $ and $ \langle \beta_1, \cdots, \beta_{m - 1} \rangle $ is a deduction for $ (\phi_1 \rightarrow (\theta_{i_1} \rightarrow \theta_j)) $.
+\n
+Thus, the theorem follows by induction.}
+Next, let's investigate conditions under we can generalize a proof, in the sense of extending the result $ \Gamma \vdash \phi $ to $ \Gamma \vdash (\forall x_i \phi) $. That is, if we can prove $ \phi $ then under what conditions can we prove that $ \phi $ holds for every variable $ x_i $? This is the case when the deduction proving $ \phi $ doesn't depend on or assert any statements about $ x_i $; if none of our axioms have any statements about or requirements on $ x_i $, and $ \phi $ contains $ x_i $, then proving $ \phi $ from these axioms is as good as proving $ \phi $ for any arbitrary value of $ x_i $, and so we ought to be able to prove $ (\forall x_i \phi) $.
+\nThm{Generalization theorem}{Let $ \Gamma $ be a set of formulas and $ \phi \in \proplang $ such that $ \Gamma \vdash \phi $. If $ x_i $ is a variable not appearing in any formula of $ \Gamma $, then $ \Gamma \vdash (\forall x_i \phi) $.}
+\Pf{We prove this by induction on the length of the $ \Gamma $-proof. Let $ \langle \theta_1, \cdots, \theta_n \rangle $ be a $ \Gamma $-proof of $ \phi $, and suppose as the inductive hypothesis that for $ j < n $, $ \Gamma \vdash (\forall x_i \theta_j) $.
+\n
+If $ \phi \in \Gamma $ then because $ (\phi \rightarrow (\forall x_i \phi)) \in \Delta $, $ \langle \phi, (\phi \rightarrow (\forall x_i \phi)), (\forall x_i \phi) \rangle $ is a $ \Gamma $-proof of $ (\forall x_i \phi) $.
+\n
+If instead there are $ i_1, i_2 $ such that $ \theta_{i_2} = (\theta_{i_1} \rightarrow \phi) $ then by the inductive hypothesis $ \Gamma \vdash (\forall x_i \theta_{i_1}) $ and $ \Gamma \vdash (\forall x_i (\theta_{i_1} \rightarrow \phi)) $, and since quantifiers split over implications, $ \Gamma \vdash ((\forall x_i \theta_{i_1}) \rightarrow (\forall x_i \phi)) $. Hence, we can concatenate the deductions for $ (\forall x_i \theta_{i_1}) $, $ (\forall x_i (\theta_{i_1} \rightarrow \phi)) $, $ ( (\forall x_i (\theta_{i_1} \rightarrow \phi)) \rightarrow ((\forall x_i \theta_{i_1}) \rightarrow (\forall x_i \phi))) $ to obtain a deduction for $ (\forall x_i \phi) $.}
+Finally, we prove 
+
+\section{The Henkin Property}
+
+\section{Extensions of Consistent Sets of $ \predlang $ Formulas}
+
+\section{The Godel Completeness Theorem}
+
+\section{The Craig Interpolation Theorem}
+
+\end{document}
