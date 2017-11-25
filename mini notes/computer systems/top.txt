@@ -1,0 +1,66 @@
+output of top program
+
+Top 5 rows: Global information about the state of the machine.
+    - Row 1 (uptime): Information about the state of the machine with respect to serving users. Equivalent to the output of the uptime program.
+        - Current time
+        - Uptime (time since machine booted)
+        - Number of logged in user sessions (equivalent to number of active terminal windows)
+        - Average system load in past 1 minute, 5 minutes, and 15 minutes respectively 
+    - Row 2 (tasks): Information about all running processes on system and the distribution of process states. Note that the normal state of most processes is usually sleeping, unless they're heavily compute-bound.
+        - Total: Total number of processes
+        - Running: Number of running processes
+        - Sleeping: Number of sleeping processes (processes that are blocked because they're waiting on something, such as I/O)
+        - Stopped: Number of stopped processes
+        - Zombie: Number of zombie processes (terminated processes that are still running because they're waiting to be stopped from their parent) 
+    - Row 3 (cpu): Information about how the CPU is being used.
+        - us: percentage of CPU used by user processes
+        - sy: percentage of CPU used by system processes
+        - ni: percentage of CPU used by processes with donated priority (referring to the process' nice value, a parameter used in the scheduling algorithm)
+        - id: percentage of unused CPU
+        - wa: percentage of CPU used by processes that are waiting for I/O operations
+        - hi: Percentage of CPU used by processes handling hardware interrupts
+        - si: Percentage of CPU used by processes handling software interrupts
+        - st: (steal time) If the system is a virtual machine, percentage of CPU stolen by the hypervisor for running other tasks. By default (i.e. on a non-VM) zero.
+    - Rows 4, 5 (memory): Information about memory usage. Row 4 concerns the usage of physical RAM whereas row 5 concerns usage of swap space. Related to output of free program.
+        - Total: total amount of available memory
+        - Used: total amount of allocated memory
+        - Free: total amount of free memory
+        - Buffers: total amount of memory used by kernel buffers
+        - Cached: total amount of memory used for caching (pages, file data, etc.)
+
+Process list: Fine-grained information about each and every process in the system.
+    - PID: Process ID of the process.
+    - USER: Owner of the process.
+    - PR: Priority of the process.
+    - NI: Nice value of the process.
+    - VIRT: amount of virtual memory used by the process, in terms of the process' full virtual size (sum of used memory, memory it's mapped into itself, files on disk that have been mapped into it, shared memory, etc.)
+    - RES: Short for resident size. Amount of physical memory used by the process.
+    - SHR: Shared memory of the process. This refers to memory the process is using that's shared between other processes, such as memory allocated for IPC, or shared libraries that the process has linked in, or shared process images (e.g. multiple copies of bash running on different terminals).
+    - S: Process status, either sleeping (S), running (R), or a zombie (Z).
+    - %CPU: Percentage of CPU used by the process. By default, this is the percentage of use for a single CPU, averaged, so on multi-core systems, the percentage often goes over 100.
+    - %MEM: Percentage of RAM used by the process.
+    - TIME+: Total time the process has been active.
+    - COMMAND: Text command used to start the process, including arguments.
+
+Options:
+    - Sorting: To sort the process list by a field, press Shift+f and then:
+        - A: PID
+          b: PPID (parent process ID)
+          d: UID (user ID)
+          e: USER
+          f: GROUP (name of process' group)
+          g: TTY (name of controlling TTY)
+          h: PR
+          i: NI
+          j: P (chronologically by when processes last used the CPU)
+          k: %CPU
+          l: TIME (CPU time)
+          n: %MEM (physical memory usage)
+          o: VIRT
+          p: SWAP (size of swap memory)
+          q: RES
+          r: CODE (size of the code segment of the process image)
+          s: DATA (size of data and stack segments)
+          t: SHR
+          w: S
+          x: COMMAND

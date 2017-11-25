@@ -1,3 +1,5 @@
+linux exit code conventions
+
 1: Catchall for general errors
 2: Misuse of shell builtins (according to Bash documentation)
 126: Command invoked cannot execute
