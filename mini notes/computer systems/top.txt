@@ -28,7 +28,7 @@ Top 5 rows: Global information about the state of the machine.
         - Buffers: total amount of memory used by kernel buffers
         - Cached: total amount of memory used for caching (pages, file data, etc.)
 
-Process list: Fine-grained information about each and every process in the system.
+Process list: Fine-grained information about each and every process in the system. All memory listings are in kilobytes. TIME+ is in minutes:seconds.
     - PID: Process ID of the process.
     - USER: Owner of the process.
     - PR: Priority of the process.
