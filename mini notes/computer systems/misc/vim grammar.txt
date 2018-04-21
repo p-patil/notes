@@ -1,0 +1,86 @@
+vim grammar
+
+Basic rule:
+
+    rule = ( [repetition] motion | duplicate-op | ( operator ( motion | text-object ) ) )
+
+    duplicate-op = [repetition] operator operator (where both operators are the same)
+
+    operator = [repetition] ( d | c | y | ... )
+    motion = [repetition] ( h | l | j | k | w | W | $ | ^ | gg | G | ... )
+    text-object = [repetition] modifier object
+
+    modifier = (a | i | ... )
+    object = ( w | s | p | [ | ( | " | { | ... )
+
+Motivation:
+
+A grammar is the structure defining what constitutes a well-formed string of symbols from an underlying alphabet. In Vim, the alphabet consists of all the keys on the keyboard (including combinations of keys, such as CTRL-A for instance, which are considered a single symbol in the alphabet), and the grammar describes the structure of "sentences" that can be used to talk to the Vim editor and edit text.
+
+The two most fundamental words in the grammar are operators and motions.
+
+Operators define how certain text will be processed. They are analogous to verbs in a language, as they determine what to "do" to text. The most common operators are:
+    d - delete text
+    y - yank text, i.e. copy to clipboard
+    c - change text, i.e. delete and enter insert mode at the beginning of the deleted text
+However, there are other useful operators as well: TODO
+
+Motions describe how to move the cursor around throughout text, and implicitly define the set of text over which an operator can be applied. Motions correspond to nouns in a language, as they represent objects that are acted upon by verbs. A motion by itself is, by default, assumed to be represented purely as a command to move the cursor around, i.e. the motion with an implicit "go to" operator. There are a large number of motions, but some of the most useful are:
+    h, j, k, l - move left, down, up, right
+    w - move to beginning of word, where words are delimited by standard regex word tokens
+    W - move to beginning of word, where words are delimited only by whitespace
+    b - move back to beginning of last, where words are delimited by standard regex word tokens
+    B - move back to beginning of last word, where words are delimited only by whitespace
+    e - move to end of word, where words are delimited by standard regex word tokens
+    E - move to end of word, where words are delimited only by whitespace
+    $ - end of line
+    ^ - beginning of line
+    /<string> - current line until the line containing next occurrence of "string"
+    ?<string> - current line until the line containing previous occurrence of "string"
+
+A basic rule (for defining sentences) in Vim consists of an operator followed by the motion it acts on. Both operators and motions can be preceded with optional numbers (positive integers) which can be used to "scale" the operator or motion by repeating it that number of times. So, a basic rule in Vim is
+
+(1) rule = operator motion
+
+    operator = [repetition] ( d | c | y | ... )
+    motion = [repetition] ( h | l | j | k | w | W | $ | ^ | /<string> | gg | G | ... )
+
+An additional construct in Vim is modifiers, which can be used to modify objects, which are units of text patterns, by enhancing or augmenting them in refined ways. To incorporate this idea, let's define a new construct, the text-object:
+
+    text-object = modifier object
+
+    modifier = ( a | i | ... )
+
+The main modifiers are:
+    a - around, used to select around an object
+    i - inside, used to select inside an object
+Objects are modified by modifiers, and represent patterns of text around the cursor which can be selected. They are similar to the "objects" defined implicitly by motions, which "select" the text from the cursor to the location specified by the motion. They are more "noun-like" than motions, however, since they actually refer to a concrete piece of text rather than a cursor motion that selects a piece of text. The common objects are:
+    w - word object (separate from the w motion), referring to the surrounding word
+    s - sentence object, defined as a set of consecutive words until they're terminated by a sentence terminator, defined as either a period or two line breaks.
+    p - paragraph object, defined as text up to a newline.
+    [, ], {, }, (, ), ", ', `, <, > - objects based on different kinds of blocks; each of these objects refers to the text contained in an enclosing block defined by the character, such as in braces { or parentheses (. Both the starting and ending versions of the block have the same meaning.
+Used together, objects can specify patterns of text which are selected in specific ways by modifiers, providing a piece of text that can then be processed using an operator. In this way, text-objects play a similar role as modifiers, as both are used to define precise selections of text that can be edited with operators. If we update rule (1) to include text-objects, we have
+
+(2) rule = operator ( motion | text-object )
+
+    operator = [repetition] ( d | c | y | ... )
+    motion = [repetition] ( h | l | j | k | w | W | $ | ^ | gg | G | ... )
+    text-object = [repetition] modifier object
+
+    modifier = (a | i | ... )
+    object = ( w | s | p | [ | ( | " | { | ... )
+
+One final edge case regarding the grammar is that when an operator is repeated twice, consecutively, such as "dd", it does not require a motion as the motion is assumed to be "the current line". Furthermore, as mentioned above, motions by themselves do not require operators as the operator is assumed to be "go to". Defining these duplicate-ops and standalone motions, we have
+
+(3) rule = ( [repetition] motion | duplicate-op | ( operator ( motion | text-object ) ) )
+
+    duplicate-op = [repetition] operator operator (where both operators are the same)
+
+    operator = [repetition] ( d | c | y | ... )
+    motion = [repetition] ( h | l | j | k | w | W | $ | ^ | gg | G | ... )
+    text-object = [repetition] modifier object
+
+    modifier = (a | i | ... )
+    object = ( w | s | p | [ | ( | " | { | ... )
+
+The above rule is not comprehensive, and there are many Vim commands in the language that don't fit the above description. For example, prepending copy and paste operations with named registers, or the various transitional shortcuts for switching between edit modes (e.g. o and O to go into insert mode on a new line below or above).
