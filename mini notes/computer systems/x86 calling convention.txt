@@ -1,0 +1,51 @@
+Anatomy of a function call, in x86 assembly:
+
+1. Push function arguments to stack.
+    a. Push the arguments in right-to-left order, e.g. for the function
+            int f(int a, int b, bool c)
+       first a 1 byte boolean value would be pushed (c), followed by a four byte integer value (b), followed by another four byte integer value (a).
+2. Execute "call" instruction, which:
+    a. Pushes the return address, i.e. push [eip + 4], to the stack.
+    b. Branches to the function call label, i.e. jmp LABEL_F, which sets eip (the instruction pointer register) to the memory address of the start of the function f.
+3. Inside the function, execute the "enter" instruction, which sets up the stack frame by:
+    a. Pushing the old frame pointer to the stack, i.e. push ebp.
+    b. Sets the frame pointer to the existing stack pointer, i.e. mov ebp, esp.
+   Note that the enter instruction tends to be very slow and so is rarely used by compilers; typically the above steps are simply done literally.
+4. Allocate space on the stack for local variables. This is done by precomputing, based on the source code, what all the local variables are and what size they are. Then, the stack pointer is decremented (since, in x86 architectures, the stack grows downards) by the total amount. Local variables are allocated sequentially based on when they're declared in the source code, so the very first local variable (e.g. a local variable declared as the first line in the function) will be at the top of the stack frame, whereas the last local variable (e.g. a local variable declared right before the return statement) will be at the bottom of the stack frame.
+5. After the function is finished executing, the "leave" instruction is executed. This does the opposite of the enter instruction, i.e.
+    a. Move the stack pointer back up to the frame pointer, i.e. mov esp, ebp. Note that this implicitly deletes the function's stack frame, clearing all the memory the function used for local variables.
+    b. Pop the old frame pointer, i.e. pop ebp.
+   Note: In x86 assembly, the return value of the function is placed in the eax register by convention (or the ST0 register for floating point return values).
+6. Execute the "ret" instruction, which does the opposite of the call instruction, i.e.
+    a. pop eip
+7. Next, the passed parameters, which are still on the stack, have to be cleaned up. Whether the caller or callee cleans up parameters depends on the convention. In cdecl convention, which is commonly used for C code, the caller cleans up the stack. This is opposed to stdcall convention. So, in cdecl convention, right after the instruction pointer is reset to the instruction right after the "call" instruction for the function, the next instruction will be to increment the stack pointer by the total size of all the passed parameters.
+
+This concludes the calling procedure. As an example, for the following code:
+    int foobar(int a, int b, int c) {
+        int xx = a + 2;
+        int yy = b + 3;
+        int zz = c + 4;
+        int sum = xx + yy + zz;
+
+        return xx * yy * zz + sum;
+    }
+
+    int main() {
+        return foobar(77, 88, 99);
+    }
+
+this is what the stack would look like right before the return statement:
+
+    Top of stack (i.e. highest memory address)
+        ...
+        c
+        b
+        a
+        old return address
+        old frame pointer (this is where the current frame pointer, ebp, points)
+        xx
+        yy
+        zz
+        sum (this is where the current stack pointer, esp, points)
+        ...
+    Bottom of stack (i.e. memory address 0)

@@ -1,8 +1,10 @@
-						NEUROSCIENCE
+# NEUROSCIENCE
 -Started July 17, 2016
 -Written around <date finished>
-			FOUNDATIONS
-1. History of Neuroscience
+
+## FOUNDATIONS
+
+### 1. History of Neuroscience
 -Origins of neuroscience: We have evidence to believe that even our prehistoric ancestors understood that the brain was vital to life. As early as 7000 years ago, in a process known as trepanation, there's evidence of people boring holes into other peoples' skulls, and the subjects' skull showing signs of healing afterwards, suggesting that trepanation was a primitive kind of surgery, speculated to have been targeted at curing headaches and mental disorders by giving trapped evil spirits in the head an escape route. However, until the time of Hippocrates it was widely believed that the heart was the most critical component of consciousness, and was seen as the seat of the soul and the organ which stored memories.
 	-Ancient Greece: During the time of Hippocrates, around the fourth century B.C., who was considered the father of modern medicine, Greek scholars believed the brain to be the organ of sensation, given its proximity to major sensory organs such as the eyes. Hippocrates also believed the brain to be the source of intelligence, but this view was not universally accepted. Aristotle was one prominent critic of this view; he believed the brain to be a radiator for cooling blood that was overheated by the heart.
 	-Roman Empire: The most important medical figure in Roman medicine was the Greek physician Galen, who lived around 150 C.E. He believed in the Hippocratic view of the brain, and performed many careful animal dissections. Galen drew a distinction between the cerebrum and the cerebellum, and thought that given the hard texture of the cerebellum and the soft constitution of the cerebrum, that the cerebrum was the source of sensations while the cerebellum controlled muscle movement. Galen also found that the brain is partially hollow, with the hollow spaces, called ventricles, containing fluid. This, in Galen's mind, supported the theory that the body functioned according to a balance or four vital fluids, called humors.
@@ -25,54 +27,64 @@
 		-Experimental neuroscience research: This forms the bedrock of all modern medical brain treatments of the nervous system. This is practiced by neuroanatomists, neurophysiologists, neuropharmacologists, molecular neurobiologists, etc., all of whom experimentally attempt to deduce brain functions.
 		-Theoretical neuroscience research: This is the youngest of the three disciplines of research, and involves using mathematical and computational tools to understand the brain at all levels of analysis. Theoretical neuroscientists attempt to make sense of the massive amounts of data about the brain produced by experimental neuroscientists.
 
-2. Neurons and Glia
+### 2. Neurons and Glia
 
+#### 2a. The neuron doctrine
 
-3. Neuronal Membranes (at rest)
+#### 2b. The prototypical neuron
 
-4. Action Potentials
+#### 2c. Classifying neurons
 
-5. Synaptic Transmission
+#### 2d. Glia
 
-6. Neurotransmitter Systems
+### 3. Neuronal Membranes (at rest)
 
-7. Structure of the Nervous System
+### 4. Action Potentials
 
-			SENSORY AND MOTOR SYSTEMS
-8. Chemistry of our Senses
+### 5. Synaptic Transmission
 
-9. The Eye
+### 6. Neurotransmitter Systems
 
-10. The Central Visual System
+### 7. Structure of the Nervous System
 
-11. The Auditory and Vestibular Systems
+## SENSORY AND MOTOR SYSTEMS
 
-12. The Somatic Sensory System
+### 8. Chemistry of our Senses
 
-13. Spinal Control of Movement
+### 9. The Eye
 
-14. Brain Control of Movement
+### 10. The Central Visual System
 
-			THE BRAIN AND BEHAVIOR
-15. Chemical Control of the Brain and Behavior
+### 11. The Auditory and Vestibular Systems
 
-16. Motivation
+### 12. The Somatic Sensory System
 
-17. Sex and the Brain
+### 13. Spinal Control of Movement
 
-18. Brain Mechanisms of Function
+### 14. Brain Control of Movement
 
-19. Brain Rhythms and Sleep
+## THE BRAIN AND BEHAVIOR
 
-20. Language
+### 15. Chemical Control of the Brain and Behavior
 
-21. The Resting Brain, Attention, and Consciousness
+### 16. Motivation
 
-22. Mental Illness
+### 17. Sex and the Brain
 
-			THE CHANGING BRAIN
-23. Wiring the Brain
+### 18. Brain Mechanisms of Function
 
-24. Memory Systems
+### 19. Brain Rhythms and Sleep
 
-25. Molecular Mechanisms of Learning
+### 20. Language
+
+### 21. The Resting Brain, Attention, and Consciousness
+
+### 22. Mental Illness
+
+## THE CHANGING BRAIN
+
+### 23. Wiring the Brain
+
+### 24. Memory Systems
+
+### 25. Molecular Mechanisms of Learning
